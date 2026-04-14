@@ -1,0 +1,6 @@
+{
+  "name": "GigQuest",
+  "description": "A gamified, mobile-first platform for artists to sign up for events, featuring a real-time admin dashboard for reviewing and approving submissions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
