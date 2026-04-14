@@ -21,6 +21,7 @@ export const Landing = () => {
   const [waiverAccepted, setWaiverAccepted] = useState(false);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [eSignConsent, setESignConsent] = useState(false);
+  const [paymentAcknowledged, setPaymentAcknowledged] = useState(false);
   const [formData, setFormData] = useState({
     stageName: '',
     realName: '',
@@ -50,7 +51,7 @@ export const Landing = () => {
     const signatureMatches =
       formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
 
-    if (!waiverViewed || !waiverAccepted || !ageConfirmed || !eSignConsent || !signatureMatches) {
+    if (!waiverViewed || !waiverAccepted || !ageConfirmed || !eSignConsent || !paymentAcknowledged || !signatureMatches) {
       return;
     }
 
@@ -84,6 +85,7 @@ export const Landing = () => {
       `Waiver Accepted: Yes`,
       `18+ Or Guardian Consent Confirmed: Yes`,
       `Electronic Signature Consent: Yes`,
+      `Payment Acknowledgment: Yes - $25 due at time of performance via cash only unless otherwise stated`,
       `Typed Legal Signature: ${formData.legalSignature}`,
       `Signature Initials: ${formData.signatureInitials}`,
       `Guardian Name: ${formData.guardianName || 'N/A'}`,
@@ -491,6 +493,19 @@ export const Landing = () => {
                       </span>
                     </label>
 
+                    <label className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white">
+                      <input
+                        type="checkbox"
+                        checked={paymentAcknowledged}
+                        required
+                        onChange={(event) => setPaymentAcknowledged(event.target.checked)}
+                        className="mt-1 h-4 w-4 rounded border-white/20 accent-[#d4af37]"
+                      />
+                      <span className="leading-6">
+                        I acknowledge this will cost $25 at the time of performance via cash only unless otherwise stated.
+                      </span>
+                    </label>
+
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <Label htmlFor="legalSignature" className="mb-2 text-zinc-200">Type Legal Name as Signature</Label>
@@ -526,6 +541,7 @@ export const Landing = () => {
                     !waiverAccepted ||
                     !ageConfirmed ||
                     !eSignConsent ||
+                    !paymentAcknowledged ||
                     formData.legalSignature.trim().toLowerCase() !== formData.realName.trim().toLowerCase()
                   }
                   className="elite-btn-gold h-12 w-full rounded-2xl text-sm font-bold uppercase tracking-[0.2em]"
