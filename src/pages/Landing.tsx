@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../components/ui/dialog';
-import { ArrowRight, CircleAlert, Info, Mic2, ShieldCheck, Star } from 'lucide-react';
+import { ArrowRight, CircleAlert, Info, Mic2, ShieldCheck } from 'lucide-react';
 
 export const Landing = () => {
   const [showForm, setShowForm] = useState(false);
@@ -116,11 +116,6 @@ export const Landing = () => {
       <main className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl items-center justify-center">
         <div className="elite-panel grid w-full overflow-hidden md:grid-cols-[1.1fr_0.9fr]">
           <section className="border-b border-white/10 px-6 py-10 md:border-b-0 md:border-r md:px-10 md:py-12">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#f2d06b]">
-              <Star className="h-3.5 w-3.5" />
-              Elite Plan First
-            </div>
-
             <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-[1.75rem] bg-[#d4af37] shadow-[0_0_45px_rgba(212,175,55,0.35)]">
               <Mic2 className="h-10 w-10 text-black" />
             </div>
@@ -129,15 +124,6 @@ export const Landing = () => {
               Performance Opportunities For Serious Artists
             </h1>
 
-            <p className="mt-5 max-w-xl text-base leading-7 text-zinc-300 md:text-lg">
-              Keep this simple. Start with the elite plan, send your artist details, and we will review your registration for upcoming performance opportunities.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3 text-sm text-zinc-400">
-              <span className="rounded-full border border-white/10 px-3 py-1.5">Fast sign up</span>
-              <span className="rounded-full border border-white/10 px-3 py-1.5">Artist-first intake</span>
-              <span className="rounded-full border border-white/10 px-3 py-1.5">Direct follow-up</span>
-            </div>
           </section>
 
           <section className="px-6 py-10 md:px-8 md:py-12">
@@ -560,6 +546,9 @@ export const Landing = () => {
                   </h2>
                   <p className="mt-4 text-sm leading-6 text-zinc-300">
                     Your artist registration draft is ready. If your email app did not open automatically, use one of the options below to send it to us.
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-zinc-400">
+                    Submission does not guarantee acceptance for a performance opportunity. If you are not selected right away, your information may still be considered for future opportunities.
                   </p>
                   <div className="mt-6 space-y-3">
                     <a
