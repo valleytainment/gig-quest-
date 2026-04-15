@@ -85,7 +85,7 @@ export const Landing = () => {
       `Waiver Accepted: Yes`,
       `18+ Or Guardian Consent Confirmed: Yes`,
       `Electronic Signature Consent: Yes`,
-      `Payment Acknowledgment: Yes - $25 due at time of performance via cash only unless otherwise stated`,
+      `Payment Acknowledgment: Yes - $25 due at time of performance via cash only unless otherwise stated. Fee is waived if artist brings a group of 5 or more.`,
       `Typed Legal Signature: ${formData.legalSignature}`,
       `Signature Initials: ${formData.signatureInitials}`,
       `Guardian Name: ${formData.guardianName || 'N/A'}`,
@@ -502,7 +502,7 @@ export const Landing = () => {
                         className="mt-1 h-4 w-4 rounded border-white/20 accent-[#d4af37]"
                       />
                       <span className="leading-6">
-                        I acknowledge this will cost $25 at the time of performance via cash only unless otherwise stated.
+                        I acknowledge this will cost $25 at the time of performance via cash only unless otherwise stated. If I bring a group of 5 or more, the fee is waived.
                       </span>
                     </label>
 
