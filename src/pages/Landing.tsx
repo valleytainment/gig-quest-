@@ -109,33 +109,41 @@ export const Landing = () => {
   };
 
   return (
-    <div className="elite-bg min-h-screen overflow-hidden px-4 py-8 text-white md:px-6 md:py-12">
+    <div className="elite-bg min-h-screen overflow-hidden px-3 py-4 text-white sm:px-4 sm:py-6 md:px-6 md:py-12">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-0 top-0 h-64 w-64 rounded-full bg-[#d4af37]/15 blur-3xl" />
-        <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-[#27456b]/25 blur-3xl" />
+        <div className="absolute left-[-2rem] top-[-1rem] h-48 w-48 rounded-full bg-[#d4af37]/15 blur-3xl sm:h-64 sm:w-64" />
+        <div className="absolute bottom-[-2rem] right-[-2rem] h-56 w-56 rounded-full bg-[#27456b]/25 blur-3xl sm:h-80 sm:w-80" />
       </div>
 
-      <main className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl items-center justify-center">
-        <div className="elite-panel grid w-full overflow-hidden md:grid-cols-[1.1fr_0.9fr]">
-          <section className="border-b border-white/10 px-6 py-10 md:border-b-0 md:border-r md:px-10 md:py-12">
-            <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-[1.75rem] bg-[#d4af37] shadow-[0_0_45px_rgba(212,175,55,0.35)]">
-              <Mic2 className="h-10 w-10 text-black" />
+      <main className="relative mx-auto flex min-h-[100dvh] max-w-5xl items-stretch justify-center md:min-h-[calc(100vh-4rem)] md:items-center">
+        <div className="elite-panel grid w-full overflow-hidden rounded-[1.5rem] md:grid-cols-[1.02fr_0.98fr] md:rounded-[2rem]">
+          <section className="border-b border-white/10 px-5 py-8 sm:px-6 sm:py-9 md:border-b-0 md:border-r md:px-10 md:py-12">
+            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[#d4af37] shadow-[0_0_45px_rgba(212,175,55,0.35)] sm:h-20 sm:w-20 sm:rounded-[1.75rem] md:mx-0">
+              <Mic2 className="h-8 w-8 text-black sm:h-10 sm:w-10" />
             </div>
 
-            <h1 className="max-w-lg text-5xl font-black uppercase leading-[0.9] tracking-tight md:text-7xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b] sm:text-sm">
+              Creative Freq Artist Intake
+            </p>
+
+            <h1 className="max-w-lg text-[2.35rem] font-black uppercase leading-[0.92] tracking-tight sm:text-5xl md:text-7xl">
               Performance Opportunities For Serious Artists
             </h1>
 
+            <p className="mt-4 max-w-md text-sm leading-6 text-zinc-300 sm:text-base sm:leading-7">
+              Submit once, review the waiver, and send your registration from your phone without extra steps.
+            </p>
+
           </section>
 
-          <section className="px-6 py-10 md:px-8 md:py-12">
+          <section className="px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-12">
             {!showForm && !submitted ? (
               <div className="flex h-full flex-col justify-center">
-                <div className="elite-card-gold rounded-3xl p-6">
-                  <p className="text-sm uppercase tracking-[0.35em] text-[#f2d06b]">
+                <div className="elite-card-gold rounded-[1.6rem] p-5 sm:rounded-3xl sm:p-6">
+                  <p className="text-xs uppercase tracking-[0.28em] text-[#f2d06b] sm:text-sm sm:tracking-[0.35em]">
                     Artist Registration
                   </p>
-                  <h2 className="mt-4 text-3xl font-bold text-white">
+                  <h2 className="mt-3 text-2xl font-bold text-white sm:mt-4 sm:text-3xl">
                     Sign up for performance opportunities
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-zinc-300">
@@ -144,7 +152,7 @@ export const Landing = () => {
                   <Button
                     type="button"
                     onClick={() => setShowForm(true)}
-                    className="elite-btn-gold mt-6 h-12 w-full rounded-2xl text-sm font-bold uppercase tracking-[0.2em]"
+                    className="elite-btn-gold mt-5 h-12 w-full rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:mt-6 sm:tracking-[0.2em]"
                   >
                     Sign Up For Performance Opportunities
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -154,56 +162,56 @@ export const Landing = () => {
             ) : null}
 
             {showForm && !submitted ? (
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <Label htmlFor="stageName" className="mb-2 text-zinc-200">Stage Name</Label>
-                  <Input id="stageName" name="stageName" required value={formData.stageName} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                  <Input id="stageName" name="stageName" required value={formData.stageName} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                 </div>
 
                 <div>
                   <Label htmlFor="realName" className="mb-2 text-zinc-200">Real Name</Label>
-                  <Input id="realName" name="realName" required value={formData.realName} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                  <Input id="realName" name="realName" required value={formData.realName} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <Label htmlFor="email" className="mb-2 text-zinc-200">Email</Label>
-                    <Input id="email" name="email" type="email" required value={formData.email} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                    <Input id="email" name="email" type="email" required value={formData.email} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                   </div>
 
                   <div>
                     <Label htmlFor="phone" className="mb-2 text-zinc-200">Phone Number</Label>
-                    <Input id="phone" name="phone" type="tel" required value={formData.phone} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                    <Input id="phone" name="phone" type="tel" required value={formData.phone} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                   </div>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <Label htmlFor="emergencyContactName" className="mb-2 text-zinc-200">Emergency Contact Name</Label>
-                    <Input id="emergencyContactName" name="emergencyContactName" required value={formData.emergencyContactName} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                    <Input id="emergencyContactName" name="emergencyContactName" required value={formData.emergencyContactName} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                   </div>
 
                   <div>
                     <Label htmlFor="emergencyContactPhone" className="mb-2 text-zinc-200">Emergency Contact Phone</Label>
-                    <Input id="emergencyContactPhone" name="emergencyContactPhone" type="tel" required value={formData.emergencyContactPhone} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                    <Input id="emergencyContactPhone" name="emergencyContactPhone" type="tel" required value={formData.emergencyContactPhone} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                   </div>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <Label htmlFor="city" className="mb-2 text-zinc-200">City</Label>
-                    <Input id="city" name="city" value={formData.city} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                    <Input id="city" name="city" value={formData.city} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                   </div>
 
                   <div>
                     <Label htmlFor="performanceType" className="mb-2 text-zinc-200">Artist Type</Label>
-                    <Input id="performanceType" name="performanceType" placeholder="Singer, rapper, DJ..." value={formData.performanceType} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white placeholder:text-zinc-500" />
+                    <Input id="performanceType" name="performanceType" placeholder="Singer, rapper, DJ..." value={formData.performanceType} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white placeholder:text-zinc-500" />
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="instagram" className="mb-2 text-zinc-200">Instagram or Social Link</Label>
-                  <Input id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                  <Input id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                 </div>
 
                 <div>
@@ -219,7 +227,7 @@ export const Landing = () => {
                   />
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
@@ -246,16 +254,16 @@ export const Landing = () => {
                         render={
                           <button
                             type="button"
-                            className="elite-btn-blue inline-flex h-11 items-center justify-center rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.18em]"
+                            className="elite-btn-blue inline-flex h-12 w-full items-center justify-center rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:w-auto sm:tracking-[0.18em]"
                           />
                         }
                         onClick={() => setWaiverViewed(true)}
                       >
                         View Waiver Form
                       </DialogTrigger>
-                      <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-[#111520] p-0 text-white ring-0">
-                        <DialogHeader className="border-b border-white/10 px-6 py-5">
-                          <DialogTitle className="text-xl font-bold uppercase tracking-[0.12em] text-white">
+                      <DialogContent className="max-h-[90dvh] max-w-[calc(100%-1rem)] overflow-y-auto rounded-3xl border border-white/10 bg-[#111520] p-0 text-white ring-0 sm:max-w-3xl">
+                        <DialogHeader className="border-b border-white/10 px-4 py-4 sm:px-6 sm:py-5">
+                          <DialogTitle className="text-lg font-bold uppercase tracking-[0.08em] text-white sm:text-xl sm:tracking-[0.12em]">
                             Artist Participation Agreement
                           </DialogTitle>
                           <DialogDescription className="text-sm leading-6 text-zinc-300">
@@ -263,7 +271,7 @@ export const Landing = () => {
                           </DialogDescription>
                         </DialogHeader>
 
-                        <div className="space-y-5 px-6 py-6 text-sm leading-7 text-zinc-200">
+                        <div className="space-y-5 px-4 py-5 text-sm leading-7 text-zinc-200 sm:px-6 sm:py-6">
                           <section>
                             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f2d06b]">Organizer</p>
                             <p className="mt-2">Independent Event Organizer</p>
@@ -412,7 +420,7 @@ export const Landing = () => {
                           </section>
                         </div>
 
-                        <DialogFooter className="border-t border-white/10 bg-white/5 px-6 py-4">
+                        <DialogFooter className="border-t border-white/10 bg-white/5 px-4 py-4 sm:px-6">
                           <div className="w-full rounded-2xl border border-[#d4af37]/30 bg-[#d4af37]/10 px-4 py-3 text-left text-xs uppercase tracking-[0.16em] text-[#f2d06b]">
                             By accepting and submitting, the artist acknowledges that they have read, understood, and agreed to all terms outlined above.
                           </div>
@@ -446,7 +454,7 @@ export const Landing = () => {
                   </label>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5">
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-[#f2d06b]" />
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white">
@@ -471,12 +479,12 @@ export const Landing = () => {
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <Label htmlFor="guardianName" className="mb-2 text-zinc-200">Guardian Name if Needed</Label>
-                        <Input id="guardianName" name="guardianName" value={formData.guardianName} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                        <Input id="guardianName" name="guardianName" value={formData.guardianName} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                       </div>
 
                       <div>
                         <Label htmlFor="guardianPhone" className="mb-2 text-zinc-200">Guardian Phone if Needed</Label>
-                        <Input id="guardianPhone" name="guardianPhone" type="tel" value={formData.guardianPhone} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                        <Input id="guardianPhone" name="guardianPhone" type="tel" value={formData.guardianPhone} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                       </div>
                     </div>
 
@@ -509,7 +517,7 @@ export const Landing = () => {
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <Label htmlFor="legalSignature" className="mb-2 text-zinc-200">Type Legal Name as Signature</Label>
-                        <Input id="legalSignature" name="legalSignature" required value={formData.legalSignature} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                        <Input id="legalSignature" name="legalSignature" required value={formData.legalSignature} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                         <p className="mt-2 text-xs uppercase tracking-[0.14em] text-zinc-400">
                           Must match real name above.
                         </p>
@@ -517,7 +525,7 @@ export const Landing = () => {
 
                       <div>
                         <Label htmlFor="signatureInitials" className="mb-2 text-zinc-200">Initials</Label>
-                        <Input id="signatureInitials" name="signatureInitials" required value={formData.signatureInitials} onChange={handleChange} className="h-11 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
+                        <Input id="signatureInitials" name="signatureInitials" required value={formData.signatureInitials} onChange={handleChange} className="h-12 rounded-xl border-white/10 bg-white/5 px-4 text-white" />
                         <p className="mt-2 text-xs uppercase tracking-[0.14em] text-zinc-400">
                           Added to the email record.
                         </p>
@@ -544,7 +552,7 @@ export const Landing = () => {
                     !paymentAcknowledged ||
                     formData.legalSignature.trim().toLowerCase() !== formData.realName.trim().toLowerCase()
                   }
-                  className="elite-btn-gold h-12 w-full rounded-2xl text-sm font-bold uppercase tracking-[0.2em]"
+                  className="elite-btn-gold h-12 w-full rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em]"
                 >
                   Submit Registration
                 </Button>
@@ -553,11 +561,11 @@ export const Landing = () => {
 
             {submitted ? (
               <div className="flex h-full flex-col justify-center">
-                <div className="elite-card-blue rounded-3xl p-8 text-center">
-                  <p className="text-sm uppercase tracking-[0.35em] text-sky-300">
+                <div className="elite-card-blue rounded-[1.6rem] p-5 text-center sm:rounded-3xl sm:p-8">
+                  <p className="text-xs uppercase tracking-[0.28em] text-sky-300 sm:text-sm sm:tracking-[0.35em]">
                     Submission Received
                   </p>
-                  <h2 className="mt-4 text-3xl font-bold text-white">
+                  <h2 className="mt-3 text-2xl font-bold text-white sm:mt-4 sm:text-3xl">
                     We will reach out soon thank you
                   </h2>
                   <p className="mt-4 text-sm leading-6 text-zinc-300">
@@ -569,7 +577,7 @@ export const Landing = () => {
                   <div className="mt-6 space-y-3">
                     <a
                       href={draftLinks.mailto}
-                      className="elite-btn-gold flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold uppercase tracking-[0.2em]"
+                      className="elite-btn-gold flex h-12 w-full items-center justify-center rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em]"
                     >
                       Open Email App
                     </a>
@@ -577,7 +585,7 @@ export const Landing = () => {
                       href={draftLinks.gmail}
                       target="_blank"
                       rel="noreferrer"
-                      className="elite-btn-blue flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold uppercase tracking-[0.2em]"
+                      className="elite-btn-blue flex h-12 w-full items-center justify-center rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em]"
                     >
                       Open In Gmail
                     </a>
