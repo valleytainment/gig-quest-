@@ -21,7 +21,6 @@ export const Landing = () => {
   const [waiverAccepted, setWaiverAccepted] = useState(false);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [eSignConsent, setESignConsent] = useState(false);
-  const [paymentAcknowledged, setPaymentAcknowledged] = useState(false);
   const [formData, setFormData] = useState({
     stageName: '',
     realName: '',
@@ -51,7 +50,7 @@ export const Landing = () => {
     const signatureMatches =
       formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
 
-    if (!waiverViewed || !waiverAccepted || !ageConfirmed || !eSignConsent || !paymentAcknowledged || !signatureMatches) {
+    if (!waiverViewed || !waiverAccepted || !ageConfirmed || !eSignConsent || !signatureMatches) {
       return;
     }
 
@@ -85,7 +84,6 @@ export const Landing = () => {
       `Waiver Accepted: Yes`,
       `18+ Or Guardian Consent Confirmed: Yes`,
       `Electronic Signature Consent: Yes`,
-      `Payment Acknowledgment: Yes - $25 due at time of performance via cash only unless otherwise stated. Fee is waived if artist brings a group of 5 or more.`,
       `Typed Legal Signature: ${formData.legalSignature}`,
       `Signature Initials: ${formData.signatureInitials}`,
       `Guardian Name: ${formData.guardianName || 'N/A'}`,
@@ -132,6 +130,10 @@ export const Landing = () => {
 
             <p className="mt-4 max-w-md text-sm leading-6 text-zinc-300 sm:text-base sm:leading-7">
               Submit once, review the waiver, and send your registration from your phone without extra steps.
+            </p>
+
+            <p className="mt-4 max-w-md text-xs leading-5 text-zinc-500 sm:text-sm sm:leading-6">
+              Sign-up is free. Some events may require a fee or ticket purchase — you will be notified in advance if that applies.
             </p>
 
           </section>
@@ -501,19 +503,6 @@ export const Landing = () => {
                       </span>
                     </label>
 
-                    <label className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white">
-                      <input
-                        type="checkbox"
-                        checked={paymentAcknowledged}
-                        required
-                        onChange={(event) => setPaymentAcknowledged(event.target.checked)}
-                        className="mt-1 h-4 w-4 rounded border-white/20 accent-[#d4af37]"
-                      />
-                      <span className="leading-6">
-                        I acknowledge this will cost $25 at the time of performance via cash only unless otherwise stated. If I bring a group of 5 or more, the fee is waived.
-                      </span>
-                    </label>
-
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <Label htmlFor="legalSignature" className="mb-2 text-zinc-200">Type Legal Name as Signature</Label>
@@ -549,7 +538,6 @@ export const Landing = () => {
                     !waiverAccepted ||
                     !ageConfirmed ||
                     !eSignConsent ||
-                    !paymentAcknowledged ||
                     formData.legalSignature.trim().toLowerCase() !== formData.realName.trim().toLowerCase()
                   }
                   className="elite-btn-gold h-12 w-full rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em]"
