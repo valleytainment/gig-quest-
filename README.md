@@ -54,6 +54,7 @@ npm run dev                  # http://localhost:3000
 | `npm run launch:verify` | 🟫 | Pre-intake readiness |
 | `npm run launch:deploy-hosting` | 🟫 | Build + Firebase Hosting deploy |
 | `npm run launch:deploy-github-pages` | 🟫 | Build + GitHub Pages deploy (uses `gh` auth) |
+| `npm run launch:smoke-production` | 🟫 | E2E smoke against live GitHub Pages URL |
 | `npm run launch:diagnose` | 🟫 | Firestore API probe |
 | `npm run launch:open-console` | 🟫 | Operator Console tabs |
 | `npm run audit:consistency` | 🟫 | Elite static consistency audit |
