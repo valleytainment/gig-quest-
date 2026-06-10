@@ -1,3 +1,4 @@
+/** 🟫 OPS │ tests/landing.smoke.test.tsx — Vitest safe-mode landing smoke (6 tests). */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';

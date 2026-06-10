@@ -104,6 +104,7 @@
   background-size: 200% 100%;
 }
 
+/* ⚪ STYLE │ effects.css — Gradients, glass panels, elite-bg, gq-card */
 .elite-bg {
   background-color: #0b0e14;
   background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #0b0e14 70%);

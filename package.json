@@ -23,7 +23,8 @@
     "launch:test-rules": "node scripts/launch/test-public-create.mjs",
     "launch:diagnose": "node scripts/launch/diagnose-firestore.mjs",
     "launch:open-new-project": "bash scripts/launch/open-new-project.sh",
-    "launch:apply-config": "node scripts/launch/apply-firebase-config.mjs"
+    "launch:apply-config": "node scripts/launch/apply-firebase-config.mjs",
+    "audit:consistency": "bash scripts/audit-consistency.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",

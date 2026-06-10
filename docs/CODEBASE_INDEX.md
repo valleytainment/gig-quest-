@@ -22,6 +22,8 @@
 | `firebase-blueprint.json` | ⚪ | Legacy scaffold metadata |
 | `metadata.json` | ⚪ | App display metadata |
 | `.env.example` | 🟦 | Env template (intake OFF) |
+| `docs/CONFIG.md` | 🟦 | Root config reference |
+| `scripts/audit-consistency.sh` | 🟫 | `npm run audit:consistency` |
 | `components.json` | 🟧 | shadcn/ui config |
 
 ---

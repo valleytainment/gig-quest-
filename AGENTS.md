@@ -90,6 +90,7 @@ Add module header block to new `lib/`, `pages/`, `contexts/`, `types/` files per
 ```bash
 npm run dev                    # localhost:3000
 npm run ci                     # typecheck + test + build + e2e
+npm run audit:consistency      # static doc/header audit
 npm run launch:verify          # pre-intake readiness
 npm run launch:diagnose        # Firestore API probe
 npm run launch:open-console    # operator Console tabs

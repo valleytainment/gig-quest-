@@ -1,5 +1,7 @@
 # Gig Quest — Launch Checklist
 
+> Hub: [docs/README.md](./README.md) | Audit: [CONSISTENCY_AUDIT.md](./CONSISTENCY_AUDIT.md) | Run: `npm run audit:consistency`
+
 Use this checklist before each production deploy and before declaring 10+ done.
 
 ## Pre-Merge (Every PR)
@@ -18,7 +20,7 @@ Use this checklist before each production deploy and before declaring 10+ done.
 - [x] Playwright mobile e2e
 - [x] `docs/LEGACY_SAFE_MODE.md`
 - [x] `npm run ci` includes typecheck + test + build + e2e
-- [x] `App.tsx` renders `<Landing />` only
+- [x] `App.tsx` routes `/` to `<Landing />` (router wired; safe mode on `/` behavior)
 
 ## Phase 1 Gate (Repo Truth)
 
