@@ -2,9 +2,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ===============================================================
-    // Helper Functions
-    // ===============================================================
     function isAuthenticated() {
       return request.auth != null;
     }
@@ -15,8 +12,8 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() && (
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
-        (request.auth.token.email == 'Valleytainment@gmail.com' && request.auth.token.email_verified == true)
+        exists(/databases/$(database)/documents/adminRoles/$(request.auth.uid)) ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
       );
     }
 
@@ -36,11 +33,8 @@ service cloud.firestore {
       return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") && email.size() <= 100;
     }
 
-    // ===============================================================
-    // Domain Validators
-    // ===============================================================
     function isValidUser(data) {
-      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'role', 'xp', 'level', 'createdAt']) &&
+      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'role', 'xp', 'level', 'createdAt', 'stageName', 'city', 'bio']) &&
              data.uid is string && data.uid.size() > 0 && data.uid.size() <= 128 &&
              isValidEmail(data.email) &&
              isValidString(data.displayName, 1, 100) &&
@@ -48,18 +42,24 @@ service cloud.firestore {
              data.role in ['artist', 'admin'] &&
              data.xp is number && data.xp >= 0 &&
              data.level is number && data.level >= 1 &&
-             data.createdAt is timestamp;
+             data.createdAt is timestamp &&
+             (!('stageName' in data) || isValidString(data.stageName, 0, 100)) &&
+             (!('city' in data) || isValidString(data.city, 0, 100)) &&
+             (!('bio' in data) || isValidString(data.bio, 0, 2000));
     }
 
     function isValidEvent(data) {
-      return hasOnlyAllowedFields(['title', 'description', 'date', 'location', 'status', 'createdBy', 'createdAt']) &&
+      return hasOnlyAllowedFields(['title', 'description', 'date', 'location', 'status', 'createdBy', 'createdAt', 'capacity', 'requirements', 'feeNote']) &&
              isValidString(data.title, 1, 200) &&
              isValidString(data.description, 1, 2000) &&
              data.date is timestamp &&
              isValidString(data.location, 1, 200) &&
-             data.status in ['open', 'closed'] &&
+             data.status in ['open', 'closed', 'draft', 'completed', 'cancelled'] &&
              data.createdBy is string && data.createdBy.size() > 0 && data.createdBy.size() <= 128 &&
-             data.createdAt is timestamp;
+             data.createdAt is timestamp &&
+             (!('capacity' in data) || (data.capacity is number && data.capacity >= 1 && data.capacity <= 500)) &&
+             (!('requirements' in data) || data.requirements is list) &&
+             (!('feeNote' in data) || isValidString(data.feeNote, 0, 500));
     }
 
     function isValidSubmission(data) {
@@ -74,27 +74,64 @@ service cloud.firestore {
              (!('reviewedBy' in data) || (data.reviewedBy is string && data.reviewedBy.size() <= 128));
     }
 
-    function isValidNotification(data) {
-      return hasOnlyAllowedFields(['userId', 'title', 'message', 'read', 'createdAt', 'type']) &&
-             data.userId is string && data.userId.size() > 0 && data.userId.size() <= 128 &&
-             isValidString(data.title, 1, 200) &&
-             isValidString(data.message, 1, 1000) &&
-             data.read is bool &&
-             data.createdAt is timestamp &&
-             data.type in ['submission_update', 'new_event'];
+    function isValidConsent(data) {
+      return data.keys().hasAll(['waiverVersionId', 'waiverBodyHash', 'waiverViewed', 'waiverAccepted', 'ageConfirmed', 'eSignConsent', 'legalSignature', 'initials', 'acceptedAt']) &&
+             isValidString(data.waiverVersionId, 1, 50) &&
+             isValidString(data.waiverBodyHash, 1, 100) &&
+             data.waiverViewed is bool && data.waiverViewed == true &&
+             data.waiverAccepted is bool && data.waiverAccepted == true &&
+             data.ageConfirmed is bool && data.ageConfirmed == true &&
+             data.eSignConsent is bool && data.eSignConsent == true &&
+             isValidString(data.legalSignature, 1, 100) &&
+             isValidString(data.initials, 1, 20) &&
+             data.acceptedAt is timestamp &&
+             (!('guardianName' in data) || isValidString(data.guardianName, 0, 100)) &&
+             (!('guardianPhone' in data) || isValidString(data.guardianPhone, 0, 30)) &&
+             (!('userAgentHash' in data) || isValidString(data.userAgentHash, 0, 128));
     }
 
-    // ===============================================================
-    // Rules
-    // ===============================================================
+    function isValidApplicationCreate(data) {
+      return hasOnlyAllowedFields(['source', 'status', 'artistSnapshot', 'emergencyContact', 'message', 'consent', 'createdAt', 'updatedAt', 'eventId', 'artistId', 'portfolioUrl']) &&
+             data.source in ['public_landing', 'artist_portal'] &&
+             data.status == 'new' &&
+             data.artistSnapshot.keys().hasAll(['stageName', 'email']) &&
+             isValidString(data.artistSnapshot.stageName, 1, 100) &&
+             isValidEmail(data.artistSnapshot.email) &&
+             (!('legalName' in data.artistSnapshot) || isValidString(data.artistSnapshot.legalName, 0, 100)) &&
+             (!('phone' in data.artistSnapshot) || isValidString(data.artistSnapshot.phone, 0, 30)) &&
+             (!('city' in data.artistSnapshot) || isValidString(data.artistSnapshot.city, 0, 100)) &&
+             (!('socialUrl' in data.artistSnapshot) || isValidString(data.artistSnapshot.socialUrl, 0, 500)) &&
+             (!('performanceType' in data.artistSnapshot) || isValidString(data.artistSnapshot.performanceType, 0, 100)) &&
+             (data.source == 'public_landing' ?
+               ('emergencyContact' in data &&
+                data.emergencyContact.keys().hasAll(['name', 'phone']) &&
+                isValidString(data.emergencyContact.name, 1, 100) &&
+                isValidString(data.emergencyContact.phone, 1, 30)) :
+               (!('emergencyContact' in data) ||
+                (data.emergencyContact.keys().hasAll(['name', 'phone']) &&
+                 isValidString(data.emergencyContact.name, 1, 100) &&
+                 isValidString(data.emergencyContact.phone, 1, 30)))) &&
+             isValidConsent(data.consent) &&
+             data.createdAt is timestamp &&
+             data.updatedAt is timestamp &&
+             (!('eventId' in data) || (data.eventId is string && data.eventId.size() <= 128)) &&
+             (!('artistId' in data) || (data.artistId is string && data.artistId == request.auth.uid)) &&
+             (!('message' in data) || isValidString(data.message, 0, 2000)) &&
+             (!('portfolioUrl' in data) || isValidUrl(data.portfolioUrl));
+    }
+
+    function isValidApplicationAdminUpdate(data) {
+      return data.diff(resource.data).affectedKeys().hasOnly(['status', 'internalNotes', 'updatedAt', 'reviewedAt', 'reviewedBy']) &&
+             data.status in ['new', 'reviewing', 'approved', 'waitlisted', 'rejected', 'checked_in', 'completed', 'no_show'] &&
+             data.updatedAt is timestamp;
+    }
+
     match /users/{userId} {
       allow read: if isAuthenticated();
-      // Allow users to create their own profile, but default to 'artist' unless they are already an admin
-      allow create: if isOwner(userId) && isValidUser(request.resource.data) && (
-        (request.resource.data.role == 'artist' && request.resource.data.xp == 0 && request.resource.data.level == 1) ||
-        isAdmin()
-      );
-      // Allow users to update their own profile, but not their role, xp, or level (unless admin)
+      allow create: if isOwner(userId) && isValidUser(request.resource.data) &&
+                    request.resource.data.role == 'artist' &&
+                    request.resource.data.xp == 0 &&
+                    request.resource.data.level == 1;
       allow update: if isOwner(userId) && isValidUser(request.resource.data) && (
         (request.resource.data.role == resource.data.role &&
          request.resource.data.xp == resource.data.xp &&
@@ -105,6 +142,11 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /adminRoles/{uid} {
+      allow read: if isAuthenticated() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
     match /events/{eventId} {
       allow read: if isAuthenticated();
       allow create: if isAdmin() && isValidEvent(request.resource.data) && request.resource.data.createdBy == request.auth.uid;
@@ -112,43 +154,54 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /applications/{applicationId} {
+      allow read: if isAuthenticated() && (
+        isAdmin() ||
+        (resource.data.artistId != null && resource.data.artistId == request.auth.uid)
+      );
+      allow create: if (
+        (request.auth == null && request.resource.data.source == 'public_landing' && isValidApplicationCreate(request.resource.data)) ||
+        (isAuthenticated() && request.resource.data.source == 'artist_portal' && request.resource.data.artistId == request.auth.uid && isValidApplicationCreate(request.resource.data))
+      );
+      allow update: if isAdmin() && isValidApplicationAdminUpdate(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
     match /submissions/{submissionId} {
-      // Artists can read their own submissions, admins can read all
       allow read: if isAuthenticated() && (resource.data.artistId == request.auth.uid || isAdmin());
-      
-      // Artists can create submissions for themselves
-      allow create: if isAuthenticated() && 
-                    request.resource.data.artistId == request.auth.uid && 
+      allow create: if isAuthenticated() &&
+                    request.resource.data.artistId == request.auth.uid &&
                     request.resource.data.status == 'pending' &&
                     isValidSubmission(request.resource.data);
-      
-      // Admins can update submission status
       allow update: if isAdmin() && isValidSubmission(request.resource.data) &&
                     request.resource.data.eventId == resource.data.eventId &&
                     request.resource.data.artistId == resource.data.artistId &&
                     request.resource.data.createdAt == resource.data.createdAt;
-      
       allow delete: if isAdmin();
     }
 
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+    }
+
     match /notifications/{notificationId} {
-      // Users can read their own notifications
       allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
-      
-      // System/Admins create notifications
-      allow create: if isAdmin() && isValidNotification(request.resource.data);
-      
-      // Users can mark their own notifications as read
-      allow update: if isAuthenticated() && 
+      allow create: if isAdmin();
+      allow update: if isAuthenticated() &&
                     resource.data.userId == request.auth.uid &&
-                    isValidNotification(request.resource.data) &&
                     request.resource.data.userId == resource.data.userId &&
                     request.resource.data.title == resource.data.title &&
                     request.resource.data.message == resource.data.message &&
                     request.resource.data.createdAt == resource.data.createdAt &&
                     request.resource.data.type == resource.data.type;
-                    
       allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /waiverVersions/{versionId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
   }
 }

@@ -22,15 +22,15 @@ Use this checklist before each production deploy and before declaring 10+ done.
 
 ## Phase 1 Gate (Repo Truth)
 
-- [ ] Package name is `gig-quest`
-- [ ] README describes Gig Quest (not AI Studio starter)
-- [ ] `docs/PRODUCT_BLUEPRINT.md` exists
-- [ ] `docs/DATA_MODEL.md` exists
-- [ ] `docs/SECURITY_PLAN.md` exists
-- [ ] `docs/LAUNCH_CHECKLIST.md` exists
-- [ ] `.env.example` exists with no secrets
-- [ ] npm-only documented; `pnpm-lock.yaml` removed
-- [ ] No app behavior changes
+- [x] Package name is `gig-quest`
+- [x] README describes Gig Quest (not AI Studio starter)
+- [x] `docs/PRODUCT_BLUEPRINT.md` exists
+- [x] `docs/DATA_MODEL.md` exists
+- [x] `docs/SECURITY_PLAN.md` exists
+- [x] `docs/LAUNCH_CHECKLIST.md` exists
+- [x] `.env.example` exists with no secrets
+- [x] npm-only documented; `pnpm-lock.yaml` removed
+- [x] No app behavior changes
 
 ## Platform Readiness (Phases 2–10)
 

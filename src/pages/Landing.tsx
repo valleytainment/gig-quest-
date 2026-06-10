@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  buildEmailDraft,
+  createPublicApplication,
+  isFirestoreIntakeEnabled,
+} from '../lib/submissions';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -21,6 +27,9 @@ export const Landing = () => {
   const [waiverAccepted, setWaiverAccepted] = useState(false);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [eSignConsent, setESignConsent] = useState(false);
+  const [confirmationId, setConfirmationId] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     stageName: '',
     realName: '',
@@ -45,7 +54,7 @@ export const Landing = () => {
     setFormData((current) => ({ ...current, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const signatureMatches =
       formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
@@ -54,56 +63,36 @@ export const Landing = () => {
       return;
     }
 
-    const submittedAt = new Date();
-    const submittedAtLocal = submittedAt.toLocaleString();
-    const submittedAtIso = submittedAt.toISOString();
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const subject = `Artist Registration - ${formData.stageName || formData.realName || 'New Submission'}`;
-    const body = [
-      'New artist registration submission:',
-      '',
-      'SUBMISSION RECORD',
-      `Submitted At (Local): ${submittedAtLocal}`,
-      `Submitted At (UTC/ISO): ${submittedAtIso}`,
-      `Browser Time Zone: ${timezone}`,
-      `User Agent: ${navigator.userAgent}`,
-      '',
-      'ARTIST DETAILS',
-      `Stage Name: ${formData.stageName}`,
-      `Real Name: ${formData.realName}`,
-      `Email: ${formData.email}`,
-      `Phone Number: ${formData.phone}`,
-      `Emergency Contact Name: ${formData.emergencyContactName}`,
-      `Emergency Contact Phone: ${formData.emergencyContactPhone}`,
-      `City: ${formData.city || 'N/A'}`,
-      `Artist Type: ${formData.performanceType || 'N/A'}`,
-      `Instagram or Social Link: ${formData.instagram || 'N/A'}`,
-      '',
-      'WAIVER / CONSENT RECORD',
-      `Waiver Viewed: Yes`,
-      `Waiver Accepted: Yes`,
-      `18+ Or Guardian Consent Confirmed: Yes`,
-      `Electronic Signature Consent: Yes`,
-      `Typed Legal Signature: ${formData.legalSignature}`,
-      `Signature Initials: ${formData.signatureInitials}`,
-      `Guardian Name: ${formData.guardianName || 'N/A'}`,
-      `Guardian Phone: ${formData.guardianPhone || 'N/A'}`,
-      '',
-      'LEGAL ACKNOWLEDGMENT',
-      'By submitting this registration, I confirm that I reviewed the Artist Participation Agreement, understood it, and voluntarily agreed to its terms. I understand that typing my legal name below acts as my electronic signature and acknowledgment of the waiver, media release, and participation terms.',
-      '',
-      'Anything Else:',
-      formData.notes || 'N/A',
-    ].join('\n');
+    setSubmitting(true);
+    setSubmitError(null);
 
-    const mailtoUrl = `mailto:creativefreqllc@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent('creativefreqllc@gmail.com')}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setDraftLinks({ mailto: mailtoUrl, gmail: gmailUrl });
+    const consent = { waiverViewed, waiverAccepted, ageConfirmed, eSignConsent };
+
+    if (isFirestoreIntakeEnabled()) {
+      try {
+        const { id } = await createPublicApplication({ formData, consent });
+        const drafts = buildEmailDraft(formData, id);
+        setConfirmationId(id);
+        setDraftLinks(drafts);
+        setSubmitted(true);
+        window.location.href = drafts.mailto;
+        return;
+      } catch {
+        const drafts = buildEmailDraft(formData);
+        setDraftLinks(drafts);
+        setSubmitError(
+          'Online submission failed. Your answers are still here — retry or send via email below.'
+        );
+        setSubmitting(false);
+        return;
+      }
+    }
+
+    const drafts = buildEmailDraft(formData);
+    setDraftLinks(drafts);
     setSubmitted(true);
-
-    // Try the default mail client first. If the browser/device has no handler configured,
-    // the fallback buttons in the success state let the user open the draft manually.
-    window.location.href = mailtoUrl;
+    window.location.href = drafts.mailto;
+    setSubmitting(false);
   };
 
   return (
@@ -135,6 +124,31 @@ export const Landing = () => {
             <p className="mt-4 max-w-md text-xs leading-5 text-zinc-500 sm:text-sm sm:leading-6">
               Sign-up is free. Some events may require a fee or ticket purchase — you will be notified in advance if that applies.
             </p>
+
+            <div className="mt-6 flex flex-wrap gap-2 text-xs uppercase tracking-[0.14em] text-zinc-400">
+              <span className="rounded-full border border-white/10 px-3 py-1">Free signup</span>
+              <span className="rounded-full border border-white/10 px-3 py-1">Curated review</span>
+              <span className="rounded-full border border-white/10 px-3 py-1">Waiver protected</span>
+            </div>
+
+            <div className="mt-8 max-w-md">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f2d06b]">How It Works</p>
+              <ol className="mt-3 space-y-2 text-sm text-zinc-300">
+                <li>1. Apply with your artist details</li>
+                <li>2. Get reviewed by the team</li>
+                <li>3. Receive slot status and next steps</li>
+                <li>4. Check in, perform, build XP</li>
+              </ol>
+            </div>
+
+            <div className="mt-8 max-w-md">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f2d06b]">FAQ</p>
+              <div className="mt-3 space-y-3 text-sm text-zinc-300">
+                <p><strong className="text-white">Is it free?</strong> Sign-up is free. Event fees are communicated in advance.</p>
+                <p><strong className="text-white">Am I guaranteed a slot?</strong> No — submission does not guarantee acceptance.</p>
+                <p><strong className="text-white">Will I be filmed?</strong> Events may be recorded for promotion per the waiver.</p>
+              </div>
+            </div>
 
           </section>
 
@@ -531,9 +545,31 @@ export const Landing = () => {
                   </div>
                 </div>
 
+                {submitError ? (
+                  <div className="space-y-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3">
+                    <p className="text-sm text-amber-200">{submitError}</p>
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <a href={draftLinks.mailto} className="elite-btn-gold flex h-10 flex-1 items-center justify-center rounded-xl text-xs font-bold uppercase">
+                        Open Email App
+                      </a>
+                      <a href={draftLinks.gmail} target="_blank" rel="noreferrer" className="elite-btn-blue flex h-10 flex-1 items-center justify-center rounded-xl text-xs font-bold uppercase">
+                        Open In Gmail
+                      </a>
+                    </div>
+                  </div>
+                ) : null}
+
+                <p className="text-xs text-zinc-500">
+                  By submitting you agree to our{' '}
+                  <Link to="/legal/privacy" className="text-[#f2d06b] underline-offset-2 hover:underline">Privacy Policy</Link>
+                  {' '}and{' '}
+                  <Link to="/legal/waiver" className="text-[#f2d06b] underline-offset-2 hover:underline">Participation Agreement</Link>.
+                </p>
+
                 <Button
                   type="submit"
                   disabled={
+                    submitting ||
                     !waiverViewed ||
                     !waiverAccepted ||
                     !ageConfirmed ||
@@ -542,7 +578,7 @@ export const Landing = () => {
                   }
                   className="elite-btn-gold h-12 w-full rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em]"
                 >
-                  Submit Registration
+                  {submitting ? 'Submitting…' : 'Submit Registration'}
                 </Button>
               </form>
             ) : null}
@@ -556,6 +592,11 @@ export const Landing = () => {
                   <h2 className="mt-3 text-2xl font-bold text-white sm:mt-4 sm:text-3xl">
                     We will reach out soon thank you
                   </h2>
+                  {confirmationId ? (
+                    <p className="mt-4 font-mono text-sm text-sky-200">
+                      Confirmation ID: {confirmationId}
+                    </p>
+                  ) : null}
                   <p className="mt-4 text-sm leading-6 text-zinc-300">
                     Your artist registration draft is ready. If your email app did not open automatically, use one of the options below to send it to us.
                   </p>
