@@ -19,7 +19,8 @@
     "launch:bootstrap-admin": "node scripts/launch/bootstrap-admin.mjs",
     "launch:all": "bash scripts/launch/launch-all.sh",
     "launch:verify": "bash scripts/launch/verify-readiness.sh",
-    "launch:open-console": "bash scripts/launch/open-console.sh"
+    "launch:open-console": "bash scripts/launch/open-console.sh",
+    "launch:test-rules": "node scripts/launch/test-public-create.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
