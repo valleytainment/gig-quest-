@@ -12,7 +12,7 @@ export const LegalTrustBlock = ({ className = '' }: { className?: string }) => (
       <div>
         <p className="text-sm font-semibold text-white">Waiver protected intake</p>
         <p className="mt-1 text-xs leading-5 text-zinc-400">
-          Review the artist participation agreement before you submit. Your consent is recorded with your registration.
+          Review the artist participation agreement before you submit. Stage, truck, and property access rules apply — unauthorized climbing is prohibited and all participation is at your own risk.
         </p>
         <div className="mt-3 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.12em]">
           <Link to="/legal/waiver" className="text-[#f2d06b] hover:underline">

@@ -71,7 +71,7 @@ export function buildEmailBody(formData: LandingFormData, confirmationId?: strin
     `Guardian Phone: ${formData.guardianPhone || 'N/A'}`,
     '',
     'LEGAL ACKNOWLEDGMENT',
-    'By submitting this registration, I confirm that I reviewed the Artist Participation Agreement, understood it, and voluntarily agreed to its terms.',
+    'By submitting this registration, I confirm that I reviewed the Artist Participation Agreement (including stage, truck, and property access rules), understood it, and voluntarily agreed to its terms — including assumption of risk and release of liability.',
     '',
     'Anything Else:',
     formData.notes || 'N/A',

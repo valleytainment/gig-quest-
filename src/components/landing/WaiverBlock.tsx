@@ -60,7 +60,7 @@ export const WaiverBlock = ({
               Artist Participation Agreement
             </DialogTitle>
             <DialogDescription className="text-sm leading-6 text-zinc-300">
-              Liability waiver, media release, and terms of participation.
+              Liability waiver, stage/truck/property access rules, assumption of risk, and release of claims.
             </DialogDescription>
           </DialogHeader>
           <WaiverDialogContent />

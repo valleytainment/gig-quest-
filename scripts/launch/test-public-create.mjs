@@ -22,8 +22,8 @@ const testDoc = {
   },
   emergencyContact: { name: 'Probe Contact', phone: '555-0199' },
   consent: {
-    waiverVersionId: 'v1.0.0',
-    waiverBodyHash: 'gq-waiver-v1-2026',
+    waiverVersionId: 'v1.1.0',
+    waiverBodyHash: 'gq-waiver-v1.1-2026',
     waiverViewed: true,
     waiverAccepted: true,
     ageConfirmed: true,
