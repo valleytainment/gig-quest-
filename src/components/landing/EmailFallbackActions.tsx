@@ -1,4 +1,4 @@
-/** 🟧 UI │ components/landing/EmailFallbackActions.tsx — mailto, Gmail, copy-email actions. @see README.md */
+/** 🟧 UI │ EmailFallbackActions — mailto, Gmail, copy-email recovery actions. @see README.md */
 import { useState } from 'react';
 import { Check, Copy, Mail } from 'lucide-react';
 import { INTAKE_RECIPIENT_EMAIL } from '../../lib/submissions';
@@ -33,34 +33,34 @@ export const EmailFallbackActions = ({ mailto, gmail, emailBody, compact }: Emai
   };
 
   const btnClass = compact
-    ? 'flex h-10 flex-1 items-center justify-center gap-2 rounded-xl text-xs font-bold uppercase'
-    : 'flex h-12 w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em]';
+    ? 'flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl text-xs font-bold uppercase'
+    : 'flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em]';
 
   return (
-    <div className={compact ? 'flex flex-col gap-2 sm:flex-row' : 'space-y-3'}>
-      <a href={mailto} className={`elite-btn-gold ${btnClass}`}>
-        <Mail className="h-4 w-4" />
+    <div className={compact ? 'flex flex-col gap-2 sm:flex-row' : 'space-y-3'} role="group" aria-label="Email fallback actions">
+      <a href={mailto} className={`gq-btn-primary ${btnClass}`}>
+        <Mail className="h-4 w-4 shrink-0" aria-hidden />
         Open Email App
       </a>
-      <a href={gmail} target="_blank" rel="noreferrer" className={`elite-btn-blue ${btnClass}`}>
+      <a href={gmail} target="_blank" rel="noreferrer" className={`gq-btn-blue ${btnClass}`}>
         Open In Gmail
       </a>
       {emailBody ? (
         <button
           type="button"
           onClick={() => handleCopy('draft', emailBody)}
-          className={`elite-btn-dark ${btnClass}`}
+          className={`gq-btn-secondary ${btnClass}`}
         >
-          {copied === 'draft' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-          {copied === 'draft' ? 'Copied' : 'Copy Artist Registration Email'}
+          {copied === 'draft' ? <Check className="h-4 w-4 shrink-0 text-emerald-400" aria-hidden /> : <Copy className="h-4 w-4 shrink-0" aria-hidden />}
+          {copied === 'draft' ? 'Copied' : 'Copy Email Draft'}
         </button>
       ) : null}
       <button
         type="button"
         onClick={() => handleCopy('email', INTAKE_RECIPIENT_EMAIL)}
-        className={`elite-btn-dark ${btnClass}`}
+        className={`gq-btn-secondary ${btnClass}`}
       >
-        {copied === 'email' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+        {copied === 'email' ? <Check className="h-4 w-4 shrink-0 text-emerald-400" aria-hidden /> : <Copy className="h-4 w-4 shrink-0" aria-hidden />}
         {copied === 'email' ? 'Copied' : 'Copy Creative Freq Email'}
       </button>
     </div>
