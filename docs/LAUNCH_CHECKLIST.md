@@ -128,15 +128,35 @@ Security:
 
 ## Phase 11 Gate (Launch Ops)
 
-- [ ] `firebase.json` and `.firebaserc` committed
-- [ ] `scripts/launch/` deploy + bootstrap scripts present
-- [ ] `e2e/phase11-smoke.spec.ts` passes
-- [ ] `npm run launch:deploy-rules` documented and runnable after `firebase login`
-- [ ] `ADMIN_UID` bootstrap script documented
-- [ ] `VITE_ENABLE_FIRESTORE_INTAKE` remains `false` by default
+- [x] `firebase.json` and `.firebaserc` committed
+- [x] `scripts/launch/` deploy + bootstrap scripts present
+- [x] `e2e/phase11-smoke.spec.ts` passes
+- [x] `npm run launch:deploy-rules` documented and runnable after `firebase login`
+- [x] `ADMIN_UID` bootstrap script documented
+- [x] `VITE_ENABLE_FIRESTORE_INTAKE` remains `false` by default
 - [ ] Firestore rules deployed to production (operator step)
 - [ ] `adminRoles/{uid}` bootstrapped (operator step)
-- [ ] Manual smoke items 6–13 pass before Phase 12
+- [ ] Manual smoke items 6–13 pass before Phase 12B
+
+## Phase 12A Gate (Visual Wow — Merged)
+
+- [x] Design token system (`src/styles/*`)
+- [x] Landing component split
+- [x] Success panel with copy-email actions
+- [x] Login/legal polish
+- [x] Admin/artist empty states
+- [x] Email fallback + waiver behavior preserved
+- [x] `npm run ci` passes locally
+
+## Phase 12B Gate (Intake Enable — BLOCKED on ops)
+
+- [x] `docs/INTAKE_ENABLE_RUNBOOK.md` exists
+- [x] `npm run launch:verify` passes
+- [ ] Rules published via Console or CLI
+- [ ] `adminRoles/{uid}` bootstrapped
+- [ ] Manual smoke 6–13 pass
+- [ ] Staging test with `VITE_ENABLE_FIRESTORE_INTAKE=true`
+- [ ] Production flag enabled only after staging pass
 
 ## Production Deploy Checklist
 
