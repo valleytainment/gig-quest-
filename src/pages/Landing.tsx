@@ -118,7 +118,7 @@ export const Landing = () => {
 
       <main className="relative mx-auto w-full max-w-6xl">
         <div className="gq-card grid w-full min-w-0 grid-cols-1 items-stretch overflow-hidden rounded-2xl lg:grid-cols-2 lg:rounded-[2rem]">
-          <section className="order-1 flex min-w-0 flex-col justify-center border-b border-white/10 px-3 py-5 sm:px-6 sm:py-8 lg:order-2 lg:border-b-0 lg:border-l lg:px-8 lg:py-10">
+          <section className="relative z-10 order-1 flex min-w-0 flex-col justify-center border-b border-white/10 px-3 py-5 sm:px-6 sm:py-8 lg:order-2 lg:border-b-0 lg:border-l lg:px-8 lg:py-10">
             {!showForm && !submitted ? (
               <ArtistIntakeCard onOpen={() => setShowForm(true)} />
             ) : null}
@@ -147,7 +147,7 @@ export const Landing = () => {
             ) : null}
           </section>
 
-          <LandingHero className="order-2 min-w-0 lg:order-1" />
+          <LandingHero className="relative z-0 order-2 min-w-0 lg:order-1" />
         </div>
 
         <div className="mt-6 px-2 lg:hidden">
