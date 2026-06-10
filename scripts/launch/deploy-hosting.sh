@@ -7,16 +7,31 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-if ! npx firebase projects:list >/dev/null 2>&1; then
+if [[ -f .env.local ]] && grep -q '^FIREBASE_TOKEN=' .env.local; then
+  # shellcheck disable=SC1091
+  set -a && source .env.local && set +a
+fi
+
+auth_ok=false
+if [[ -n "${FIREBASE_TOKEN:-}" ]]; then
+  auth_ok=true
+elif npx firebase projects:list >/dev/null 2>&1; then
+  auth_ok=true
+fi
+
+if [[ "${auth_ok}" != true ]]; then
   echo "FAIL: Firebase CLI not authenticated."
   echo ""
-  echo "Run in your terminal (interactive — complete browser auth):"
+  echo "Option A — interactive login (your terminal):"
   echo "  npx firebase login --no-localhost"
-  echo ""
-  echo "Then re-run:"
   echo "  npm run launch:deploy-hosting"
   echo ""
-  echo "Or open Console deploy: npm run launch:open-hosting-console"
+  echo "Option B — CI token (works for Cursor/agent deploy):"
+  echo "  npx firebase login:ci"
+  echo "  echo 'FIREBASE_TOKEN=your-token' >> .env.local   # never commit"
+  echo "  npm run launch:deploy-hosting"
+  echo ""
+  echo "Option C — Console: npm run launch:open-hosting-console"
   exit 1
 fi
 
