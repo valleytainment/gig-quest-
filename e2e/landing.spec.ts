@@ -1,9 +1,10 @@
 /** 🟫 OPS │ e2e/landing.spec.ts — Mobile intake happy path + email fallback. @see e2e/README.md */
 import { test, expect } from '@playwright/test';
+import { appPath } from './helpers/nav';
 
 test.describe('Landing intake happy path', () => {
   test('mobile user can complete registration and see email fallback links', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
 
     await expect(
       page.getByRole('heading', { name: /apply once.*get reviewed/i })

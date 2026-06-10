@@ -158,7 +158,7 @@ Security:
 - [x] **12G** Mobile conversion — 375px e2e, safe-area submit, touch targets
 - [x] `npm run ci` — vitest 27/27, playwright 11/11
 - [x] Merged to `main` (`f80131b`)
-- [ ] Production smoke after deploy
+- [x] Production smoke after deploy — GitHub Pages live, 11/11 @ 375px
 
 ## Phase 12B Gate (Firestore Intake Enable — BLOCKED on ops)
 
@@ -172,8 +172,10 @@ Security:
 
 ## Production Deploy Checklist
 
-- [ ] `npm run build` succeeds
-- [ ] `npm run launch:deploy-hosting` (or Netlify equivalent) after `firebase login`
+- [x] `npm run build` succeeds
+- [x] GitHub Pages deployed — https://valleytainment.github.io/gig-quest-/
+- [x] `npm run launch:smoke-production` — 11/11 pass (375px mobile)
+- [ ] `npm run launch:deploy-hosting` (Firebase) after `firebase login`
 - [ ] Environment variables set in hosting provider (`VITE_ENABLE_FIRESTORE_INTAKE=false`)
 - [ ] Firestore rules deployed (`firebase deploy --only firestore:rules`)
 - [ ] Smoke test `/` on production URL

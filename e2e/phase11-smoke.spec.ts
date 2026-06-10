@@ -1,16 +1,17 @@
 /** 🟫 OPS │ e2e/phase11-smoke.spec.ts — Legal, waiver gate, signature, auth redirect smoke. */
 import { test, expect } from '@playwright/test';
+import { appPath } from './helpers/nav';
 
 test.describe('Phase 11 launch smoke', () => {
   test('public landing loads without login', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
     await expect(
       page.getByRole('heading', { name: /apply once.*get reviewed/i })
     ).toBeVisible();
   });
 
   test('waiver must be viewed before checkbox unlocks', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
     await expect(page.locator('#stageName')).toBeVisible();
 
@@ -28,7 +29,7 @@ test.describe('Phase 11 launch smoke', () => {
   });
 
   test('bad signature blocks submit', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
 
     await page.getByLabel('Stage Name').fill('Stage Star');
@@ -60,13 +61,13 @@ test.describe('Phase 11 launch smoke', () => {
   });
 
   test('legal pages load', async ({ page }) => {
-    await page.goto('/legal/terms');
+    await page.goto(appPath('legal/terms'));
     await expect(page.getByRole('heading', { name: /terms of use/i })).toBeVisible();
 
-    await page.goto('/legal/privacy');
+    await page.goto(appPath('legal/privacy'));
     await expect(page.getByRole('heading', { name: /privacy policy/i })).toBeVisible();
 
-    await page.goto('/legal/waiver');
+    await page.goto(appPath('legal/waiver'));
     await expect(page.getByText('Gig Quest Legal Center')).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'Artist Participation Agreement', exact: true })
@@ -74,15 +75,15 @@ test.describe('Phase 11 launch smoke', () => {
   });
 
   test('login page has back to signup link', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto(appPath('login'));
     await expect(page.getByRole('link', { name: /back to public signup/i })).toBeVisible();
   });
 
   test('protected routes redirect to login', async ({ page }) => {
-    await page.goto('/admin');
+    await page.goto(appPath('admin'));
     await expect(page).toHaveURL(/\/login/);
 
-    await page.goto('/artist');
+    await page.goto(appPath('artist'));
     await expect(page).toHaveURL(/\/login/);
   });
 });

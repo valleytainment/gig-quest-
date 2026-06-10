@@ -22,7 +22,7 @@ echo "==> SPA fallback (404.html)..."
 cp dist/index.html dist/404.html
 
 echo "==> Publishing gh-pages branch..."
-npx gh-pages -d dist -m "Deploy Gig Quest $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+npx gh-pages -d dist --nojekyll -m "Deploy Gig Quest $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 echo "==> Ensuring GitHub Pages is enabled..."
 if gh api "repos/${REPO}/pages" >/dev/null 2>&1; then

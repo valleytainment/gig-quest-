@@ -31,9 +31,11 @@ import { LegalPrivacy } from './pages/legal/Privacy';
 import { LegalWaiver } from './pages/legal/Waiver';
 
 export default function App() {
+  const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={routerBasename || undefined}>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />

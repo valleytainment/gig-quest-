@@ -1,5 +1,6 @@
 /** Phase 12G — 375px mobile conversion e2e checks. */
 import { test, expect, type Page } from '@playwright/test';
+import { appPath } from './helpers/nav';
 
 async function expectNoHorizontalScroll(page: Page) {
   const { scrollWidth, clientWidth } = await page.evaluate(() => ({
@@ -15,7 +16,7 @@ test.describe('375px mobile conversion', () => {
   });
 
   test('landing CTA is visible without horizontal scroll', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
     await expectNoHorizontalScroll(page);
 
     await expect(
@@ -27,7 +28,7 @@ test.describe('375px mobile conversion', () => {
   });
 
   test('intake form stays usable at 375px with sticky submit visible', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
 
     await expectNoHorizontalScroll(page);
@@ -42,7 +43,7 @@ test.describe('375px mobile conversion', () => {
   });
 
   test('success actions stack full-width on mobile', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(appPath());
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
 
     await page.getByLabel('Stage Name').fill('Stage Star');
@@ -81,7 +82,7 @@ test.describe('375px mobile conversion', () => {
   });
 
   test('legal pages are readable at 375px', async ({ page }) => {
-    await page.goto('/legal/waiver');
+    await page.goto(appPath('legal/waiver'));
     await expectNoHorizontalScroll(page);
     await expect(page.getByText('Gig Quest Legal Center')).toBeVisible();
     await expect(

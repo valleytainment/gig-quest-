@@ -15,14 +15,24 @@
 | `launch:deploy-rules` | `deploy-rules.sh` | Needs `firebase login` |
 | `launch:deploy-hosting` | `deploy-hosting.sh` | Build + Firebase Hosting (SPA) |
 | `launch:smoke-preview` | `smoke-preview.sh` | E2E against production `dist/` |
+| `launch:smoke-production` | `smoke-production.sh` | E2E against live GitHub Pages URL |
 | `launch:deploy-github-pages` | `deploy-github-pages.sh` | Build + GitHub Pages (uses `gh` auth) |
 | `launch:bootstrap-admin` | `bootstrap-admin.mjs` | Needs `ADMIN_UID` + ADC |
 | `launch:all` | `launch-all.sh` | Full chain (CI+deploy+bootstrap) |
 
 ## Production Deploy (Email-First)
 
+**GitHub Pages (live):** https://valleytainment.github.io/gig-quest-/
+
 ```bash
-npm run ci                    # local gate (GitHub Actions may be billing-blocked)
+npm run ci                         # local gate (GitHub Actions may be billing-blocked)
+npm run launch:deploy-github-pages # build + publish gh-pages branch
+npm run launch:smoke-production    # e2e against live URL (375px mobile)
+```
+
+**Firebase Hosting (optional, needs login):**
+
+```bash
 npm run launch:smoke-preview  # e2e against production build (dist/)
 firebase login --no-localhost # once per machine
 npm run launch:deploy-hosting # build dist/ + firebase deploy --only hosting
