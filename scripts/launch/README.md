@@ -15,6 +15,7 @@
 | `launch:deploy-rules` | `deploy-rules.sh` | Needs `firebase login` |
 | `launch:deploy-hosting` | `deploy-hosting.sh` | Build + Firebase Hosting (SPA) |
 | `launch:setup-firebase-ci` | `setup-firebase-ci.sh` | One-time `FIREBASE_TOKEN` for CLI + GHA |
+| `launch:status` | `status.sh` | Print Pages / Firebase / Firestore gate status |
 | `launch:smoke-preview` | `smoke-preview.sh` | E2E against production `dist/` |
 | `launch:smoke-production` | `smoke-production.sh` | E2E against live GitHub Pages URL |
 | `launch:deploy-github-pages` | `deploy-github-pages.sh` | Build + GitHub Pages (uses `gh` auth) |

@@ -20,6 +20,7 @@
     "launch:wait-and-deploy": "bash scripts/launch/wait-and-deploy.sh",
     "launch:deploy-github-pages": "bash scripts/launch/deploy-github-pages.sh",
     "launch:setup-firebase-ci": "bash scripts/launch/setup-firebase-ci.sh",
+    "launch:status": "bash scripts/launch/status.sh",
     "launch:smoke-preview": "bash scripts/launch/smoke-preview.sh",
     "launch:smoke-production": "bash scripts/launch/smoke-production.sh",
     "launch:open-hosting-console": "bash scripts/launch/open-hosting-console.sh",
