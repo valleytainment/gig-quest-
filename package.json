@@ -18,7 +18,8 @@
     "launch:deploy-rules": "bash scripts/launch/deploy-rules.sh",
     "launch:bootstrap-admin": "node scripts/launch/bootstrap-admin.mjs",
     "launch:all": "bash scripts/launch/launch-all.sh",
-    "launch:verify": "bash scripts/launch/verify-readiness.sh"
+    "launch:verify": "bash scripts/launch/verify-readiness.sh",
+    "launch:open-console": "bash scripts/launch/open-console.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
