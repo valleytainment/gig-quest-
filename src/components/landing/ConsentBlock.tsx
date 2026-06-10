@@ -41,7 +41,7 @@ export const ConsentBlock = ({
         <div className="mt-4 space-y-4">
           <label
             className={cn(
-              'gq-checkbox-card min-h-[44px] cursor-pointer',
+              'gq-checkbox-card cursor-pointer',
               ageConfirmed && 'gq-checkbox-card--active'
             )}
           >
@@ -68,7 +68,7 @@ export const ConsentBlock = ({
 
           <label
             className={cn(
-              'gq-checkbox-card min-h-[44px] cursor-pointer',
+              'gq-checkbox-card cursor-pointer',
               eSignConsent && 'gq-checkbox-card--active'
             )}
           >

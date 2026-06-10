@@ -13,7 +13,7 @@ type LandingHeroProps = {
 
 export const LandingHero = ({ className = '' }: LandingHeroProps) => (
   <section
-    className={`relative border-b border-white/10 px-5 py-8 sm:px-6 sm:py-9 lg:border-b-0 lg:border-r lg:px-10 lg:py-12 ${className}`}
+    className={`relative border-b border-white/10 px-4 py-6 sm:px-6 sm:py-9 lg:border-b-0 lg:border-r lg:px-10 lg:py-12 ${className}`}
   >
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="gq-spotlight-orb gq-soft-pulse absolute -left-12 top-4 h-48 w-48" />
@@ -35,7 +35,7 @@ export const LandingHero = ({ className = '' }: LandingHeroProps) => (
         Creative Freq Artist Intake
       </p>
 
-      <h1 className="gq-hero-title max-w-xl text-[1.75rem] leading-[1.05] sm:text-4xl lg:text-5xl xl:text-6xl">
+      <h1 className="gq-hero-title max-w-xl text-[1.5rem] leading-[1.08] sm:text-4xl lg:text-5xl xl:text-6xl">
         Apply once. Get reviewed. Lock in performance opportunities.
       </h1>
 
@@ -60,13 +60,13 @@ export const LandingHero = ({ className = '' }: LandingHeroProps) => (
         </Link>
         <Link
           to="/login"
-          className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500 transition hover:text-[#f2d06b]"
+          className="inline-flex min-h-11 items-center py-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500 transition hover:text-[#f2d06b]"
         >
           Already have portal access? Sign in
         </Link>
       </div>
 
-      <LegalTrustBlock />
+      <LegalTrustBlock className="hidden sm:block" />
 
       <div className="hidden lg:block">
         <HowItWorks />

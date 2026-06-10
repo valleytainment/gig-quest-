@@ -143,7 +143,7 @@ export const ArtistDashboard = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-[1400px] mx-auto space-y-8 pb-24 md:pb-8">
+    <div className="p-3 md:p-8 max-w-[1400px] mx-auto space-y-6 pb-24 md:space-y-8 md:pb-8">
       <header className="gq-fade-in">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Artist Opportunity Hub</p>
         <h1 className="mt-2 text-2xl font-black uppercase tracking-tight text-white md:text-3xl">

@@ -6,11 +6,11 @@ import { GlowCard } from '../ui/GlowCard';
 
 export const ArtistIntakeCard = ({ onOpen }: { onOpen: () => void }) => (
   <div className="flex h-full flex-col justify-center gq-scale-in">
-    <GlowCard variant="gold" className="gq-shimmer rounded-[1.6rem] p-5 sm:rounded-3xl sm:p-6">
+    <GlowCard variant="gold" className="gq-shimmer rounded-[1.35rem] p-4 sm:rounded-3xl sm:p-6">
       <p className="text-xs uppercase tracking-[0.28em] text-[#f2d06b] sm:text-sm sm:tracking-[0.35em]">
         Artist Registration
       </p>
-      <h2 className="mt-3 text-2xl font-bold text-white sm:mt-4 sm:text-3xl">
+      <h2 className="mt-3 text-xl font-bold text-white sm:mt-4 sm:text-3xl">
         Sign up for performance opportunities
       </h2>
       <p className="mt-3 text-sm leading-6 text-zinc-300">

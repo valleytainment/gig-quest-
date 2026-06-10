@@ -33,11 +33,15 @@ export const EmailFallbackActions = ({ mailto, gmail, emailBody, compact }: Emai
   };
 
   const btnClass = compact
-    ? 'gq-tap-scale flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl text-xs font-bold uppercase'
-    : 'gq-tap-scale flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em]';
+    ? 'gq-tap-scale flex min-h-11 w-full flex-1 items-center justify-center gap-2 rounded-xl text-xs font-bold uppercase sm:flex-1'
+    : 'gq-tap-scale flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-3 text-xs font-bold uppercase tracking-[0.12em] sm:px-4 sm:text-sm sm:tracking-[0.14em]';
 
   return (
-    <div className={compact ? 'flex flex-col gap-2 sm:flex-row' : 'space-y-3'} role="group" aria-label="Email fallback actions">
+    <div
+      className={compact ? 'flex flex-col gap-2 sm:flex-row' : 'gq-mobile-stack'}
+      role="group"
+      aria-label="Email fallback actions"
+    >
       <a href={mailto} className={`gq-btn-primary ${btnClass}`}>
         <Mail className="h-4 w-4 shrink-0" aria-hidden />
         Open Email App

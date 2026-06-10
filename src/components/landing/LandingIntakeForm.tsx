@@ -47,7 +47,7 @@ export const LandingIntakeForm = ({
     formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
 
   return (
-    <form className="gq-form-reveal space-y-4 pb-28 md:pb-4" onSubmit={onSubmit}>
+    <form className="gq-form-reveal space-y-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))] md:pb-4" onSubmit={onSubmit}>
       <div className="gq-stagger space-y-4">
       <IntakeFormSection number={1} label="Artist Info" description="Your stage and legal name.">
         <div className="space-y-4">
@@ -144,7 +144,7 @@ export const LandingIntakeForm = ({
         After submit, your email app will open with your registration ready to send.
       </p>
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-[#070911]/95 p-4 backdrop-blur-md safe-area-pb md:static md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
+      <div className="gq-sticky-submit md:static md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
         <ActionButton
           type="submit"
           fullWidth

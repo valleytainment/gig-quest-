@@ -155,14 +155,14 @@ export const AdminDashboard = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-[1400px] mx-auto">
+    <div className="p-3 md:p-8 max-w-[1400px] mx-auto">
       <header className="mb-8 gq-fade-in">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Event Command Center</p>
         <h1 className="mt-2 text-2xl font-black uppercase tracking-tight text-white md:text-3xl">Mission Control</h1>
         <p className="mt-2 max-w-xl text-sm text-zinc-400">Review artist applications, manage events, and track capacity.</p>
       </header>
 
-      <div className="gq-stagger mb-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+      <div className="gq-stagger mb-6 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4 md:gap-4">
         {[
           { label: 'New Applications', value: pendingCount, accent: 'text-sky-300' },
           { label: 'Approved', value: approvedCount, accent: 'text-emerald-300' },

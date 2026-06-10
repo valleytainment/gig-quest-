@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 import { GlassPanel } from '../ui/GlassPanel';
 
-export const LegalTrustBlock = () => (
-  <GlassPanel className="mt-6">
+export const LegalTrustBlock = ({ className = '' }: { className?: string }) => (
+  <GlassPanel className={`mt-6 ${className}`}>
     <div className="flex items-start gap-3">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#d4af37]/30 bg-[#d4af37]/10">
         <ShieldCheck className="h-5 w-5 text-[#f2d06b]" aria-hidden />

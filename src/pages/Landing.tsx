@@ -110,15 +110,15 @@ export const Landing = () => {
   };
 
   return (
-    <div className="gq-shell relative min-h-screen overflow-x-hidden px-3 py-4 pb-10 sm:px-4 sm:py-6 lg:px-8 lg:py-10">
+    <div className="gq-shell relative min-h-screen overflow-x-hidden px-3 py-3 pb-8 safe-area-x sm:px-4 sm:py-6 sm:pb-10 lg:px-8 lg:py-10">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="gq-orb left-[-2rem] top-[-1rem] h-48 w-48 bg-[#d4af37]/15 sm:h-64 sm:w-64" />
         <div className="gq-orb bottom-[-2rem] right-[-2rem] h-56 w-56 bg-[#27456b]/25 sm:h-80 sm:w-80" />
       </div>
 
       <main className="relative mx-auto w-full max-w-6xl">
-        <div className="gq-card grid w-full grid-cols-1 items-stretch rounded-2xl lg:grid-cols-2 lg:rounded-[2rem]">
-          <section className="order-1 flex min-w-0 flex-col justify-center border-b border-white/10 px-4 py-6 sm:px-6 sm:py-8 lg:order-2 lg:border-b-0 lg:border-l lg:px-8 lg:py-10">
+        <div className="gq-card grid w-full min-w-0 grid-cols-1 items-stretch overflow-hidden rounded-2xl lg:grid-cols-2 lg:rounded-[2rem]">
+          <section className="order-1 flex min-w-0 flex-col justify-center border-b border-white/10 px-3 py-5 sm:px-6 sm:py-8 lg:order-2 lg:border-b-0 lg:border-l lg:px-8 lg:py-10">
             {!showForm && !submitted ? (
               <ArtistIntakeCard onOpen={() => setShowForm(true)} />
             ) : null}

@@ -31,7 +31,7 @@ export const Login = () => {
 
   if (loading) {
     return (
-      <div className="gq-shell flex min-h-screen items-center justify-center">
+      <div className="gq-shell flex min-h-screen items-center justify-center safe-area-x">
         <EliteLoader label="Checking access…" />
       </div>
     );
@@ -60,7 +60,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="gq-shell flex min-h-screen items-center justify-center px-4 py-8 text-white">
+    <div className="gq-shell flex min-h-screen items-center justify-center px-3 py-6 text-white safe-area-x sm:px-4 sm:py-8">
       <div className="grid w-full max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 gq-scale-in md:grid-cols-2">
         <section className="relative hidden border-r border-white/10 bg-gradient-to-br from-[#1a2130] to-[#0b0e14] p-10 md:flex md:flex-col md:justify-between">
           <div>
@@ -82,7 +82,7 @@ export const Login = () => {
           </div>
         </section>
 
-        <GlowCard className="rounded-none border-0 p-8 sm:p-10">
+        <GlowCard className="rounded-none border-0 p-6 sm:p-10">
           <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#d4af37] shadow-[var(--gq-glow-gold)]">
             <Mic2 className="h-7 w-7 text-black" aria-hidden />
           </div>

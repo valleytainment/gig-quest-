@@ -5,7 +5,7 @@ import { GlowCard } from '../../components/ui/GlowCard';
 
 export const LegalLayout = () => {
   return (
-    <div className="gq-shell min-h-screen px-4 py-8 text-white sm:px-6 print:bg-white print:text-black">
+    <div className="gq-shell min-h-screen px-3 py-6 text-white safe-area-x sm:px-6 sm:py-8 print:bg-white print:text-black">
       <div className="mx-auto max-w-3xl gq-fade-in">
         <Link to="/" className="mb-6 inline-flex items-center gap-3 text-[#f2d06b] hover:underline print:text-black">
           <Mic2 className="h-5 w-5" aria-hidden />
@@ -28,7 +28,7 @@ export const LegalLayout = () => {
           </div>
         </header>
 
-        <GlowCard className="rounded-2xl p-6 sm:p-10 print:border print:border-gray-300 print:shadow-none">
+        <GlowCard className="rounded-2xl p-4 sm:p-10 print:border print:border-gray-300 print:shadow-none">
           <div className="mb-6 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-zinc-400 print:border-gray-300 print:text-gray-600">
             Effective 2026 · Creative Freq
           </div>

@@ -27,7 +27,7 @@ export const WaiverBlock = ({
   onAcceptedChange,
 }: WaiverBlockProps) => (
   <div className="gq-form-section">
-    <div className="flex items-start justify-between gap-3">
+    <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-start">
       <SectionHeader
         number={5}
         label="Waiver Review"
@@ -54,7 +54,7 @@ export const WaiverBlock = ({
         >
           View Waiver Form
         </DialogTrigger>
-        <DialogContent className="max-h-[90dvh] max-w-[calc(100%-1rem)] overflow-y-auto rounded-3xl border border-white/10 bg-[#111520] p-0 text-white ring-0 sm:max-w-3xl">
+        <DialogContent className="mx-2 max-h-[90dvh] max-w-[calc(100%-1rem)] overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-[#111520] p-0 text-white ring-0 sm:mx-auto sm:max-w-3xl">
           <DialogHeader className="border-b border-white/10 px-4 py-4 sm:px-6 sm:py-5">
             <DialogTitle className="text-lg font-bold uppercase tracking-[0.08em] text-white sm:text-xl sm:tracking-[0.12em]">
               Artist Participation Agreement
@@ -84,7 +84,7 @@ export const WaiverBlock = ({
 
     <label
       className={cn(
-        'gq-checkbox-card mt-4 min-h-[44px] cursor-pointer',
+        'gq-checkbox-card mt-4 cursor-pointer',
         waiverViewed && waiverAccepted && 'gq-checkbox-card--active',
         !waiverViewed && 'gq-checkbox-card--locked cursor-not-allowed'
       )}
