@@ -34,6 +34,9 @@ if (reason === 'CONSUMER_INVALID') {
   console.log('  2. Firebase Console → Firestore → confirm database exists');
   console.log('  3. npm run launch:open-console → paste firestore.rules → Publish');
   console.log('  4. npm run launch:test-rules');
+  console.log('');
+  console.log('If this AI Studio project cannot enable billing/API:');
+  console.log('  npm run launch:open-new-project');
   process.exit(2);
 }
 
