@@ -45,7 +45,7 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
       type={type}
       disabled={disabled || loading}
       className={cn(
-        'inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em]',
+        'gq-tap-scale inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em]',
         VARIANT_CLASS[variant],
         fullWidth && 'w-full',
         loading && 'gq-btn-loading',

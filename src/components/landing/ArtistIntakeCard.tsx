@@ -5,7 +5,7 @@ import { ActionButton } from '../ui/ActionButton';
 import { GlowCard } from '../ui/GlowCard';
 
 export const ArtistIntakeCard = ({ onOpen }: { onOpen: () => void }) => (
-  <div className="flex h-full flex-col justify-center gq-fade-in">
+  <div className="flex h-full flex-col justify-center gq-scale-in">
     <GlowCard variant="gold" className="gq-shimmer rounded-[1.6rem] p-5 sm:rounded-3xl sm:p-6">
       <p className="text-xs uppercase tracking-[0.28em] text-[#f2d06b] sm:text-sm sm:tracking-[0.35em]">
         Artist Registration
@@ -31,7 +31,7 @@ export const ArtistIntakeCard = ({ onOpen }: { onOpen: () => void }) => (
 
       <Link
         to="/legal/waiver"
-        className="gq-btn-ghost mt-3 inline-flex h-11 w-full items-center justify-center rounded-2xl text-xs font-bold uppercase tracking-[0.14em]"
+        className="gq-btn-ghost gq-tap-scale mt-3 inline-flex h-11 w-full items-center justify-center rounded-2xl text-xs font-bold uppercase tracking-[0.14em]"
       >
         View Artist Agreement
       </Link>

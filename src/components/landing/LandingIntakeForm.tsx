@@ -47,7 +47,8 @@ export const LandingIntakeForm = ({
     formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
 
   return (
-    <form className="space-y-4 pb-28 md:pb-4 gq-slide-up" onSubmit={onSubmit}>
+    <form className="gq-form-reveal space-y-4 pb-28 md:pb-4" onSubmit={onSubmit}>
+      <div className="gq-stagger space-y-4">
       <IntakeFormSection number={1} label="Artist Info" description="Your stage and legal name.">
         <div className="space-y-4">
           <FormField id="stageName" label="Stage Name" required>
@@ -123,6 +124,7 @@ export const LandingIntakeForm = ({
         onAgeConfirmedChange={onAgeConfirmedChange}
         onESignConsentChange={onESignConsentChange}
       />
+      </div>
 
       {submitError ? (
         <div className="space-y-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3">

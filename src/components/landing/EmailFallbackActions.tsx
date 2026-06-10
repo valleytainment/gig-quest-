@@ -33,8 +33,8 @@ export const EmailFallbackActions = ({ mailto, gmail, emailBody, compact }: Emai
   };
 
   const btnClass = compact
-    ? 'flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl text-xs font-bold uppercase'
-    : 'flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em]';
+    ? 'gq-tap-scale flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl text-xs font-bold uppercase'
+    : 'gq-tap-scale flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em]';
 
   return (
     <div className={compact ? 'flex flex-col gap-2 sm:flex-row' : 'space-y-3'} role="group" aria-label="Email fallback actions">
@@ -49,7 +49,7 @@ export const EmailFallbackActions = ({ mailto, gmail, emailBody, compact }: Emai
         <button
           type="button"
           onClick={() => handleCopy('draft', emailBody)}
-          className={`gq-btn-secondary ${btnClass}`}
+          className={`gq-btn-secondary ${btnClass} ${copied === 'draft' ? 'gq-btn-success-state' : ''}`}
         >
           {copied === 'draft' ? <Check className="h-4 w-4 shrink-0 text-emerald-400" aria-hidden /> : <Copy className="h-4 w-4 shrink-0" aria-hidden />}
           {copied === 'draft' ? 'Copied' : 'Copy Email Draft'}
@@ -58,7 +58,7 @@ export const EmailFallbackActions = ({ mailto, gmail, emailBody, compact }: Emai
       <button
         type="button"
         onClick={() => handleCopy('email', INTAKE_RECIPIENT_EMAIL)}
-        className={`gq-btn-secondary ${btnClass}`}
+        className={`gq-btn-secondary ${btnClass} ${copied === 'email' ? 'gq-btn-success-state' : ''}`}
       >
         {copied === 'email' ? <Check className="h-4 w-4 shrink-0 text-emerald-400" aria-hidden /> : <Copy className="h-4 w-4 shrink-0" aria-hidden />}
         {copied === 'email' ? 'Copied' : 'Copy Creative Freq Email'}

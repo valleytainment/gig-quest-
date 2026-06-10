@@ -61,7 +61,7 @@ export const Login = () => {
 
   return (
     <div className="gq-shell flex min-h-screen items-center justify-center px-4 py-8 text-white">
-      <div className="grid w-full max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 gq-fade-in md:grid-cols-2">
+      <div className="grid w-full max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 gq-scale-in md:grid-cols-2">
         <section className="relative hidden border-r border-white/10 bg-gradient-to-br from-[#1a2130] to-[#0b0e14] p-10 md:flex md:flex-col md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Gig Quest Portal</p>
@@ -72,7 +72,7 @@ export const Login = () => {
               Artist and admin portal access. Public artist registration is available without signing in.
             </p>
           </div>
-          <div className="space-y-3">
+          <div className="gq-stagger space-y-3">
             <TrustBadge dot>Secure Google sign-in</TrustBadge>
             <TrustBadge>Public signup does not require login</TrustBadge>
             <p className="flex items-center gap-2 text-sm text-zinc-500">

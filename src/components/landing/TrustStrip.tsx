@@ -10,7 +10,7 @@ const CHIPS = [
 ];
 
 export const TrustStrip = () => (
-  <div className="mt-6 flex flex-wrap gap-2">
+  <div className="gq-stagger mt-6 flex flex-wrap gap-2">
     {CHIPS.map((chip) => (
       <span key={chip}>
         <TrustBadge>{chip}</TrustBadge>

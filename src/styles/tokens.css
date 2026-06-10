@@ -18,5 +18,6 @@
   --gq-glow-blue: 0 0 55px rgba(58, 117, 181, 0.18);
   --gq-motion-fast: 150ms;
   --gq-motion-card: 320ms;
+  --gq-motion-stagger: 70ms;
   --gq-motion-ambient: 14s;
 }
