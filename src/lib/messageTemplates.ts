@@ -1,3 +1,15 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟩 MODULE │ gig-quest/src/lib/messageTemplates.ts
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          DOMAIN
+ * @responsibility Admin email/message templates with {{placeholder}} rendering
+ * @depends-on     None
+ * @consumers      AdminDashboard
+ * @safe-mode      N/A
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 export type MessageTemplateId =
   | 'application_submitted'
   | 'application_approved'

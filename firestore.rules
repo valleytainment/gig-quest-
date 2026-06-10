@@ -1,3 +1,9 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// 🔴 SECURITY │ gig-quest/firestore.rules
+// @layer SECURITY | @responsibility Server-side Firestore authorization
+// @consumers All client SDK reads/writes | Publish via Console or launch:deploy-rules
+// @see docs/SECURITY_PLAN.md | @see docs/DATA_MODEL.md
+// ═══════════════════════════════════════════════════════════════════════════════
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {

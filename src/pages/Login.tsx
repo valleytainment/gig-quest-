@@ -1,3 +1,15 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟨 MODULE │ gig-quest/src/pages/Login.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          ROUTE
+ * @responsibility Google sign-in page with redirect-back support
+ * @depends-on     AuthContext, lib/firebase signInWithGoogle
+ * @consumers      App.tsx route "/login"
+ * @safe-mode      Must not be required for public "/" intake
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { Mic2, ShieldCheck, Sparkles } from 'lucide-react';

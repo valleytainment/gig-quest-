@@ -16,9 +16,13 @@ Create event → Review artists → Approve lineup → Message performers → Tr
 
 | Route | Component | Status |
 |-------|-----------|--------|
-| `/` | `Landing` | **Live** — public intake + waiver + email fallback |
+| `/` | `Landing` | **LIVE** — public intake + waiver + email fallback |
+| `/login` | `Login` | Wired — Google auth |
+| `/legal/*` | Legal pages | Wired — static legal |
+| `/admin/*` | `AdminDashboard` | Wired — requires `adminRoles/{uid}` |
+| `/artist/*` | `ArtistDashboard` | Wired — authenticated artist |
 
-Dashboard, auth, and router pieces exist in the repo but are **not wired** to the live app shell. See [LEGACY_SAFE_MODE.md](./LEGACY_SAFE_MODE.md).
+**Safe mode:** Firestore intake OFF by default. See [LEGACY_SAFE_MODE.md](./LEGACY_SAFE_MODE.md).
 
 ## Core Rules
 
@@ -52,17 +56,15 @@ Dashboard, auth, and router pieces exist in the repo but are **not wired** to th
 
 | Phase | Branch | Goal | Status |
 |-------|--------|------|--------|
-| 0 | `phase/00-safety-harness` | Safety harness + tests | **Merged** |
-| 1 | `phase/01-repo-truth` | Package/docs hygiene | In progress |
-| 2 | `phase/02-router-shell` | Router without breaking `/` | Planned |
-| 3 | `phase/03-submission-v2` | Firestore applications + email fallback | Planned |
-| 4 | `phase/04-landing-wow` | Premium landing conversion | Planned |
-| 5 | `phase/05-admin-mission-control` | Real admin ops | Planned |
-| 6 | `phase/06-artist-portal` | Artist profiles/quests/XP | Planned |
-| 7 | `phase/07-security-hardening` | Firestore rules + admin roles | Planned |
-| 8 | `phase/08-legal-privacy-system` | Versioned waiver/privacy | Planned |
-| 9 | `phase/09-notifications` | Email/message system | Planned |
-| 10 | `phase/10-launch-hardening` | CI/e2e/docs/launch | Planned |
+| 0 | `phase/00-safety-harness` | Safety harness + tests | ✅ **Merged** |
+| 1 | `phase/01-repo-truth` | Package/docs hygiene | ✅ **Merged** |
+| 2 | `phase/02-router-shell` | Router without breaking `/` | ✅ **Merged** |
+| 3 | `phase/03-submission-v2` | Firestore applications + email fallback | ✅ **Merged** (intake OFF by default) |
+| 4–10 | `phase/04`–`10` | Admin, artist, rules, legal, CI | ✅ **Merged** |
+| 11 | `phase/11-launch-ops` | Firebase config, launch scripts | ✅ **Merged** |
+| 12A | visual wow | Landing split, design tokens | ✅ **Merged** |
+| 12B | intake runbook | `launch:verify`, ops docs | ✅ **Merged** — ops blocked |
+| 14+ | — | Kanban, EPK, server XP, emulator tests | 🔲 Planned |
 
 ## Sequence
 
@@ -84,7 +86,12 @@ Protect → Wire → Persist → Wow → Admin → Artist → Secure → Legal �
 
 ## Related Docs
 
+- [SYSTEM_MAP.md](./SYSTEM_MAP.md) — architecture source of truth
+- [CONVENTIONS.md](./CONVENTIONS.md) — layer colors, module headers
+- [CODEBASE_INDEX.md](./CODEBASE_INDEX.md) — file inventory
+- [CONSISTENCY_AUDIT.md](./CONSISTENCY_AUDIT.md) — pre-merge audit
 - [DATA_MODEL.md](./DATA_MODEL.md)
 - [SECURITY_PLAN.md](./SECURITY_PLAN.md)
 - [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md)
 - [LEGACY_SAFE_MODE.md](./LEGACY_SAFE_MODE.md)
+- [AGENTS.md](../AGENTS.md) — AI onboarding

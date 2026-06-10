@@ -1,3 +1,15 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟩 MODULE │ gig-quest/src/lib/xp.ts
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          DOMAIN
+ * @responsibility XP award constants and level calculation (read-only client use)
+ * @depends-on     None
+ * @consumers      Display only — client writes blocked by firestore.rules
+ * @safe-mode      Do not call awardXp from artist flows; server-side awards planned Phase 18
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 // Client-side XP writes are deferred until server-side awards (Cloud Function / admin).
 // Artists cannot update xp/level per Firestore rules.
 

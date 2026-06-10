@@ -1,13 +1,11 @@
 # Gig Quest
 
-Gig Quest is an artist opportunity platform for pop-up performances, showcases, tailgate activations, open mics, and live creator events. The live public surface is the landing page and artist intake flow at `/`.
+> **Operator:** Creative Freq · **Intake email:** `creativefreqllc@gmail.com`
+> **Mode:** Legacy Safe Mode — public landing live, Firestore intake **OFF** by default
 
-**Operator:** Creative Freq
+Gig Quest is an artist opportunity platform for pop-up performances, showcases, tailgate activations, open mics, and live creator events.
 
-## Prerequisites
-
-- Node.js 20.x (recommended)
-- npm (this repo uses **npm only** — see `package-lock.json`)
+---
 
 ## Quick Start
 
@@ -15,77 +13,120 @@ Gig Quest is an artist opportunity platform for pop-up performances, showcases, 
 git clone https://github.com/valleytainment/gig-quest-.git
 cd gig-quest-
 npm ci
-cp .env.example .env.local   # optional — see Environment
-npm run dev
+cp .env.example .env.local   # optional
+npm run dev                  # http://localhost:3000
 ```
 
-Open http://localhost:3000/
+---
+
+## Documentation Hub
+
+| Doc | Audience | Purpose |
+|-----|----------|---------|
+| [AGENTS.md](AGENTS.md) | AI / Cursor | Agent onboarding, non-negotiables |
+| [docs/SYSTEM_MAP.md](docs/SYSTEM_MAP.md) | All devs | Architecture, routes, data flow |
+| [docs/CONVENTIONS.md](docs/CONVENTIONS.md) | All devs | Layer colors, module headers |
+| [docs/CODEBASE_INDEX.md](docs/CODEBASE_INDEX.md) | All devs | File-by-file index |
+| [docs/LEGACY_SAFE_MODE.md](docs/LEGACY_SAFE_MODE.md) | All devs | Landing non-negotiables |
+| [docs/INTAKE_ENABLE_RUNBOOK.md](docs/INTAKE_ENABLE_RUNBOOK.md) | Ops | Firestore intake gates |
+| [docs/DATA_MODEL.md](docs/DATA_MODEL.md) | Backend | Firestore schemas |
+| [docs/SECURITY_PLAN.md](docs/SECURITY_PLAN.md) | Security | Auth, rules, threats |
+| [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md) | Ops | Phase gates |
+| [docs/PRODUCT_BLUEPRINT.md](docs/PRODUCT_BLUEPRINT.md) | Product | Vision & roadmap |
+| [docs/CONSISTENCY_AUDIT.md](docs/CONSISTENCY_AUDIT.md) | Review | Pre-merge elite audit |
+| [docs/README.md](docs/README.md) | All | Documentation hub index |
+| [src/README.md](src/README.md) | Devs | Source tree map |
+
+---
 
 ## Scripts
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Start Vite dev server (port 3000) |
-| `npm run build` | Production build to `dist/` |
-| `npm run preview` | Preview production build |
-| `npm run typecheck` | TypeScript check without emit |
-| `npm run test` | Vitest landing smoke tests |
-| `npm run test:watch` | Vitest in watch mode |
-| `npm run test:e2e` | Playwright mobile intake happy path |
-| `npm run ci` | Full gate: typecheck + test + build + e2e |
+| Command | Layer | Purpose |
+|---------|-------|---------|
+| `npm run dev` | 🟦 | Vite dev server (port 3000) |
+| `npm run build` | 🟦 | Production build → `dist/` |
+| `npm run typecheck` | 🟫 | TypeScript check |
+| `npm run test` | 🟫 | Vitest smoke tests |
+| `npm run test:e2e` | 🟫 | Playwright e2e |
+| `npm run ci` | 🟫 | Full gate: typecheck + test + build + e2e |
+| `npm run launch:verify` | 🟫 | Pre-intake readiness |
+| `npm run launch:diagnose` | 🟫 | Firestore API probe |
+| `npm run launch:open-console` | 🟫 | Operator Console tabs |
+
+Full ops reference: [scripts/launch/README.md](scripts/launch/README.md)
+
+---
+
+## Routes (Live)
+
+| Route | Status | Notes |
+|-------|--------|-------|
+| `/` | **LIVE** | Public landing + intake + email fallback |
+| `/login` | Wired | Google sign-in |
+| `/legal/*` | Wired | Terms, privacy, waiver |
+| `/admin/*` | Wired | Requires `adminRoles/{uid}` |
+| `/artist/*` | Wired | Authenticated artist |
+
+Source of truth: `src/App.tsx`
+
+---
 
 ## Environment
 
-Copy `.env.example` to `.env.local` and fill in values as needed. **Never commit secrets.**
+Copy `.env.example` → `.env.local`. **Never commit secrets.**
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GEMINI_API_KEY` | No | Optional Gemini API key (legacy scaffold) |
-| `VITE_ENABLE_FIRESTORE_INTAKE` | No | `false` by default; enables Firestore submit in Phase 3+ |
-| `DISABLE_HMR` | No | Set to `true` to disable Vite HMR |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_ENABLE_FIRESTORE_INTAKE` | `false` | Enable Firestore submit (staging/prod only after ops gates) |
+| `GEMINI_API_KEY` | — | Optional legacy scaffold |
+| `DISABLE_HMR` | — | Disable Vite HMR |
 
-Firebase client config is loaded from `firebase-applet-config.json` (public web SDK keys). Do not put Firebase service account keys in env files.
+Firebase web config: `firebase-applet-config.json` (public SDK keys only).
 
-## Package Manager
-
-This repo uses **npm only**. Install with `npm ci` or `npm install`. Do not use `pnpm` or `yarn` — `pnpm-lock.yaml` is intentionally absent.
+---
 
 ## Project Structure
 
 ```txt
 src/
-  App.tsx              # Entry — renders Landing only (Legacy Safe Mode)
-  pages/Landing.tsx    # Public landing + artist intake
-  pages/admin/         # Admin dashboard (not wired to live routes yet)
-  pages/artist/        # Artist dashboard (not wired to live routes yet)
-  contexts/            # Auth context (dormant until router phase)
-docs/                  # Product, data, security, launch docs
-tests/                 # Vitest smoke tests
-e2e/                   # Playwright e2e tests
+  App.tsx                 Router shell
+  pages/Landing.tsx       Public intake orchestrator
+  pages/admin/            Admin mission control
+  pages/artist/           Artist dashboard
+  lib/                    Domain + Firebase IO
+  components/landing/     Landing UI (split components)
+docs/                     Architecture & ops docs
+scripts/launch/           Operator launch scripts
+tests/ + e2e/             CI test suites
+firestore.rules           Security rules (publish via Console or CLI)
 ```
 
-## Documentation
+See [src/README.md](src/README.md) for the full source tree.
 
-| Doc | Purpose |
-|-----|---------|
-| [docs/LEGACY_SAFE_MODE.md](docs/LEGACY_SAFE_MODE.md) | No-break rules for landing/intake |
-| [docs/PRODUCT_BLUEPRINT.md](docs/PRODUCT_BLUEPRINT.md) | Product vision and phase roadmap |
-| [docs/DATA_MODEL.md](docs/DATA_MODEL.md) | Firestore collections and types |
-| [docs/SECURITY_PLAN.md](docs/SECURITY_PLAN.md) | Auth, roles, and rules strategy |
-| [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md) | Pre-launch verification |
+---
 
-## Roadmap Status
+## Prerequisites
 
-| Phase | Status |
-|-------|--------|
-| 0 — Safety Harness | Merged |
-| 1 — Repo Truth | In progress |
-| 2–10 | Planned |
+- Node.js 20.x
+- npm only (`package-lock.json` — no yarn/pnpm)
 
-See [docs/PRODUCT_BLUEPRINT.md](docs/PRODUCT_BLUEPRINT.md) for the full roadmap.
+---
 
 ## Contributing
 
-1. Branch from `main` using `phase/XX-description` naming.
-2. Run `npm run ci` before opening a PR.
-3. Do not break the landing/intake flow — see [docs/LEGACY_SAFE_MODE.md](docs/LEGACY_SAFE_MODE.md).
+1. Branch from `main`: `phase/XX-description`, `feat/*`, `fix/*`, `chore/*`
+2. Run `npm run ci` before PR
+3. Follow [docs/CONVENTIONS.md](docs/CONVENTIONS.md) — module headers on new lib/pages/contexts/types
+4. Do not break landing — [docs/LEGACY_SAFE_MODE.md](docs/LEGACY_SAFE_MODE.md)
+
+---
+
+## Phase Status
+
+| Phase | Status |
+|-------|--------|
+| 0–10 Platform (router, applications, admin, artist, rules) | ✅ Merged |
+| 11 Launch ops | ✅ Merged |
+| 12A Visual wow | ✅ Merged |
+| 12B Intake runbook | ✅ Merged — **ops blocked** (Firestore API) |
+| 14+ Kanban, EPK, server XP | 🔲 Planned |

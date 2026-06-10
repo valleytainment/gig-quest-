@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Opens Firebase Console to create a standard project (escape hatch for CONSUMER_INVALID AI Studio projects).
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🟫 OPS │ scripts/launch/open-new-project.sh
+# @responsibility New Firebase project wizard (escape hatch for CONSUMER_INVALID)
+# ═══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 
 open "https://console.firebase.google.com/"

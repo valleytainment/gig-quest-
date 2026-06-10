@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/ArtistIntakeCard.tsx — Intake section card + open form CTA. @see README.md */
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 

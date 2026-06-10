@@ -1,3 +1,22 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟪 MODULE │ gig-quest/src/contexts/AuthContext.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          STATE
+ * @responsibility Firebase auth session, user profile, isAdmin from adminRoles
+ * @depends-on     lib/firebase.ts
+ * @consumers      App.tsx, AdminDashboard, ArtistDashboard, Layout, Login
+ * @safe-mode      isAdmin is UX hint only — firestore.rules enforces authorization
+ *
+ * STRUCTURAL INTENT
+ * Single auth provider. Admin = adminRoles/{uid} exists (legacy users.role fallback in rules).
+ * Creates users/{uid} on first sign-in with artist role defaults.
+ *
+ * @see docs/SECURITY_PLAN.md
+ * @see docs/SYSTEM_MAP.md#auth--admin-model
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User as FirebaseUser, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';

@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/LandingIntakeForm.tsx — Intake form fields, waiver, submit UI. @see README.md */
 import type { ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';

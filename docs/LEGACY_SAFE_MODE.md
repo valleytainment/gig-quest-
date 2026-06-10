@@ -11,19 +11,17 @@ Gig Quest's live production surface is the public landing and artist intake flow
 5. **No auth on `/`** — Unauthenticated users must reach sign-up without logging in.
 6. **Free sign-up policy** — Sign-up is free. Event-specific fees or ticket purchases are communicated in advance only.
 
-## Phase 0 Hard Boundary
+## Router vs Live Surface
 
-Phase 0 and any "safety harness" work may modify only:
+`App.tsx` wires the full router (`/login`, `/admin`, `/artist`, `/legal/*`). **Legacy Safe Mode applies to behavior, not route count:**
 
-- Test tooling (`package.json` devDependencies, `vite.config.ts` test block)
-- Tests (`tests/`, `e2e/`, `playwright.config.ts`)
-- Documentation (`docs/`, README test section)
+- **`/` always renders `<Landing />`** — never an auth gate or dashboard redirect.
+- Other routes may exist but must not break `/` intake behavior.
+- Firestore intake remains gated by `VITE_ENABLE_FIRESTORE_INTAKE=false` default.
 
-Phase 0 must **not** modify:
+## Phase 0 Hard Boundary (Historical)
 
-- `Landing.tsx` behavior or logic
-- `App.tsx` (must remain `return <Landing />`)
-- Firebase logic, auth logic, routes, or landing CSS/copy
+Phase 0 safety harness was limited to tests + docs. Later phases (2+) added the router shell **without** changing landing intake semantics above.
 
 ## Manual QA Checklist
 

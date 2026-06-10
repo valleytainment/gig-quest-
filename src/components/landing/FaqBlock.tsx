@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/FaqBlock.tsx — FAQ accordion section. @see README.md */
 const FAQ = [
   {
     q: 'Is it free?',

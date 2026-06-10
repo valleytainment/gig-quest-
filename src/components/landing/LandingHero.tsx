@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/LandingHero.tsx — Hero headline, trust strip, how-it-works, FAQ. @see README.md */
 import { ClipboardList, Mic2, ShieldCheck, Sparkles } from 'lucide-react';
 import { TrustStrip } from './TrustStrip';
 import { HowItWorks } from './HowItWorks';

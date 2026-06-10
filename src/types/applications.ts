@@ -1,3 +1,20 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟩 MODULE │ gig-quest/src/types/applications.ts
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          DOMAIN
+ * @responsibility Application, consent, and landing form TypeScript contracts
+ * @depends-on     None
+ * @consumers      submissions.ts, Landing.tsx, AdminDashboard, ArtistDashboard
+ * @safe-mode      LandingFormData field names map to artistSnapshot in Firestore docs
+ *
+ * STRUCTURAL INTENT
+ * Shared types aligned with firestore.rules isValidApplicationCreate validation.
+ *
+ * @see docs/DATA_MODEL.md
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 export type ApplicationStatus =
   | 'new'
   | 'reviewing'

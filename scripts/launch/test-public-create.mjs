@@ -1,6 +1,9 @@
 /**
- * Probes whether production Firestore rules allow public applications create.
- * Safe: writes a single test doc with obvious test data (delete manually if needed).
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟫 OPS │ scripts/launch/test-public-create.mjs
+ * @responsibility Probe public applications create against deployed rules
+ * @usage npm run launch:test-rules (delete test doc in Console after PASS)
+ * ═══════════════════════════════════════════════════════════════════════════════
  */
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';

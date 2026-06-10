@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/WaiverDialogContent.tsx — Full waiver text inside dialog. @see README.md */
 export const WaiverDialogContent = () => (
   <div className="space-y-5 px-4 py-5 text-sm leading-7 text-zinc-200 sm:px-6 sm:py-6">
     <section>

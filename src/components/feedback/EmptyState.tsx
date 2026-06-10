@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/feedback/EmptyState.tsx — Empty list placeholder. @see README.md */
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 

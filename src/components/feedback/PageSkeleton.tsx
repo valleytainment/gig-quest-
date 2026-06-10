@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/feedback/PageSkeleton.tsx — Route loading skeleton. @see README.md */
 export const PageSkeleton = () => (
   <div className="space-y-4 p-4 md:p-8" aria-hidden>
     <div className="gq-skeleton h-28 rounded-xl" />

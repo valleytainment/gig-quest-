@@ -1,3 +1,15 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟨 MODULE │ gig-quest/src/pages/artist/ArtistDashboard.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          ROUTE
+ * @responsibility Artist portal — browse events, apply, view submissions
+ * @depends-on     firebase, waiver, AuthContext
+ * @consumers      App.tsx route "/artist/*"
+ * @safe-mode      No client-side XP awards (rules block xp/level writes)
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';

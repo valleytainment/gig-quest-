@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/SuccessPanel.tsx — Post-submit success state wrapper. @see README.md */
 import { EmailFallbackActions } from './EmailFallbackActions';
 
 type SuccessPanelProps = {
