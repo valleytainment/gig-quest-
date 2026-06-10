@@ -16,6 +16,7 @@
     "test:e2e:launch": "playwright test e2e/phase11-smoke.spec.ts e2e/landing.spec.ts",
     "ci": "npm run typecheck && npm run test && npm run build && npm run test:e2e",
     "launch:deploy-rules": "bash scripts/launch/deploy-rules.sh",
+    "launch:deploy-hosting": "bash scripts/launch/deploy-hosting.sh",
     "launch:bootstrap-admin": "node scripts/launch/bootstrap-admin.mjs",
     "launch:all": "bash scripts/launch/launch-all.sh",
     "launch:verify": "bash scripts/launch/verify-readiness.sh",

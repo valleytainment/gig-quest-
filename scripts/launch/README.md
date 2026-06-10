@@ -13,8 +13,19 @@
 | `launch:apply-config` | `apply-firebase-config.mjs` | After new Firebase web config |
 | `launch:verify` | `verify-readiness.sh` | Pre-intake CI gate |
 | `launch:deploy-rules` | `deploy-rules.sh` | Needs `firebase login` |
+| `launch:deploy-hosting` | `deploy-hosting.sh` | Build + Firebase Hosting (SPA) |
 | `launch:bootstrap-admin` | `bootstrap-admin.mjs` | Needs `ADMIN_UID` + ADC |
 | `launch:all` | `launch-all.sh` | Full chain (CI+deploy+bootstrap) |
+
+## Production Deploy (Email-First)
+
+```bash
+npm run ci                    # local gate (GitHub Actions may be billing-blocked)
+firebase login --no-localhost # once per machine
+npm run launch:deploy-hosting # build dist/ + firebase deploy --only hosting
+```
+
+Ensure hosting env keeps `VITE_ENABLE_FIRESTORE_INTAKE=false` until ops gates pass.
 
 ## Enablement Order
 

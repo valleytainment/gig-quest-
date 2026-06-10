@@ -173,7 +173,8 @@ Security:
 ## Production Deploy Checklist
 
 - [ ] `npm run build` succeeds
-- [ ] Environment variables set in hosting provider
+- [ ] `npm run launch:deploy-hosting` (or Netlify equivalent) after `firebase login`
+- [ ] Environment variables set in hosting provider (`VITE_ENABLE_FIRESTORE_INTAKE=false`)
 - [ ] Firestore rules deployed (`firebase deploy --only firestore:rules`)
 - [ ] Smoke test `/` on production URL
 - [ ] Submit test registration (staging first)

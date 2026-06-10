@@ -51,6 +51,7 @@ npm run dev                  # http://localhost:3000
 | `npm run test:e2e` | 🟫 | Playwright e2e |
 | `npm run ci` | 🟫 | Full gate: typecheck + test + build + e2e |
 | `npm run launch:verify` | 🟫 | Pre-intake readiness |
+| `npm run launch:deploy-hosting` | 🟫 | Build + Firebase Hosting deploy |
 | `npm run launch:diagnose` | 🟫 | Firestore API probe |
 | `npm run launch:open-console` | 🟫 | Operator Console tabs |
 | `npm run audit:consistency` | 🟫 | Elite static consistency audit |
@@ -129,6 +130,7 @@ See [src/README.md](src/README.md) for the full source tree.
 |-------|--------|
 | 0–10 Platform (router, applications, admin, artist, rules) | ✅ Merged |
 | 11 Launch ops | ✅ Merged |
-| 12A Visual wow | ✅ Merged |
-| 12B Intake runbook | ✅ Merged — **ops blocked** (Firestore API) |
+| 12A Visual foundation | ✅ Merged |
+| 12B–12G Visual experience | ✅ Merged (`f80131b`) |
+| 12B Firestore intake enable | 🔲 Ops blocked — `CONSUMER_INVALID` (enable Firestore API + billing) |
 | 14+ Kanban, EPK, server XP | 🔲 Planned |
