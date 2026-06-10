@@ -20,7 +20,8 @@
     "launch:all": "bash scripts/launch/launch-all.sh",
     "launch:verify": "bash scripts/launch/verify-readiness.sh",
     "launch:open-console": "bash scripts/launch/open-console.sh",
-    "launch:test-rules": "node scripts/launch/test-public-create.mjs"
+    "launch:test-rules": "node scripts/launch/test-public-create.mjs",
+    "launch:diagnose": "node scripts/launch/diagnose-firestore.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
