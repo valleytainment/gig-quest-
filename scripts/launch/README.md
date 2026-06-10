@@ -14,6 +14,7 @@
 | `launch:verify` | `verify-readiness.sh` | Pre-intake CI gate |
 | `launch:deploy-rules` | `deploy-rules.sh` | Needs `firebase login` |
 | `launch:deploy-hosting` | `deploy-hosting.sh` | Build + Firebase Hosting (SPA) |
+| `launch:setup-firebase-ci` | `setup-firebase-ci.sh` | One-time `FIREBASE_TOKEN` for CLI + GHA |
 | `launch:smoke-preview` | `smoke-preview.sh` | E2E against production `dist/` |
 | `launch:smoke-production` | `smoke-production.sh` | E2E against live GitHub Pages URL |
 | `launch:deploy-github-pages` | `deploy-github-pages.sh` | Build + GitHub Pages (uses `gh` auth) |
@@ -27,17 +28,19 @@
 Pushes to `main` auto-deploy after CI passes (`.github/workflows/deploy-pages.yml`).
 
 Manual deploy:
-npm run ci                         # local gate (GitHub Actions may be billing-blocked)
+```bash
+npm run ci                         # local gate
 npm run launch:deploy-github-pages # build + publish gh-pages branch
 npm run launch:smoke-production    # e2e against live URL (375px mobile)
 ```
 
-**Firebase Hosting (optional, needs login):**
+**Firebase Hosting (optional, needs token):**
 
 ```bash
-npm run launch:smoke-preview  # e2e against production build (dist/)
-firebase login --no-localhost # once per machine
-npm run launch:deploy-hosting # build dist/ + firebase deploy --only hosting
+npm run launch:setup-firebase-ci   # prints login:ci + gh secret steps
+npm run launch:smoke-preview       # e2e against production build (dist/)
+npm run launch:deploy-hosting      # local deploy (needs FIREBASE_TOKEN in .env.local)
+# or: gh workflow run deploy-firebase.yml   # after FIREBASE_TOKEN repo secret is set
 ```
 
 Ensure hosting env keeps `VITE_ENABLE_FIRESTORE_INTAKE=false` until ops gates pass.

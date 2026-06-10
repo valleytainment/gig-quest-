@@ -176,10 +176,10 @@ Security:
 - [x] `npm run build` succeeds
 - [x] GitHub Pages deployed — https://valleytainment.github.io/gig-quest-/
 - [x] `npm run launch:smoke-production` — 11/11 pass (375px mobile)
-- [ ] `npm run launch:deploy-hosting` (Firebase) after `firebase login`
+- [ ] `npm run launch:deploy-hosting` (Firebase) — needs `FIREBASE_TOKEN` (see `launch:setup-firebase-ci`) or `gh workflow run deploy-firebase.yml`
 - [ ] Environment variables set in hosting provider (`VITE_ENABLE_FIRESTORE_INTAKE=false`)
 - [ ] Firestore rules deployed (`firebase deploy --only firestore:rules`)
-- [ ] Smoke test `/` on production URL
+- [x] Smoke test `/` on production URL
 - [ ] Submit test registration (staging first)
 - [ ] Admin can see test application (when Phase 3+ live)
 - [ ] Monitor for errors in first 24 hours

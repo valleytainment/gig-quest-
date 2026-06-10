@@ -1,0 +1,51 @@
+name: Deploy Firebase Hosting
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-firebase-hosting
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Require FIREBASE_TOKEN secret
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          if [ -z "${FIREBASE_TOKEN}" ]; then
+            echo "::error::Missing repository secret FIREBASE_TOKEN."
+            echo "One-time setup:"
+            echo "  npx firebase login:ci"
+            echo "  gh secret set FIREBASE_TOKEN --repo valleytainment/gig-quest-"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+
+      - name: Deploy Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx firebase deploy --only hosting --non-interactive
+
+      - name: Post-deploy reminder
+        run: |
+          echo "Hosting deploy complete."
+          echo "Verify VITE_ENABLE_FIRESTORE_INTAKE=false (email-first path)."
+          echo "Manual smoke: complete intake on production URL at 375px."
