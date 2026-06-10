@@ -10,7 +10,8 @@ import { Label } from '../../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-import { CalendarPlus, ClipboardList, Mail, Check, X, Search, Plus, Play, ChevronDown, Filter, MoreHorizontal } from 'lucide-react';
+import { CalendarPlus, ClipboardList, Mail, Check, X, Search, Plus, Play, ChevronDown, Filter, MoreHorizontal, Calendar } from 'lucide-react';
+import { EmptyState } from '../../components/feedback/EmptyState';
 
 export const AdminDashboard = () => {
   const { user } = useAuth();
@@ -136,9 +137,7 @@ export const AdminDashboard = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold text-white tracking-wide">Create Event</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs bg-black/40 text-gray-400 px-2 py-1 rounded border border-gray-800 font-mono">- Sharp Date</span>
-            </div>
+            <p className="mt-1 text-xs text-zinc-500">Launch a new quest with capacity and lineup slots</p>
           </div>
         </div>
 
@@ -148,9 +147,7 @@ export const AdminDashboard = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold text-white tracking-wide">View Applications</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs bg-black/40 text-gray-400 px-2 py-1 rounded border border-gray-800 font-mono">Snap Photo</span>
-            </div>
+            <p className="mt-1 text-xs text-zinc-500">{pendingCount} awaiting review</p>
           </div>
         </div>
 
@@ -160,9 +157,7 @@ export const AdminDashboard = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold text-white tracking-wide">Send Email</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs bg-black/40 text-gray-400 px-2 py-1 rounded border border-gray-800 font-mono">Record Sale</span>
-            </div>
+            <p className="mt-1 text-xs text-zinc-500">Template preview in sidebar</p>
           </div>
         </div>
       </div>
@@ -322,7 +317,11 @@ export const AdminDashboard = () => {
                 </div>
               ))}
               {applications.length === 0 && (
-                <p className="text-gray-500 text-sm">No applications yet.</p>
+                <EmptyState
+                  icon={ClipboardList}
+                  title="Review queue empty"
+                  description="Applications from the landing page and artist portal will appear here."
+                />
               )}
             </div>
           </div>

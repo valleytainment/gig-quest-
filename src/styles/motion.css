@@ -1,0 +1,46 @@
+@keyframes gq-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes gq-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes gq-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gq-pulse-glow {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes gq-stage-sweep {
+  0% { transform: translateX(-30%) rotate(-8deg); opacity: 0; }
+  50% { opacity: 0.35; }
+  100% { transform: translateX(130%) rotate(-8deg); opacity: 0; }
+}
+
+.gq-fade-in {
+  animation: gq-fade-in 0.5s ease-out both;
+}
+
+.gq-slide-up {
+  animation: gq-slide-up 0.55s ease-out both;
+}
+
+.gq-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.gq-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  animation: gq-shimmer 2.4s infinite;
+}

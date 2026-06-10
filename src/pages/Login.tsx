@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
-import { Mic2 } from 'lucide-react';
+import { Mic2, ShieldCheck, Sparkles } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { signInWithGoogle } from '../lib/firebase';
 import { Button } from '../components/ui/button';
+import { EliteLoader } from '../components/feedback/EliteLoader';
+import { ErrorState } from '../components/feedback/ErrorState';
 
 export const Login = () => {
   const { user, loading, isAdmin } = useAuth();
@@ -15,11 +17,8 @@ export const Login = () => {
 
   if (loading) {
     return (
-      <div className="elite-bg flex min-h-screen items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#D4AF37] border-t-transparent" />
-          <p className="font-mono text-sm uppercase tracking-widest text-gray-400">Loading</p>
-        </div>
+      <div className="gq-shell flex min-h-screen items-center justify-center">
+        <EliteLoader label="Loading portal" />
       </div>
     );
   }
@@ -47,40 +46,50 @@ export const Login = () => {
   };
 
   return (
-    <div className="elite-bg flex min-h-screen items-center justify-center px-4 py-8 text-white">
-      <div className="elite-panel w-full max-w-md rounded-[1.5rem] p-8 sm:p-10">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[#d4af37] shadow-[0_0_45px_rgba(212,175,55,0.35)]">
-          <Mic2 className="h-8 w-8 text-black" />
-        </div>
+    <div className="gq-shell flex min-h-screen items-center justify-center px-4 py-8 text-white">
+      <div className="grid w-full max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 md:grid-cols-2">
+        <section className="relative hidden border-r border-white/10 bg-gradient-to-br from-[#1a2130] to-[#0b0e14] p-10 md:flex md:flex-col md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Gig Quest Portal</p>
+            <h1 className="mt-4 text-3xl font-black uppercase leading-tight">Artist Portal / Admin Ops</h1>
+            <p className="mt-4 text-sm leading-6 text-zinc-400">
+              Sign in to manage quests, review applications, and track your artist profile.
+            </p>
+          </div>
+          <div className="space-y-3 text-sm text-zinc-400">
+            <p className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[#f2d06b]" /> Secure Google sign-in</p>
+            <p className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[#f2d06b]" /> Public signup does not require login</p>
+          </div>
+        </section>
 
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">
-          Gig Quest
-        </p>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-white">Sign In</h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-300">
-          Artists and admins sign in with Google to access dashboards. Public registration stays on the home page.
-        </p>
+        <section className="gq-card rounded-none border-0 p-8 sm:p-10">
+          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#d4af37] shadow-[var(--gq-glow-gold)]">
+            <Mic2 className="h-7 w-7 text-black" />
+          </div>
 
-        {error ? (
-          <p className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-            {error}
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Sign In</p>
+          <h2 className="text-2xl font-black uppercase tracking-tight text-white">Continue With Google</h2>
+          <p className="mt-3 text-sm leading-6 text-zinc-300">
+            Artists and admins use Google to access dashboards. New artist registration stays on the public home page.
           </p>
-        ) : null}
 
-        <Button
-          type="button"
-          disabled={signingIn}
-          onClick={handleSignIn}
-          className="elite-btn-gold mt-6 h-12 w-full rounded-2xl text-sm font-bold uppercase tracking-[0.16em]"
-        >
-          {signingIn ? 'Signing in…' : 'Continue With Google'}
-        </Button>
+          {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
 
-        <p className="mt-6 text-center text-sm text-zinc-400">
-          <Link to="/" className="text-[#f2d06b] underline-offset-4 hover:underline">
-            Back to artist registration
-          </Link>
-        </p>
+          <Button
+            type="button"
+            disabled={signingIn}
+            onClick={handleSignIn}
+            className="elite-btn-gold mt-6 h-12 w-full rounded-2xl text-sm font-bold uppercase tracking-[0.16em]"
+          >
+            {signingIn ? 'Signing in…' : 'Continue With Google'}
+          </Button>
+
+          <p className="mt-6 text-center text-sm text-zinc-400">
+            <Link to="/" className="text-[#f2d06b] underline-offset-4 hover:underline">
+              Back to artist registration
+            </Link>
+          </p>
+        </section>
       </div>
     </div>
   );

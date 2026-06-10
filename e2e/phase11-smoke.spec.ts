@@ -4,7 +4,7 @@ test.describe('Phase 11 launch smoke', () => {
   test('public landing loads without login', async ({ page }) => {
     await page.goto('/');
     await expect(
-      page.getByRole('heading', { name: /performance opportunities for serious artists/i })
+      page.getByRole('heading', { name: /apply once.*get reviewed/i })
     ).toBeVisible();
   });
 
@@ -66,6 +66,11 @@ test.describe('Phase 11 launch smoke', () => {
 
     await page.goto('/legal/waiver');
     await expect(page.getByRole('heading', { name: /artist participation agreement/i })).toBeVisible();
+  });
+
+  test('login page has back to signup link', async ({ page }) => {
+    await page.goto('/login');
+    await expect(page.getByRole('link', { name: /back to artist registration/i })).toBeVisible();
   });
 
   test('protected routes redirect to login', async ({ page }) => {

@@ -49,7 +49,7 @@ describe('Landing page smoke tests', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /performance opportunities for serious artists/i,
+        name: /apply once.*get reviewed/i,
       })
     ).toBeInTheDocument();
     expect(

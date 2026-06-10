@@ -1,0 +1,25 @@
+.gq-input {
+  @apply h-12 w-full rounded-xl border px-4 text-white outline-none transition;
+  border-color: var(--gq-border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gq-input:focus {
+  border-color: var(--gq-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.gq-input::placeholder {
+  color: rgb(113 113 122);
+}
+
+.gq-section-label {
+  @apply text-xs font-semibold uppercase tracking-[0.2em];
+  color: var(--gq-gold-soft);
+}
+
+.gq-form-section {
+  @apply rounded-2xl border p-4 sm:p-5;
+  border-color: var(--gq-border);
+  background: rgba(255, 255, 255, 0.03);
+}
