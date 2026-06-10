@@ -15,7 +15,7 @@ const testDoc = {
   artistSnapshot: {
     stageName: 'Rules Probe',
     legalName: 'Rules Probe',
-    email: 'rules-probe@test.local',
+    email: 'rules.probe@gmail.com',
   },
   emergencyContact: { name: 'Probe Contact', phone: '555-0199' },
   consent: {
@@ -33,14 +33,20 @@ const testDoc = {
   updatedAt: serverTimestamp(),
 };
 
+const timeoutMs = 15_000;
+const write = addDoc(collection(db, 'applications'), testDoc);
+const timer = new Promise((_, reject) => {
+  setTimeout(() => reject(new Error(`Timed out after ${timeoutMs}ms — rules likely not published`)), timeoutMs);
+});
+
 try {
-  const ref = await addDoc(collection(db, 'applications'), testDoc);
+  const ref = await Promise.race([write, timer]);
   console.log(`PASS: public applications create allowed. Test doc: applications/${ref.id}`);
   console.log('Delete this test doc in Firebase Console when done verifying.');
   process.exit(0);
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
-  console.error(`FAIL: public create blocked or rules not deployed.`);
+  console.error('FAIL: public create blocked — publish firestore.rules in Console first.');
   console.error(message);
   process.exit(1);
 }

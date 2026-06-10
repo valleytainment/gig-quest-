@@ -19,4 +19,13 @@ echo "==> Running CI..."
 CI=true npm run ci
 
 echo ""
+echo "==> Probing deployed Firestore rules (15s max)..."
+if npm run launch:test-rules >/dev/null 2>&1; then
+  echo "OK: public applications create allowed — rules published"
+else
+  echo "WARN: rules probe failed — run: npm run launch:open-console"
+  echo "      Paste firestore.rules → Publish, then: npm run launch:test-rules"
+fi
+
+echo ""
 echo "PASS: Code ready. Complete docs/INTAKE_ENABLE_RUNBOOK.md gates before enabling intake."
