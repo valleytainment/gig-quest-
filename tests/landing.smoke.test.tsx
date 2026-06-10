@@ -185,4 +185,13 @@ describe('Landing page smoke tests', () => {
       screen.getByText(/sign-up is free\. some events may require a fee or ticket purchase/i)
     ).toBeInTheDocument();
   });
+
+  it('shows trust strip, legal links, and portal sign-in', () => {
+    renderLanding();
+
+    expect(screen.getAllByText('Free signup').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Email fallback').length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('link', { name: /view artist agreement/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('link', { name: /already have portal access\? sign in/i }).length).toBeGreaterThan(0);
+  });
 });

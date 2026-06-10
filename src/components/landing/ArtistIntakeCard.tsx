@@ -1,10 +1,12 @@
-/** 🟧 UI │ components/landing/ArtistIntakeCard.tsx — Intake section card + open form CTA. @see README.md */
+/** 🟧 UI │ ArtistIntakeCard — Primary intake CTA card on landing. */
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { Button } from '../ui/button';
+import { ActionButton } from '../ui/ActionButton';
+import { GlowCard } from '../ui/GlowCard';
 
 export const ArtistIntakeCard = ({ onOpen }: { onOpen: () => void }) => (
   <div className="flex h-full flex-col justify-center gq-fade-in">
-    <div className="gq-card-gold gq-shimmer rounded-[1.6rem] p-5 sm:rounded-3xl sm:p-6">
+    <GlowCard variant="gold" className="gq-shimmer rounded-[1.6rem] p-5 sm:rounded-3xl sm:p-6">
       <p className="text-xs uppercase tracking-[0.28em] text-[#f2d06b] sm:text-sm sm:tracking-[0.35em]">
         Artist Registration
       </p>
@@ -14,14 +16,31 @@ export const ArtistIntakeCard = ({ onOpen }: { onOpen: () => void }) => (
       <p className="mt-3 text-sm leading-6 text-zinc-300">
         Tap once, fill out the basics, and submit your information for review.
       </p>
-      <Button
+
+      <ActionButton
         type="button"
         onClick={onOpen}
-        className="elite-btn-gold mt-5 h-12 w-full rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:mt-6 sm:tracking-[0.2em]"
+        fullWidth
+        className="mt-5 sm:mt-6"
       >
-        Sign Up For Performance Opportunities
-        <ArrowRight className="ml-2 h-4 w-4" />
-      </Button>
-    </div>
+        <span className="flex items-center justify-center gap-2">
+          Sign Up For Performance Opportunities
+          <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+        </span>
+      </ActionButton>
+
+      <Link
+        to="/legal/waiver"
+        className="gq-btn-ghost mt-3 inline-flex h-11 w-full items-center justify-center rounded-2xl text-xs font-bold uppercase tracking-[0.14em]"
+      >
+        View Artist Agreement
+      </Link>
+
+      <p className="mt-4 text-center text-xs text-zinc-500">
+        <Link to="/login" className="font-semibold uppercase tracking-[0.1em] text-zinc-400 hover:text-[#f2d06b]">
+          Already have portal access? Sign in
+        </Link>
+      </p>
+    </GlowCard>
   </div>
 );

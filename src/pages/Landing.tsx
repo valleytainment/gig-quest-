@@ -27,6 +27,8 @@ import { LandingHero } from '../components/landing/LandingHero';
 import { ArtistIntakeCard } from '../components/landing/ArtistIntakeCard';
 import { LandingIntakeForm } from '../components/landing/LandingIntakeForm';
 import { SuccessPanel } from '../components/landing/SuccessPanel';
+import { HowItWorks } from '../components/landing/HowItWorks';
+import { FaqBlock } from '../components/landing/FaqBlock';
 import type { LandingFormData } from '../types/applications';
 
 const INITIAL_FORM: LandingFormData = {
@@ -108,17 +110,15 @@ export const Landing = () => {
   };
 
   return (
-    <div className="gq-shell min-h-screen overflow-hidden px-3 py-4 sm:px-4 sm:py-6 md:px-6 md:py-12">
-      <div className="pointer-events-none absolute inset-0">
+    <div className="gq-shell relative min-h-screen overflow-x-hidden px-3 py-4 pb-10 sm:px-4 sm:py-6 lg:px-8 lg:py-10">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="gq-orb left-[-2rem] top-[-1rem] h-48 w-48 bg-[#d4af37]/15 sm:h-64 sm:w-64" />
         <div className="gq-orb bottom-[-2rem] right-[-2rem] h-56 w-56 bg-[#27456b]/25 sm:h-80 sm:w-80" />
       </div>
 
-      <main className="relative mx-auto flex min-h-[100dvh] max-w-5xl items-stretch justify-center md:min-h-[calc(100vh-4rem)] md:items-center">
-        <div className="gq-card grid w-full overflow-hidden rounded-[1.5rem] md:grid-cols-[1.02fr_0.98fr] md:rounded-[2rem]">
-          <LandingHero />
-
-          <section className="px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-12">
+      <main className="relative mx-auto w-full max-w-6xl">
+        <div className="gq-card grid w-full grid-cols-1 items-stretch rounded-2xl lg:grid-cols-2 lg:rounded-[2rem]">
+          <section className="order-1 flex min-w-0 flex-col justify-center border-b border-white/10 px-4 py-6 sm:px-6 sm:py-8 lg:order-2 lg:border-b-0 lg:border-l lg:px-8 lg:py-10">
             {!showForm && !submitted ? (
               <ArtistIntakeCard onOpen={() => setShowForm(true)} />
             ) : null}
@@ -146,6 +146,13 @@ export const Landing = () => {
               <SuccessPanel draftLinks={draftLinks} confirmationId={confirmationId} />
             ) : null}
           </section>
+
+          <LandingHero className="order-2 min-w-0 lg:order-1" />
+        </div>
+
+        <div className="mt-6 px-2 lg:hidden">
+          <HowItWorks />
+          <FaqBlock />
         </div>
       </main>
     </div>
