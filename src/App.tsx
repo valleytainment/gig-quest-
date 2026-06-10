@@ -1,3 +1,21 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟨 MODULE │ gig-quest/src/App.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          ROUTE
+ * @responsibility Application router shell — route table source of truth
+ * @depends-on     AuthProvider, page components, Layout, sonner Toaster
+ * @consumers      main.tsx
+ * @safe-mode      "/" must remain public Landing — see LEGACY_SAFE_MODE.md
+ *
+ * STRUCTURAL INTENT
+ * Central route map. Protected routes use Layout; legal uses nested LegalLayout.
+ * Do not redirect "/" to login or dashboard.
+ *
+ * @see docs/SYSTEM_MAP.md#route-map-source-of-truth-srcapptsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { Layout } from './components/Layout';

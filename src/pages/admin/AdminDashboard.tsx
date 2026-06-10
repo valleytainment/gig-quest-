@@ -1,3 +1,18 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟨 MODULE │ gig-quest/src/pages/admin/AdminDashboard.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          ROUTE
+ * @responsibility Admin mission control — events, applications review, legacy submissions
+ * @depends-on     firebase, audit, messageTemplates, AuthContext
+ * @consumers      App.tsx route "/admin/*"
+ * @safe-mode      Requires adminRoles bootstrap; real-time Firestore listeners
+ *
+ * STRUCTURAL INTENT
+ * Primary admin ops surface. Application approve/waitlist/reject writes audit logs.
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import React, { useEffect, useState } from 'react';
 import { collection, query, onSnapshot, addDoc, updateDoc, doc, serverTimestamp, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';

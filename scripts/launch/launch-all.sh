@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# Phase 11 — one-shot launch readiness (requires interactive firebase login once).
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🟫 OPS │ scripts/launch/launch-all.sh
+# @responsibility Full launch chain: ci + deploy-rules + bootstrap-admin
+# @requires firebase login, ADMIN_UID
+# ═══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 

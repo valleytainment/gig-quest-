@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Opens Firebase Console tabs and copies firestore.rules to clipboard (macOS).
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🟫 OPS │ scripts/launch/open-console.sh
+# @responsibility Open GCP/Firebase tabs + copy firestore.rules to clipboard (macOS)
+# ═══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 

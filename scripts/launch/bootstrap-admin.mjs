@@ -1,12 +1,11 @@
 /**
- * Bootstrap first admin via Firebase Admin SDK (bypasses security rules).
- *
- * Prerequisites:
- *   1. firebase login  (or GOOGLE_APPLICATION_CREDENTIALS set)
- *   2. ADMIN_UID env var set to your Firebase Auth UID
- *
- * Usage:
- *   ADMIN_UID=your-uid npm run launch:bootstrap-admin
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟫 OPS │ scripts/launch/bootstrap-admin.mjs
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * @responsibility Create adminRoles/{ADMIN_UID} via Firebase Admin SDK
+ * @requires firebase login or GOOGLE_APPLICATION_CREDENTIALS, ADMIN_UID env
+ * @usage ADMIN_UID=your-uid npm run launch:bootstrap-admin
+ * ═══════════════════════════════════════════════════════════════════════════════
  */
 import admin from 'firebase-admin';
 import firebaseConfig from '../../firebase-applet-config.json' with { type: 'json' };

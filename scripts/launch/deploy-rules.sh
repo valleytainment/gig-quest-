@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🟫 OPS │ scripts/launch/deploy-rules.sh
+# @responsibility Deploy firestore.rules via Firebase CLI
+# @requires firebase login | @see scripts/launch/README.md
+# ═══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 

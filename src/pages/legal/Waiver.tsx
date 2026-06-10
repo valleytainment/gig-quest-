@@ -1,5 +1,6 @@
 import { CURRENT_WAIVER_VERSION_ID, WAIVER_EFFECTIVE_DATE } from '../../lib/waiver';
 
+/** 🟨 ROUTE │ pages/legal/Waiver.tsx — Full liability waiver text. @see lib/waiver.ts */
 export const LegalWaiver = () => (
   <article className="text-sm leading-7 text-zinc-200">
     <h1 className="text-2xl font-bold uppercase tracking-tight text-white">Artist Participation Agreement</h1>

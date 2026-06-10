@@ -1,3 +1,12 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟧 MODULE │ gig-quest/src/components/Layout.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * @layer UI | @responsibility Authenticated shell — nav, avatar, logout, Outlet
+ * @consumers App.tsx routes /admin/*, /artist/*
+ * @safe-mode Redirects unauthenticated users to /login
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import React from 'react';
 import { Outlet, Navigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';

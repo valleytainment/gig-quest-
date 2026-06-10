@@ -1,6 +1,9 @@
 /**
- * Diagnose Firestore connectivity before rules publish.
- * CONSUMER_INVALID => enable Cloud Firestore API / billing on the GCP project.
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟫 OPS │ scripts/launch/diagnose-firestore.mjs
+ * @responsibility Probe Firestore API; detect CONSUMER_INVALID
+ * @usage npm run launch:diagnose
+ * ═══════════════════════════════════════════════════════════════════════════════
  */
 import firebaseConfig from '../../firebase-applet-config.json' with { type: 'json' };
 

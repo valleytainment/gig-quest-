@@ -1,3 +1,22 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟩 MODULE │ gig-quest/src/lib/submissions.ts
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          DOMAIN
+ * @responsibility Public intake: email draft, Firestore create gate, confirmation IDs
+ * @depends-on     firebase.ts, waiver.ts, types/applications
+ * @consumers      Landing.tsx, LandingIntakeForm (via Landing)
+ * @safe-mode      isFirestoreIntakeEnabled() false by default; email fallback always built
+ *
+ * STRUCTURAL INTENT
+ * Canonical intake domain logic. Firestore write is optional and env-gated;
+ * buildEmailDraft() always runs so users can send via mailto/Gmail.
+ *
+ * @see docs/INTAKE_ENABLE_RUNBOOK.md
+ * @see docs/SYSTEM_MAP.md#intake-flow-public-landing
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase';
 import {

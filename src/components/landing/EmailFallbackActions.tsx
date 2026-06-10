@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/EmailFallbackActions.tsx — mailto, Gmail, copy-email actions. @see README.md */
 import { useState } from 'react';
 import { Check, Copy, Mail } from 'lucide-react';
 import { INTAKE_RECIPIENT_EMAIL } from '../../lib/submissions';

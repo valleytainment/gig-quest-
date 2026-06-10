@@ -1,3 +1,4 @@
+/** 🟨 ROUTE │ pages/NotFound.tsx — 404 fallback with link to landing. @see App.tsx */
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 

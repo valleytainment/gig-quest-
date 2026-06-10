@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/feedback/EliteLoader.tsx — Branded loading spinner. @see README.md */
 export const EliteLoader = ({ label = 'Loading' }: { label?: string }) => (
   <div className="flex flex-col items-center gap-4 gq-fade-in" role="status" aria-live="polite">
     <div className="relative h-12 w-12">

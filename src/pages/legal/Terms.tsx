@@ -1,3 +1,4 @@
+/** 🟨 ROUTE │ pages/legal/Terms.tsx — Static terms of use. Effective: 2026-06-01 */
 export const LegalTerms = () => (
   <article className="prose prose-invert max-w-none text-sm leading-7 text-zinc-200">
     <h1 className="text-2xl font-bold uppercase tracking-tight text-white">Terms of Use</h1>

@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/feedback/ErrorState.tsx — Recoverable error display. @see README.md */
 import { CircleAlert } from 'lucide-react';
 
 export const ErrorState = ({ message }: { message: string }) => (

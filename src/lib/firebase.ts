@@ -1,3 +1,22 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟦 MODULE │ gig-quest/src/lib/firebase.ts
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          INFRASTRUCTURE
+ * @responsibility Firebase app init, Auth helpers, sanitized Firestore error handling
+ * @depends-on     firebase-applet-config.json, firebase SDK
+ * @consumers      AuthContext, submissions, audit, AdminDashboard, ArtistDashboard
+ * @safe-mode      handleFirestoreError never exposes PII to users or verbose logs
+ *
+ * STRUCTURAL INTENT
+ * Single IO boundary for Firebase client SDK. All Firestore errors flow through
+ * handleFirestoreError with { operationType, path, message } logging only.
+ *
+ * @see docs/SYSTEM_MAP.md#environment--config
+ * @see docs/CODEBASE_INDEX.md
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';

@@ -1,10 +1,9 @@
 /**
- * Apply Firebase web config from a JSON file to repo config files.
- *
- * Usage:
- *   npm run launch:apply-config -- ./my-firebase-config.json
- *
- * Input JSON must include standard web SDK fields plus firestoreDatabaseId (use "(default)" for new projects).
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟫 OPS │ scripts/launch/apply-firebase-config.mjs
+ * @responsibility Write firebase-applet-config.json, .firebaserc, firebase.json
+ * @usage npm run launch:apply-config -- ./my-firebase-config.json
+ * ═══════════════════════════════════════════════════════════════════════════════
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';

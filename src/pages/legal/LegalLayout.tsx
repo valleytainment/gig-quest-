@@ -1,3 +1,4 @@
+/** 🟨 ROUTE │ pages/legal/LegalLayout.tsx — Nested layout for /legal/* static pages. */
 import { Link, Outlet } from 'react-router-dom';
 import { Mic2 } from 'lucide-react';
 

@@ -1,108 +1,108 @@
 # Gig Quest — Security Plan
 
+> Layer: 🔴 SECURITY | See also: [SYSTEM_MAP.md](./SYSTEM_MAP.md), [firestore.rules](../firestore.rules)
+
 ## Principles
 
 1. **Defense in depth** — UI checks are UX only; Firestore Security Rules are the source of truth.
-2. **Least privilege** — Public users get create-only on intake; no list/read of other artists' data.
-3. **No client-grantable admin** — Admin role must not be self-assigned via profile edits.
-4. **Audit everything** — Admin actions on applications, events, and messages are logged.
-5. **Secrets never in repo** — Service account keys, private API keys, and webhook secrets live in env/secret manager only.
+2. **Least privilege** — Public users get create-only on `applications` with field validation; no list/read of others' data.
+3. **No client-grantable admin** — `adminRoles/{uid}` bootstrap only; artists cannot self-promote via profile edits.
+4. **Audit everything** — Admin application actions logged via `auditLogs`.
+5. **Secrets never in repo** — Service account keys live in env/secret manager only.
+6. **Sanitized errors** — `handleFirestoreError()` logs `{ operationType, path, message }` only.
 
-## Current State (Prototype)
+---
 
-| Area | Status | Risk |
-|------|--------|------|
-| Firestore rules | Present in `firestore.rules` | Medium — hardcoded admin email bypass |
-| AuthContext `isAdmin` | Client-side check + email bypass | High if treated as security |
-| Public landing writes | Not enabled | Low (email fallback only) |
-| Emulator tests | Not yet | High for Phase 3+ |
+## Current State (Production-Ready Code, Ops Pending)
 
-### Known Issues (to fix in Phase 7)
+| Area | Status | Notes |
+|------|--------|-------|
+| Firestore rules | ✅ In repo | `adminRoles` + field validators; **must be published** to Firebase |
+| AuthContext `isAdmin` | ✅ UX hint | `adminRoles/{uid}` OR legacy `users.role === 'admin'` |
+| Public landing writes | 🔒 Gated | `VITE_ENABLE_FIRESTORE_INTAKE=false` default |
+| PII in error logs | ✅ Fixed | Generic user message; sanitized console log |
+| Emulator rule tests | 🔲 Phase 17 | Planned |
 
-- Admin bypass via hardcoded email in `AuthContext.tsx` and `firestore.rules`
-- `users.role` can be set to `admin` on create if `isAdmin()` passes (circular)
-- No `adminRoles/{uid}` collection yet
-- ~~Sensitive auth info logged in `handleFirestoreError`~~ (fixed: logs operation/path/message only)
-
-## Target Role Model (Phase 7)
+### Authorization Path
 
 ```txt
-adminRoles/{uid}
-  role: 'admin'
-  grantedBy: string
-  grantedAt: Timestamp
+isAdmin() in firestore.rules:
+  1. adminRoles/{request.auth.uid} exists
+  2. OR users/{uid}.role == 'admin' (legacy fallback)
+
+AuthContext.isAdmin (client UX only):
+  1. hasAdminRole from adminRoles doc
+  2. OR profile.role === 'admin'
 ```
 
-Remove hardcoded email from final authorization path. Bootstrap first admin via Firebase console or one-time script documented in ops runbook.
+**Bootstrap:** Create `adminRoles/{uid}` via Console or `npm run launch:bootstrap-admin`.
+
+---
 
 ## Firestore Rules Strategy
 
 ### Public (unauthenticated)
 
-- **Allow:** create on `applications/{id}` with strict field validator (Phase 3)
-- **Deny:** list, read, update, delete on all collections
+- **Allow:** create on `applications` when `source == 'public_landing'` and `isValidApplicationCreate()`
+- **Deny:** list, read, update, delete
 
 ### Artist (authenticated)
 
-- Read/write own `users/{uid}` profile (cannot change `role`, `xp`, `level` without admin)
+- Read/write own `users/{uid}` (cannot change `role`, `xp`, `level` without admin rules)
 - Read own `applications` where `artistId == uid`
-- Read `events` where `status == 'open'`
-- Create `applications` for self via artist portal
+- Create `applications` via artist portal (`source == 'artist_portal'`)
 
 ### Admin
 
-- Full CRUD on `events`, `applications`
-- Read all `users`
-- Create append-only `auditLogs`
-- Create `notifications` for users
+- CRUD on `events`, `applications` (updates via `isValidApplicationAdminUpdate`)
+- Read `users`, `auditLogs`
+- Create `notifications`, `auditLogs`
 
-### Rules Testing (Phase 7+)
-
-Use Firestore Emulator Suite:
+### Rules Testing (Phase 17 — Planned)
 
 ```bash
-# Planned in Phase 7/10
 firebase emulators:start --only firestore
-npm run test:rules
+npm run test:rules   # planned
 ```
 
-Required test cases:
+Required cases: public cannot list applications; artist cannot read others; admin cannot be self-granted via profile edit.
 
-- Public cannot list applications
-- Artist cannot read another artist's application
-- Artist cannot approve own application
-- Admin role cannot be gained from client profile edit
-- Public create rejects invalid/missing consent fields
+---
 
 ## Environment & Secrets
 
 | Secret | Storage | Never in |
 |--------|---------|----------|
 | Firebase web API key | `firebase-applet-config.json` (public SDK) | — |
-| Firebase service account | Secret manager / CI env | repo, `.env.example` |
-| Email provider API key | Secret manager | repo, client bundle |
+| Firebase service account | Secret manager / ADC | repo |
+| `VITE_ENABLE_FIRESTORE_INTAKE` | Hosting env / `.env.local` | committed `.env` |
 | `GEMINI_API_KEY` | `.env.local` | repo |
 
-See `.env.example` for allowed local env vars.
+---
 
-## Feature Flag (Phase 3)
+## Feature Flag
 
 ```txt
-VITE_ENABLE_FIRESTORE_INTAKE=false  # default until emulator + e2e pass
+VITE_ENABLE_FIRESTORE_INTAKE=false   # default — email fallback only
 ```
 
-When `false`, landing uses mailto/Gmail only (current safe behavior).
+Enable only after [INTAKE_ENABLE_RUNBOOK.md](./INTAKE_ENABLE_RUNBOOK.md) gates pass.
 
-## Legal / Consent (Phase 8)
+---
 
-- Every application stores `ConsentSnapshot` with `waiverVersionId` and `waiverBodyHash`
-- Waiver text changes require new version in `waiverVersions`
-- Admin can export consent packet for legal review
+## Legal / Consent
 
-> This document is a technical security plan, not legal advice. Waiver and privacy copy should be reviewed by qualified counsel before public event use.
+- Applications store `ConsentSnapshot` with `waiverVersionId` + `waiverBodyHash`
+- Constants in `src/lib/waiver.ts` until `waiverVersions` collection (Phase 8)
+- Rules validate consent via `isValidConsent()`
+
+> Technical plan only — not legal advice.
+
+---
 
 ## Related Docs
 
 - [DATA_MODEL.md](./DATA_MODEL.md)
 - [LEGACY_SAFE_MODE.md](./LEGACY_SAFE_MODE.md)
-- [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md)
+- [INTAKE_ENABLE_RUNBOOK.md](./INTAKE_ENABLE_RUNBOOK.md)
+- [CONSISTENCY_AUDIT.md](./CONSISTENCY_AUDIT.md)

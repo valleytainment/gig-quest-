@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/WaiverBlock.tsx — Waiver view gate + acceptance checkboxes. @see README.md */
 import { CircleAlert, Info, ShieldCheck } from 'lucide-react';
 import {
   Dialog,

@@ -1,3 +1,20 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟩 MODULE │ gig-quest/src/lib/audit.ts
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          DOMAIN
+ * @responsibility Append-only audit log writes to auditLogs collection
+ * @depends-on     firebase.ts
+ * @consumers      AdminDashboard (application status changes)
+ * @safe-mode      N/A — admin-only writes per firestore.rules
+ *
+ * STRUCTURAL INTENT
+ * Thin wrapper for admin action auditing. No reads; admin UI queries separately.
+ *
+ * @see docs/DATA_MODEL.md
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase';
 

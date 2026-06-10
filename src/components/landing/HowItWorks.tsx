@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/HowItWorks.tsx — Three-step how-it-works section. @see README.md */
 const STEPS = [
   'Apply with your artist details',
   'Get reviewed by the team',

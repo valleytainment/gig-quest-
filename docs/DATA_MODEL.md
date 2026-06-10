@@ -8,16 +8,18 @@ Gig Quest uses Cloud Firestore. The schema is evolving from a prototype (`submis
 
 | Collection | Used by | Notes |
 |------------|---------|-------|
+| `applications` | Landing (gated), AdminDashboard | Canonical intake; `source: public_landing \| artist_portal` |
 | `users` | AuthContext, dashboards | Profile with `role`, `xp`, `level` |
+| `adminRoles` | AuthContext, rules | Admin bootstrap; doc id = uid |
 | `events` | Admin/Artist dashboards | `title`, `description`, `date`, `location`, `status` |
-| `submissions` | Admin/Artist dashboards | Auth-required; `artistId` required |
+| `submissions` | Admin/Artist dashboards | **Legacy** — auth-required; migrate to `applications` |
+| `auditLogs` | Admin actions | `logAuditAction()` |
 | `notifications` | Planned | User notifications |
+| `waiverVersions` | Planned (Phase 8) | Public read; constants in `lib/waiver.ts` today |
 
-Public landing intake does **not** write to Firestore today — it uses mailto/Gmail fallback.
+Public landing intake writes to Firestore **only when** `VITE_ENABLE_FIRESTORE_INTAKE=true`. Default path is mailto/Gmail fallback.
 
-## Target Collections (Roadmap)
-
-### `applications` (Phase 3+)
+## `applications` (Canonical Intake)
 
 Canonical intake for public landing and artist portal.
 

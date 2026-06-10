@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# Pre-intake-enable verification. Does NOT enable intake.
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🟫 OPS │ scripts/launch/verify-readiness.sh
+# @responsibility Pre-intake CI gate + rules probe warning (does NOT enable intake)
+# @see docs/INTAKE_ENABLE_RUNBOOK.md
+# ═══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 

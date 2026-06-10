@@ -1,3 +1,4 @@
+/** 🟧 UI │ components/landing/ConsentBlock.tsx — Age + e-sign consent fields. @see README.md */
 import type { ChangeEvent } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { Input } from '../ui/input';

@@ -1,3 +1,22 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟨 MODULE │ gig-quest/src/pages/Landing.tsx
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * @layer          ROUTE
+ * @responsibility Public intake orchestrator — form state, submit, success flow
+ * @depends-on     lib/submissions, components/landing/*, types/applications
+ * @consumers      App.tsx route "/"
+ * @safe-mode      CRITICAL — waiver gate, signature match, email fallback required
+ *
+ * STRUCTURAL INTENT
+ * Owns intake state machine only; presentation delegated to components/landing/.
+ * Never remove email fallback on success. Firestore create is env-gated.
+ *
+ * @see docs/LEGACY_SAFE_MODE.md
+ * @see docs/SYSTEM_MAP.md#intake-flow-public-landing
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import React, { useState } from 'react';
 import {
   buildEmailDraft,
