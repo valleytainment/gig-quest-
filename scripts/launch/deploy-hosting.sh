@@ -7,8 +7,21 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-echo "==> Building production bundle..."
-npm run build
+if ! npx firebase projects:list >/dev/null 2>&1; then
+  echo "FAIL: Firebase CLI not authenticated."
+  echo ""
+  echo "Run in your terminal (interactive — complete browser auth):"
+  echo "  npx firebase login --no-localhost"
+  echo ""
+  echo "Then re-run:"
+  echo "  npm run launch:deploy-hosting"
+  echo ""
+  echo "Or open Console deploy: npm run launch:open-hosting-console"
+  exit 1
+fi
+
+echo "==> Pre-deploy smoke (production build)..."
+npm run launch:smoke-preview
 
 echo "==> Deploying Firebase Hosting (dist/)..."
 npx firebase deploy --only hosting
