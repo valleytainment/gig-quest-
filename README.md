@@ -2,6 +2,7 @@
 
 > **Operator:** Creative Freq · **Intake email:** `creativefreqllc@gmail.com`
 > **Mode:** Legacy Safe Mode — public landing live, Firestore intake **OFF** by default
+> **Production:** https://valleytainment.github.io/gig-quest-/
 
 Gig Quest is an artist opportunity platform for pop-up performances, showcases, tailgate activations, open mics, and live creator events.
 
