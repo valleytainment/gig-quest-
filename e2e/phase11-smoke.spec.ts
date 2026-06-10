@@ -67,12 +67,15 @@ test.describe('Phase 11 launch smoke', () => {
     await expect(page.getByRole('heading', { name: /privacy policy/i })).toBeVisible();
 
     await page.goto('/legal/waiver');
-    await expect(page.getByRole('heading', { name: /artist participation agreement/i })).toBeVisible();
+    await expect(page.getByText('Gig Quest Legal Center')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Artist Participation Agreement', exact: true })
+    ).toBeVisible();
   });
 
   test('login page has back to signup link', async ({ page }) => {
     await page.goto('/login');
-    await expect(page.getByRole('link', { name: /back to artist registration/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /back to public signup/i })).toBeVisible();
   });
 
   test('protected routes redirect to login', async ({ page }) => {
