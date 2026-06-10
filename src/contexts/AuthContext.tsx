@@ -34,6 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasAdminRole, setHasAdminRole] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -43,6 +44,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           const userDocRef = doc(db, 'users', currentUser.uid);
           const userDoc = await getDoc(userDocRef);
+          const adminRoleDoc = await getDoc(doc(db, 'adminRoles', currentUser.uid));
+          setHasAdminRole(adminRoleDoc.exists());
           
           if (userDoc.exists()) {
             setProfile(userDoc.data() as UserProfile);
@@ -67,6 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       } else {
         setProfile(null);
+        setHasAdminRole(false);
       }
       
       setLoading(false);
@@ -80,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       user, 
       profile, 
       loading, 
-      isAdmin: profile?.role === 'admin' || (user?.email === 'Valleytainment@gmail.com' && user?.emailVerified)
+      isAdmin: profile?.role === 'admin' || hasAdminRole
     }}>
       {children}
     </AuthContext.Provider>

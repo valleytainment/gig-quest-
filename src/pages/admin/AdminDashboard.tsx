@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, onSnapshot, addDoc, updateDoc, doc, serverTimestamp, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
+import { logAuditAction } from '../../lib/audit';
+import { renderTemplate } from '../../lib/messageTemplates';
+import type { ApplicationStatus } from '../../types/applications';
 import { useAuth } from '../../contexts/AuthContext';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
@@ -13,8 +16,10 @@ export const AdminDashboard = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState<any[]>([]);
   const [submissions, setSubmissions] = useState<any[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
   const [users, setUsers] = useState<Record<string, any>>({});
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<'application_approved' | 'application_rejected' | 'application_waitlisted'>('application_approved');
 
   useEffect(() => {
     if (!user) return;
@@ -29,6 +34,11 @@ export const AdminDashboard = () => {
       setSubmissions(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'submissions'));
 
+    const appsQuery = query(collection(db, 'applications'), orderBy('createdAt', 'desc'));
+    const unsubApps = onSnapshot(appsQuery, (snapshot) => {
+      setApplications(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'applications'));
+
     const usersQuery = query(collection(db, 'users'));
     const unsubUsers = onSnapshot(usersQuery, (snapshot) => {
       const userMap: Record<string, any> = {};
@@ -41,9 +51,35 @@ export const AdminDashboard = () => {
     return () => {
       unsubEvents();
       unsubSubs();
+      unsubApps();
       unsubUsers();
     };
   }, [user]);
+
+  const handleUpdateApplication = async (applicationId: string, status: ApplicationStatus) => {
+    if (!user) return;
+    const before = applications.find((a) => a.id === applicationId);
+    try {
+      await updateDoc(doc(db, 'applications', applicationId), {
+        status,
+        updatedAt: serverTimestamp(),
+        reviewedAt: serverTimestamp(),
+        reviewedBy: user.uid,
+      });
+      await logAuditAction({
+        actorId: user.uid,
+        action: `application_${status}`,
+        entityType: 'application',
+        entityId: applicationId,
+        before,
+        after: { status },
+      });
+      toast.success(`Application marked ${status}`);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.UPDATE, `applications/${applicationId}`);
+      toast.error('Failed to update application');
+    }
+  };
 
   const handleCreateEvent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,9 +92,17 @@ export const AdminDashboard = () => {
         description: formData.get('description'),
         date: new Date(formData.get('date') as string),
         location: formData.get('location'),
+        capacity: Number(formData.get('capacity')) || 20,
         status: 'open',
         createdBy: user.uid,
         createdAt: serverTimestamp(),
+      });
+      await logAuditAction({
+        actorId: user.uid,
+        action: 'event_create',
+        entityType: 'event',
+        entityId: 'new',
+        after: { title: formData.get('title') },
       });
       toast.success('Event created successfully');
       setIsCreateOpen(false);
@@ -68,9 +112,18 @@ export const AdminDashboard = () => {
     }
   };
 
-  const pendingCount = submissions.filter(s => s.status === 'pending').length;
-  const approvedCount = submissions.filter(s => s.status === 'approved').length;
-  const rejectedCount = submissions.filter(s => s.status === 'rejected').length;
+  const pendingCount = applications.filter(s => s.status === 'new' || s.status === 'reviewing').length;
+  const approvedCount = applications.filter(s => s.status === 'approved').length;
+  const rejectedCount = applications.filter(s => s.status === 'rejected').length;
+  const totalSlots = events.reduce((sum, e) => sum + (e.capacity || 20), 0);
+  const filledSlots = applications.filter(s => s.status === 'approved').length;
+  const slotsRemaining = Math.max(0, totalSlots - filledSlots);
+  const templatePreview = renderTemplate(selectedTemplate, {
+    stageName: 'Artist Name',
+    eventTitle: 'Sample Event',
+    eventDate: 'TBD',
+    eventLocation: 'TBD',
+  });
 
   return (
     <div className="p-4 md:p-8 max-w-[1400px] mx-auto">
@@ -126,8 +179,8 @@ export const AdminDashboard = () => {
           <div className="hidden md:block w-px h-8 bg-[#2A3441]"></div>
           <div className="flex items-center gap-3">
             <X className="text-[#D4AF37] w-6 h-6" />
-            <span className="text-white font-medium text-lg">$ Lots Left</span>
-            <span className="text-[#D4AF37] font-bold text-2xl">29</span>
+            <span className="text-white font-medium text-lg">Slots Left</span>
+            <span className="text-[#D4AF37] font-bold text-2xl">{slotsRemaining}</span>
             <span className="text-gray-400 text-sm">Remaining Slots</span>
           </div>
         </div>
@@ -168,9 +221,9 @@ export const AdminDashboard = () => {
               </thead>
               <tbody>
                 {events.map(event => {
-                  const approvedForEvent = submissions.filter(s => s.eventId === event.id && s.status === 'approved').length;
-                  const maxSlots = 14; // Mocked for visual fidelity
-                  const slotsLeft = maxSlots - approvedForEvent;
+                  const approvedForEvent = applications.filter(s => s.eventId === event.id && s.status === 'approved').length;
+                  const maxSlots = event.capacity || 20;
+                  const slotsLeft = Math.max(0, maxSlots - approvedForEvent);
                   const isClosed = event.status === 'closed' || slotsLeft <= 0;
 
                   return (
@@ -222,7 +275,7 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between text-sm border-b border-[#2A3441] pb-3">
                 <div className="flex items-center gap-3 text-gray-400">
                   <Search className="w-4 h-4"/> 
-                  <span className="text-white font-bold text-lg">{submissions.length}</span> 
+                  <span className="text-white font-bold text-lg">{applications.length}</span> 
                   Total Applications
                 </div>
               </div>
@@ -252,32 +305,41 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Earnings Summary (Mocked for visual match) */}
-          <div className="elite-panel p-6">
-            <h3 className="text-white font-bold text-lg mb-5">Earnings Summary</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between text-sm border-b border-[#2A3441] pb-3">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <div className="w-6 h-4 bg-gradient-to-r from-[#D4AF37] to-[#8A6B2C] rounded-sm"></div>
-                  Earned
+          {/* Application Review */}
+          <div className="elite-panel p-6 max-h-[420px] overflow-y-auto">
+            <h3 className="text-white font-bold text-lg mb-4">Review Queue</h3>
+            <div className="space-y-3">
+              {applications.slice(0, 8).map((app) => (
+                <div key={app.id} className="rounded border border-[#2A3441] bg-black/20 p-3 text-sm">
+                  <p className="font-semibold text-white">{app.artistSnapshot?.stageName || 'Artist'}</p>
+                  <p className="text-gray-400 text-xs">{app.artistSnapshot?.email}</p>
+                  <p className="mt-1 text-xs uppercase tracking-wider text-[#D4AF37]">{app.status}</p>
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    <button className="elite-btn-dark px-2 py-1 text-[10px] rounded" onClick={() => handleUpdateApplication(app.id, 'approved')}>Approve</button>
+                    <button className="elite-btn-dark px-2 py-1 text-[10px] rounded" onClick={() => handleUpdateApplication(app.id, 'waitlisted')}>Waitlist</button>
+                    <button className="elite-btn-dark px-2 py-1 text-[10px] rounded" onClick={() => handleUpdateApplication(app.id, 'rejected')}>Reject</button>
+                  </div>
                 </div>
-                <span className="text-white font-bold text-lg">$2,440</span>
-              </div>
-              <div className="flex items-center justify-between text-sm border-b border-[#2A3441] pb-3">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <div className="w-6 h-4 bg-gradient-to-r from-[#D4AF37] to-[#8A6B2C] rounded-sm opacity-70"></div>
-                  Pending
-                </div>
-                <span className="text-white font-bold text-lg">$5,520</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <div className="w-6 h-4 bg-gradient-to-r from-[#D4AF37] to-[#8A6B2C] rounded-sm opacity-40"></div>
-                  Estimated
-                </div>
-                <span className="text-white font-bold text-lg">$1,320</span>
-              </div>
+              ))}
+              {applications.length === 0 && (
+                <p className="text-gray-500 text-sm">No applications yet.</p>
+              )}
             </div>
+          </div>
+
+          {/* Message Templates */}
+          <div className="elite-panel p-6">
+            <h3 className="text-white font-bold text-lg mb-4">Message Templates</h3>
+            <select
+              className="w-full rounded bg-[#0B0E14] border border-[#2A3441] px-3 py-2 text-sm text-white mb-3"
+              value={selectedTemplate}
+              onChange={(e) => setSelectedTemplate(e.target.value as typeof selectedTemplate)}
+            >
+              <option value="application_approved">Approval</option>
+              <option value="application_waitlisted">Waitlist</option>
+              <option value="application_rejected">Rejection</option>
+            </select>
+            <p className="text-xs text-gray-400 font-mono whitespace-pre-wrap">{templatePreview.body}</p>
           </div>
 
           {/* Quick Actions */}
@@ -326,6 +388,10 @@ export const AdminDashboard = () => {
                 <Label htmlFor="location" className="text-xs font-mono uppercase text-gray-400">Location</Label>
                 <Input id="location" name="location" required className="bg-[#0B0E14] border-[#2A3441] text-white" />
               </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="capacity" className="text-xs font-mono uppercase text-gray-400">Capacity</Label>
+              <Input id="capacity" name="capacity" type="number" min={1} defaultValue={20} required className="bg-[#0B0E14] border-[#2A3441] text-white" />
             </div>
             <div className="flex gap-3 pt-4">
               <button type="button" className="flex-1 elite-btn-dark py-2 rounded" onClick={() => setIsCreateOpen(false)}>

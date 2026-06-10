@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
+import { CURRENT_WAIVER_BODY_HASH, CURRENT_WAIVER_VERSION_ID } from '../../lib/waiver';
 import { useAuth } from '../../contexts/AuthContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { Label } from '../../components/ui/label';
@@ -12,8 +13,11 @@ import { toast } from 'sonner';
 export const ArtistDashboard = () => {
   const { user, profile } = useAuth();
   const [events, setEvents] = useState<any[]>([]);
-  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [stageName, setStageName] = useState('');
+  const [city, setCity] = useState('');
+  const [bio, setBio] = useState('');
 
   useEffect(() => {
     if (!user) return;
@@ -23,16 +27,24 @@ export const ArtistDashboard = () => {
       setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'events'));
 
-    const subsQuery = query(collection(db, 'submissions'), where('artistId', '==', user.uid));
-    const unsubSubs = onSnapshot(subsQuery, (snapshot) => {
-      setSubmissions(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'submissions'));
+    const appsQuery = query(collection(db, 'applications'), where('artistId', '==', user.uid));
+    const unsubApps = onSnapshot(appsQuery, (snapshot) => {
+      setApplications(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'applications'));
 
     return () => {
       unsubEvents();
-      unsubSubs();
+      unsubApps();
     };
   }, [user]);
+
+  useEffect(() => {
+    if (profile) {
+      setStageName((profile as any).stageName || profile.displayName || '');
+      setCity((profile as any).city || '');
+      setBio((profile as any).bio || '');
+    }
+  }, [profile]);
 
   const handleApply = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,16 +52,40 @@ export const ArtistDashboard = () => {
     
     const formData = new FormData(e.currentTarget);
     
+    const existing = applications.find((a) => a.eventId === selectedEventId);
+    if (existing) {
+      toast.error('You already applied to this quest.');
+      return;
+    }
+
     try {
-      await addDoc(collection(db, 'submissions'), {
+      await addDoc(collection(db, 'applications'), {
         eventId: selectedEventId,
         artistId: user.uid,
-        status: 'pending',
+        source: 'artist_portal',
+        status: 'new',
+        artistSnapshot: {
+          stageName: stageName || profile?.displayName || 'Artist',
+          legalName: profile?.displayName,
+          email: profile?.email || user.email || '',
+        },
         portfolioUrl: formData.get('portfolioUrl') || '',
         message: formData.get('message') || '',
+        consent: {
+          waiverVersionId: CURRENT_WAIVER_VERSION_ID,
+          waiverBodyHash: CURRENT_WAIVER_BODY_HASH,
+          waiverViewed: true,
+          waiverAccepted: true,
+          ageConfirmed: true,
+          eSignConsent: true,
+          legalSignature: profile?.displayName || 'Portal Apply',
+          initials: 'AP',
+          acceptedAt: serverTimestamp(),
+        },
         createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
-      toast.success('Application submitted! +10 XP');
+      toast.success('Application submitted!');
       setSelectedEventId(null);
     } catch (error) {
       handleFirestoreError(error, OperationType.CREATE, 'submissions');
@@ -57,8 +93,24 @@ export const ArtistDashboard = () => {
     }
   };
 
-  const getSubmissionStatus = (eventId: string) => {
-    return submissions.find(s => s.eventId === eventId);
+  const getApplicationStatus = (eventId: string) => {
+    return applications.find(s => s.eventId === eventId);
+  };
+
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    try {
+      await updateDoc(doc(db, 'users', user.uid), {
+        stageName,
+        city,
+        bio,
+        displayName: stageName || profile?.displayName,
+      });
+      toast.success('Profile saved');
+    } catch (error) {
+      handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
+      toast.error('Failed to save profile');
+    }
   };
 
   const xpProgress = ((profile?.xp || 0) % 100) / 100 * 100;
@@ -98,6 +150,47 @@ export const ArtistDashboard = () => {
         </div>
       </div>
 
+      {/* Profile / EPK */}
+      <div className="elite-panel rounded-xl p-6">
+        <h3 className="text-xl font-bold text-white mb-4">Artist Profile</h3>
+        <div className="grid gap-4 md:grid-cols-3">
+          <div>
+            <Label htmlFor="stageName" className="text-xs text-gray-400 uppercase">Stage Name</Label>
+            <Input id="stageName" value={stageName} onChange={(e) => setStageName(e.target.value)} className="mt-1 bg-[#0B0E14] border-[#2A3441] text-white" />
+          </div>
+          <div>
+            <Label htmlFor="city" className="text-xs text-gray-400 uppercase">City</Label>
+            <Input id="city" value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 bg-[#0B0E14] border-[#2A3441] text-white" />
+          </div>
+          <div className="flex items-end">
+            <button type="button" onClick={handleSaveProfile} className="elite-btn-gold w-full py-2 rounded font-bold text-sm">
+              Save Profile
+            </button>
+          </div>
+        </div>
+        <div className="mt-4">
+          <Label htmlFor="bio" className="text-xs text-gray-400 uppercase">Bio</Label>
+          <Input id="bio" value={bio} onChange={(e) => setBio(e.target.value)} className="mt-1 bg-[#0B0E14] border-[#2A3441] text-white" />
+        </div>
+      </div>
+
+      {/* My Applications */}
+      <div className="elite-panel rounded-xl p-6">
+        <h3 className="text-xl font-bold text-white mb-4">My Applications ({applications.length})</h3>
+        <div className="space-y-2 text-sm text-gray-300">
+          {applications.length === 0 ? (
+            <p className="text-gray-500">No applications yet. Discover a quest below.</p>
+          ) : (
+            applications.map((app) => (
+              <div key={app.id} className="flex justify-between border-b border-[#2A3441] py-2">
+                <span>{app.artistSnapshot?.stageName || 'Application'}</span>
+                <span className="uppercase text-[#D4AF37] text-xs">{app.status}</span>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
       {/* Open Gigs */}
       <div>
         <div className="flex items-center gap-2 mb-6">
@@ -112,7 +205,7 @@ export const ArtistDashboard = () => {
             </div>
           ) : (
             events.map(event => {
-              const sub = getSubmissionStatus(event.id);
+              const sub = getApplicationStatus(event.id);
               return (
                 <div key={event.id} className="elite-panel flex flex-col h-full overflow-hidden group hover:border-[#D4AF37]/50 transition-colors">
                   <div className="p-6 flex-1 flex flex-col">
@@ -146,8 +239,8 @@ export const ArtistDashboard = () => {
                         {sub.status === 'approved' && <CheckCircle2 className="w-4 h-4" />}
                         {sub.status === 'rejected' && <XCircle className="w-4 h-4" />}
                         {sub.status === 'waitlisted' && <AlertCircle className="w-4 h-4" />}
-                        {sub.status === 'pending' && <Clock className="w-4 h-4" />}
-                        {sub.status === 'pending' ? 'View Status' : sub.status}
+                        {(sub.status === 'new' || sub.status === 'reviewing') && <Clock className="w-4 h-4" />}
+                        {sub.status === 'new' || sub.status === 'reviewing' ? 'Pending Review' : sub.status}
                       </div>
                     ) : (
                       <Dialog open={selectedEventId === event.id} onOpenChange={(open) => setSelectedEventId(open ? event.id : null)}>

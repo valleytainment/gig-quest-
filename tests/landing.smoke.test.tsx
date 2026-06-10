@@ -1,7 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { Landing } from '../src/pages/Landing';
+
+function renderLanding() {
+  return render(
+    <MemoryRouter>
+      <Landing />
+    </MemoryRouter>
+  );
+}
 
 async function openRegistrationForm(user: ReturnType<typeof userEvent.setup>) {
   await user.click(
@@ -36,7 +45,7 @@ describe('Landing page smoke tests', () => {
   });
 
   it('loads with hero and CTA visible', () => {
-    render(<Landing />);
+    renderLanding();
 
     expect(
       screen.getByRole('heading', {
@@ -50,7 +59,7 @@ describe('Landing page smoke tests', () => {
 
   it('opens the registration form when CTA is clicked', async () => {
     const user = userEvent.setup();
-    render(<Landing />);
+    renderLanding();
 
     await openRegistrationForm(user);
 
@@ -61,7 +70,7 @@ describe('Landing page smoke tests', () => {
 
   it('keeps waiver acceptance locked until the waiver is viewed', async () => {
     const user = userEvent.setup();
-    render(<Landing />);
+    renderLanding();
 
     await openRegistrationForm(user);
 
@@ -77,7 +86,7 @@ describe('Landing page smoke tests', () => {
 
   it('disables submit when legal signature does not match real name', async () => {
     const user = userEvent.setup();
-    render(<Landing />);
+    renderLanding();
 
     await openRegistrationForm(user);
 
@@ -130,7 +139,7 @@ describe('Landing page smoke tests', () => {
       get: () => 'http://localhost/',
     });
 
-    render(<Landing />);
+    renderLanding();
     await openRegistrationForm(user);
 
     await user.type(screen.getByLabelText(/stage name/i), 'Stage Star');
@@ -169,7 +178,7 @@ describe('Landing page smoke tests', () => {
   });
 
   it('shows the free sign-up notice', () => {
-    render(<Landing />);
+    renderLanding();
 
     expect(
       screen.getByText(/sign-up is free\. some events may require a fee or ticket purchase/i)
