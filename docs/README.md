@@ -19,6 +19,7 @@
 | [SYSTEM_MAP.md](./SYSTEM_MAP.md) | ⚪ | Architecture, routes, flows |
 | [CODEBASE_INDEX.md](./CODEBASE_INDEX.md) | ⚪ | File-by-file inventory |
 | [CONSISTENCY_AUDIT.md](./CONSISTENCY_AUDIT.md) | ⚪ | Pre-merge audit checklist |
+| [CONFIG.md](./CONFIG.md) | 🟦 | Root config & env reference |
 
 ## Product & Data
 

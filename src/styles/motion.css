@@ -1,8 +1,10 @@
+/* ⚪ STYLE │ motion.css — Animation keyframes and utilities */
 @keyframes gq-shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
+/* ⚪ STYLE │ motion.css — Animation keyframes and utilities */
 @keyframes gq-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

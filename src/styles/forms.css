@@ -1,3 +1,4 @@
+/* ⚪ STYLE │ forms.css — Intake form field styling */
 .gq-input {
   @apply h-12 w-full rounded-xl border px-4 text-white outline-none transition;
   border-color: var(--gq-border);

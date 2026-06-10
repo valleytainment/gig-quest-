@@ -35,6 +35,7 @@ npm run dev                  # http://localhost:3000
 | [docs/PRODUCT_BLUEPRINT.md](docs/PRODUCT_BLUEPRINT.md) | Product | Vision & roadmap |
 | [docs/CONSISTENCY_AUDIT.md](docs/CONSISTENCY_AUDIT.md) | Review | Pre-merge elite audit |
 | [docs/README.md](docs/README.md) | All | Documentation hub index |
+| [docs/CONFIG.md](docs/CONFIG.md) | Devs | Root config & env reference |
 | [src/README.md](src/README.md) | Devs | Source tree map |
 
 ---
@@ -52,6 +53,7 @@ npm run dev                  # http://localhost:3000
 | `npm run launch:verify` | 🟫 | Pre-intake readiness |
 | `npm run launch:diagnose` | 🟫 | Firestore API probe |
 | `npm run launch:open-console` | 🟫 | Operator Console tabs |
+| `npm run audit:consistency` | 🟫 | Elite static consistency audit |
 
 Full ops reference: [scripts/launch/README.md](scripts/launch/README.md)
 

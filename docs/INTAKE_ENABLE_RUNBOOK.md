@@ -1,5 +1,7 @@
 # Phase 12B — Firestore Intake Enable Runbook
 
+> Hub: [docs/README.md](./README.md) | Diagnose: `npm run launch:diagnose` | Scripts: [scripts/launch/README.md](../scripts/launch/README.md)
+
 **Do not enable intake until all gates below are checked.**
 
 Safe default remains: `VITE_ENABLE_FIRESTORE_INTAKE=false` (email fallback only).

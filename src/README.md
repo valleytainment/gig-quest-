@@ -6,10 +6,10 @@
 src/
 ├── main.tsx              🟦 Bootstrap
 ├── App.tsx               🟨 Router + providers
-├── contexts/             🟪 React context (auth)
-├── lib/                  🟩 Domain + 🟦 infrastructure
+├── contexts/             🟪 React context — see contexts/README.md
+├── lib/                  🟩 Domain + 🟦 infrastructure — see lib/README.md
 ├── types/                🟩 Shared TypeScript types
-├── pages/                🟨 Route pages
+├── pages/                🟨 Route pages — see pages/README.md
 ├── components/
 │   ├── landing/          🟧 Public landing UI (split from Landing.tsx)
 │   ├── feedback/         🟧 Loaders, empty, error states

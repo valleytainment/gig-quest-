@@ -1,3 +1,4 @@
+/** 🟫 OPS │ e2e/landing.spec.ts — Mobile intake happy path + email fallback. @see e2e/README.md */
 import { test, expect } from '@playwright/test';
 
 test.describe('Landing intake happy path', () => {

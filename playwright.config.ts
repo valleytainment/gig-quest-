@@ -1,3 +1,10 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🟫 CONFIG │ gig-quest/playwright.config.ts
+ * @responsibility E2E config — mobile Chrome, localhost:3000, webServer
+ * @see e2e/README.md | docs/CONFIG.md
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({

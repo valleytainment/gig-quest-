@@ -55,7 +55,15 @@
 
 ---
 
-## 5. CI Gate
+## 5. Automated Static Audit
+
+```bash
+npm run audit:consistency
+```
+
+Checks: intake default, doc existence, module headers, route `/` → Landing, no LAUNCH_CHECKLIST contradictions.
+
+## 6. CI Gate
 
 ```bash
 npm run ci
@@ -65,7 +73,7 @@ Must pass: typecheck, 6 unit tests, build, 7 e2e tests.
 
 ---
 
-## 6. Ops Consistency
+## 7. Ops Consistency
 
 | Check | Pass criteria |
 |-------|---------------|

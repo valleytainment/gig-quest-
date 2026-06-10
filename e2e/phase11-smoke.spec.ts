@@ -1,3 +1,4 @@
+/** 🟫 OPS │ e2e/phase11-smoke.spec.ts — Legal, waiver gate, signature, auth redirect smoke. */
 import { test, expect } from '@playwright/test';
 
 test.describe('Phase 11 launch smoke', () => {
