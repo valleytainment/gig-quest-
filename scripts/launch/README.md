@@ -15,7 +15,7 @@
 | `launch:deploy-rules` | `deploy-rules.sh` | Needs `firebase login` |
 | `launch:deploy-hosting` | `deploy-hosting.sh` | Build + Firebase Hosting (SPA) |
 | `launch:smoke-preview` | `smoke-preview.sh` | E2E against production `dist/` |
-| `launch:open-hosting-console` | `open-hosting-console.sh` | Open Firebase Hosting tabs |
+| `launch:deploy-github-pages` | `deploy-github-pages.sh` | Build + GitHub Pages (uses `gh` auth) |
 | `launch:bootstrap-admin` | `bootstrap-admin.mjs` | Needs `ADMIN_UID` + ADC |
 | `launch:all` | `launch-all.sh` | Full chain (CI+deploy+bootstrap) |
 

@@ -13,7 +13,9 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  const githubPages = process.env.GITHUB_PAGES === 'true';
   return {
+    base: githubPages ? '/gig-quest-/' : '/',
     plugins: [react(), tailwindcss()],
     test: {
       environment: 'jsdom',
