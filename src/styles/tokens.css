@@ -1,15 +1,22 @@
-/* ⚪ STYLE │ tokens.css — CSS variables: colors, spacing, typography */
+/* ⚪ STYLE │ tokens.css — Design tokens: color, surface, glow, typography rhythm */
 :root {
-  --gq-bg: #070911;
+  --gq-bg-deep: #070911;
+  --gq-bg-stage: #0b0e14;
+  --gq-bg: var(--gq-bg-deep);
   --gq-panel: #101622;
   --gq-panel-2: #151d2c;
+  --gq-border: rgba(255, 255, 255, 0.1);
   --gq-gold: #d4af37;
   --gq-gold-soft: #f2d06b;
   --gq-blue: #3a75b5;
   --gq-bronze: #d47837;
-  --gq-danger: #ef4444;
   --gq-success: #22c55e;
-  --gq-border: rgba(255, 255, 255, 0.1);
-  --gq-glow-gold: 0 0 50px rgba(212, 175, 55, 0.28);
-  --gq-glow-blue: 0 0 55px rgba(58, 117, 181, 0.22);
+  --gq-warning: #f59e0b;
+  --gq-danger: #ef4444;
+  --gq-muted: rgba(255, 255, 255, 0.62);
+  --gq-glow-gold: 0 0 50px rgba(212, 175, 55, 0.25);
+  --gq-glow-blue: 0 0 55px rgba(58, 117, 181, 0.18);
+  --gq-motion-fast: 150ms;
+  --gq-motion-card: 320ms;
+  --gq-motion-ambient: 14s;
 }
