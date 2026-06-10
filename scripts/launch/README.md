@@ -23,6 +23,7 @@
 
 ```bash
 npm run ci                    # local gate (GitHub Actions may be billing-blocked)
+npm run launch:smoke-preview  # e2e against production build (dist/)
 firebase login --no-localhost # once per machine
 npm run launch:deploy-hosting # build dist/ + firebase deploy --only hosting
 ```
