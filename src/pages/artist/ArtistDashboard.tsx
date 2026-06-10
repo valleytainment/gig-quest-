@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
-import { awardXp } from '../../lib/xp';
 import { CURRENT_WAIVER_BODY_HASH, CURRENT_WAIVER_VERSION_ID } from '../../lib/waiver';
 import { useAuth } from '../../contexts/AuthContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
@@ -86,8 +85,7 @@ export const ArtistDashboard = () => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      await awardXp(user.uid, 'apply_to_event');
-      toast.success('Application submitted! +10 XP');
+      toast.success('Application submitted!');
       setSelectedEventId(null);
     } catch (error) {
       handleFirestoreError(error, OperationType.CREATE, 'submissions');
@@ -108,7 +106,6 @@ export const ArtistDashboard = () => {
         bio,
         displayName: stageName || profile?.displayName,
       });
-      await awardXp(user.uid, 'complete_profile');
       toast.success('Profile saved');
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);

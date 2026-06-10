@@ -22,7 +22,7 @@
 - Admin bypass via hardcoded email in `AuthContext.tsx` and `firestore.rules`
 - `users.role` can be set to `admin` on create if `isAdmin()` passes (circular)
 - No `adminRoles/{uid}` collection yet
-- Sensitive auth info logged in `handleFirestoreError`
+- ~~Sensitive auth info logged in `handleFirestoreError`~~ (fixed: logs operation/path/message only)
 
 ## Target Role Model (Phase 7)
 

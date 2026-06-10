@@ -179,7 +179,7 @@ export const AdminDashboard = () => {
           <div className="hidden md:block w-px h-8 bg-[#2A3441]"></div>
           <div className="flex items-center gap-3">
             <X className="text-[#D4AF37] w-6 h-6" />
-            <span className="text-white font-medium text-lg">$ Lots Left</span>
+            <span className="text-white font-medium text-lg">Slots Left</span>
             <span className="text-[#D4AF37] font-bold text-2xl">{slotsRemaining}</span>
             <span className="text-gray-400 text-sm">Remaining Slots</span>
           </div>

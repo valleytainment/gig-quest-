@@ -1,5 +1,5 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from './firebase';
+// Client-side XP writes are deferred until server-side awards (Cloud Function / admin).
+// Artists cannot update xp/level per Firestore rules.
 
 export const XP_AWARDS = {
   complete_profile: 10,
@@ -11,17 +11,3 @@ export const XP_AWARDS = {
 } as const;
 
 export type XpReason = keyof typeof XP_AWARDS;
-
-export async function awardXp(uid: string, reason: XpReason) {
-  const delta = XP_AWARDS[reason];
-  const userRef = doc(db, 'users', uid);
-  const snap = await getDoc(userRef);
-  if (!snap.exists()) return;
-
-  const currentXp = (snap.data().xp as number) || 0;
-  const currentLevel = (snap.data().level as number) || 1;
-  const nextXp = Math.max(0, currentXp + delta);
-  const nextLevel = Math.max(1, Math.floor(nextXp / 100) + 1);
-
-  await updateDoc(userRef, { xp: nextXp, level: nextLevel });
-}
