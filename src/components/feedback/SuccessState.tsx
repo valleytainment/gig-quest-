@@ -29,7 +29,7 @@ export const SuccessState = ({
       {description ? <div className="mt-4 text-sm leading-6 text-zinc-300">{description}</div> : null}
 
       {checklist.length > 0 ? (
-        <ul className="mt-5 space-y-2 rounded-2xl border border-white/10 bg-black/20 p-4">
+        <ul className="gq-check-stagger mt-5 space-y-2 rounded-2xl border border-white/10 bg-black/20 p-4">
           {checklist.map((item) => (
             <li key={item} className="flex items-center gap-2 text-sm text-zinc-200">
               <Check className="h-4 w-4 shrink-0 text-emerald-400" aria-hidden />

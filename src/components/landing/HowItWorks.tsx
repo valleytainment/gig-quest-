@@ -23,7 +23,7 @@ const STEPS = [
 export const HowItWorks = () => (
   <div className="mt-8">
     <p className="gq-section-label">How It Works</p>
-    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+    <div className="gq-stagger mt-4 grid gap-3 sm:grid-cols-3">
       {STEPS.map(({ icon: Icon, title, body }, index) => (
         <GlowCard key={title} lift className="p-4">
           <div className="mb-3 flex items-center gap-2">

@@ -24,18 +24,17 @@ const DOT_CLASS: Record<NonNullable<FloatingCard['dot']>, string> = {
 };
 
 export const FloatingCards = ({ className = '' }: { className?: string }) => (
-  <div className={`grid grid-cols-2 gap-3 lg:grid-cols-4 ${className}`}>
+  <div className={`gq-stagger grid grid-cols-2 gap-3 lg:grid-cols-4 ${className}`}>
     {CARDS.map(({ icon: Icon, label, value, dot }, index) => (
       <GlassPanel
         key={label}
-        className={`gq-hover-lift gq-fade-in p-3 sm:p-4 ${index % 2 === 1 ? 'lg:translate-y-2' : ''}`}
-        style={{ animationDelay: `${index * 80}ms` }}
+        className={`gq-hover-lift p-3 sm:p-4 ${index % 2 === 1 ? 'lg:translate-y-2' : ''}`}
       >
         <div className="mb-2 flex items-center justify-between">
           <Icon className="h-4 w-4 text-[#f2d06b]" aria-hidden />
           {dot ? (
             <span
-              className={`h-2 w-2 rounded-full ${DOT_CLASS[dot]}`}
+              className={`gq-live-dot h-2 w-2 rounded-full ${DOT_CLASS[dot]}`}
               title={dot === 'live' ? 'Active' : dot === 'ready' ? 'Ready' : 'Protected'}
               aria-hidden
             />
