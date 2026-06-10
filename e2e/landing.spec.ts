@@ -39,7 +39,8 @@ test.describe('Landing intake happy path', () => {
 
     await page.getByRole('button', { name: /submit registration/i }).click();
 
-    await expect(page.getByRole('heading', { name: /we will reach out soon/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /your registration is ready to send/i })).toBeVisible();
+    await expect(page.getByText(/waiver reviewed/i)).toBeVisible();
     await expect(page.getByRole('button', { name: /copy creative freq email/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /open email app/i })).toHaveAttribute(
       'href',

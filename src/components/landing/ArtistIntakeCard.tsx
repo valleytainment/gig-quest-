@@ -1,4 +1,5 @@
 /** 🟧 UI │ components/landing/ArtistIntakeCard.tsx — Intake section card + open form CTA. @see README.md */
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -17,11 +18,19 @@ export const ArtistIntakeCard = ({ onOpen }: { onOpen: () => void }) => (
       <Button
         type="button"
         onClick={onOpen}
-        className="elite-btn-gold mt-5 h-12 w-full rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.16em] sm:mt-6 sm:tracking-[0.2em]"
+        className="elite-btn-gold mt-5 h-auto min-h-12 w-full rounded-2xl px-4 py-3 text-sm font-bold uppercase leading-snug tracking-[0.12em] sm:mt-6 sm:tracking-[0.16em]"
       >
-        Sign Up For Performance Opportunities
-        <ArrowRight className="ml-2 h-4 w-4" />
+        <span className="flex items-center justify-center gap-2 text-center">
+          Sign Up For Performance Opportunities
+          <ArrowRight className="h-4 w-4 shrink-0" />
+        </span>
       </Button>
+      <Link
+        to="/legal/waiver"
+        className="gq-btn-ghost mt-3 inline-flex h-11 w-full items-center justify-center rounded-2xl text-xs font-bold uppercase tracking-[0.14em]"
+      >
+        View Artist Agreement
+      </Link>
     </div>
   </div>
 );

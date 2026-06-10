@@ -20,6 +20,7 @@ import { Label } from '../../components/ui/label';
 import { Input } from '../../components/ui/input';
 import { MapPin, Calendar, Star, Trophy, CheckCircle2, Clock, XCircle, AlertCircle, Compass, ClipboardList } from 'lucide-react';
 import { EmptyState } from '../../components/feedback/EmptyState';
+import { StatusPill } from '../../components/feedback/StatusPill';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -130,6 +131,11 @@ export const ArtistDashboard = () => {
 
   return (
     <div className="p-4 md:p-8 max-w-[1400px] mx-auto space-y-8 pb-24 md:pb-8">
+      <header className="gq-fade-in">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Artist Portal</p>
+        <h1 className="mt-2 text-2xl font-black uppercase tracking-tight text-white">Build your profile. Apply to open quests. Track review status.</h1>
+      </header>
+
       {/* Gamified Header */}
       <div className="elite-card-gold rounded-xl p-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 rounded-full blur-[80px] pointer-events-none" />
@@ -195,14 +201,14 @@ export const ArtistDashboard = () => {
           {applications.length === 0 ? (
             <EmptyState
               icon={ClipboardList}
-              title="No applications yet"
-              description="Discover an open quest below and submit your first application."
+              title="You have not applied yet"
+              description="Open opportunities will appear here when available."
             />
           ) : (
             applications.map((app) => (
               <div key={app.id} className="flex justify-between border-b border-[#2A3441] py-2">
                 <span>{app.artistSnapshot?.stageName || 'Application'}</span>
-                <span className="uppercase text-[#D4AF37] text-xs">{app.status}</span>
+                <StatusPill status={app.status} />
               </div>
             ))
           )}
@@ -221,8 +227,8 @@ export const ArtistDashboard = () => {
             <div className="col-span-full">
               <EmptyState
                 icon={Compass}
-                title="No open quests"
-                description="New performance opportunities will appear here when admins publish events."
+                title="No open performance quests right now"
+                description="Check back soon — new opportunities drop as events are announced."
               />
             </div>
           ) : (
@@ -252,17 +258,12 @@ export const ArtistDashboard = () => {
                     </div>
 
                     {sub ? (
-                      <div className={`flex items-center justify-center gap-2 py-3 rounded font-bold uppercase tracking-wider text-sm border ${
-                        sub.status === 'approved' ? 'bg-green-500/10 text-green-500 border-green-500/30' :
-                        sub.status === 'waitlisted' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30' :
-                        sub.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/30' :
-                        'bg-[#0B0E14] text-gray-400 border-[#2A3441]'
-                      }`}>
-                        {sub.status === 'approved' && <CheckCircle2 className="w-4 h-4" />}
-                        {sub.status === 'rejected' && <XCircle className="w-4 h-4" />}
-                        {sub.status === 'waitlisted' && <AlertCircle className="w-4 h-4" />}
-                        {(sub.status === 'new' || sub.status === 'reviewing') && <Clock className="w-4 h-4" />}
-                        {sub.status === 'new' || sub.status === 'reviewing' ? 'Pending Review' : sub.status}
+                      <div className="flex items-center justify-center gap-2 py-3">
+                        <StatusPill status={sub.status} className="text-xs px-4 py-2" />
+                        {sub.status === 'approved' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                        {sub.status === 'rejected' && <XCircle className="w-4 h-4 text-red-400" />}
+                        {sub.status === 'waitlisted' && <AlertCircle className="w-4 h-4 text-yellow-400" />}
+                        {(sub.status === 'new' || sub.status === 'reviewing') && <Clock className="w-4 h-4 text-amber-400" />}
                       </div>
                     ) : (
                       <Dialog open={selectedEventId === event.id} onOpenChange={(open) => setSelectedEventId(open ? event.id : null)}>

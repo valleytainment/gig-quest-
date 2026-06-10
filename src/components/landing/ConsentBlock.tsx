@@ -77,7 +77,9 @@ export const ConsentBlock = ({
           <div>
             <Label htmlFor="legalSignature" className="mb-2 text-zinc-200">Type Legal Name as Signature</Label>
             <Input id="legalSignature" name="legalSignature" required value={formData.legalSignature} onChange={onChange} className="gq-input" />
-            <p className="mt-2 text-xs uppercase tracking-[0.14em] text-zinc-400">Must match real name above.</p>
+            <p className="mt-2 text-xs uppercase tracking-[0.14em] text-zinc-400">
+              Type your legal name exactly as entered above.
+            </p>
           </div>
           <div>
             <Label htmlFor="signatureInitials" className="mb-2 text-zinc-200">Initials</Label>

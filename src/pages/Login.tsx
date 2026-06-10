@@ -63,14 +63,14 @@ export const Login = () => {
         <section className="relative hidden border-r border-white/10 bg-gradient-to-br from-[#1a2130] to-[#0b0e14] p-10 md:flex md:flex-col md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Gig Quest Portal</p>
-            <h1 className="mt-4 text-3xl font-black uppercase leading-tight">Artist Portal / Admin Ops</h1>
+            <h1 className="mt-4 text-3xl font-black uppercase leading-tight">Artist dashboard · Admin operations · Event review</h1>
             <p className="mt-4 text-sm leading-6 text-zinc-400">
-              Sign in to manage quests, review applications, and track your artist profile.
+              Artist and admin portal access. Public artist registration is available without signing in.
             </p>
           </div>
           <div className="space-y-3 text-sm text-zinc-400">
             <p className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[#f2d06b]" /> Secure Google sign-in</p>
-            <p className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[#f2d06b]" /> Public signup does not require login</p>
+            <p className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[#f2d06b]" /> Manage profile, applications, or event operations</p>
           </div>
         </section>
 
@@ -82,7 +82,7 @@ export const Login = () => {
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Sign In</p>
           <h2 className="text-2xl font-black uppercase tracking-tight text-white">Continue With Google</h2>
           <p className="mt-3 text-sm leading-6 text-zinc-300">
-            Artists and admins use Google to access dashboards. New artist registration stays on the public home page.
+            Use this portal to manage your profile, applications, or event operations. Public artist signup does not require login.
           </p>
 
           {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
@@ -98,7 +98,7 @@ export const Login = () => {
 
           <p className="mt-6 text-center text-sm text-zinc-400">
             <Link to="/" className="text-[#f2d06b] underline-offset-4 hover:underline">
-              Back to artist registration
+              Back to Public Signup
             </Link>
           </p>
         </section>

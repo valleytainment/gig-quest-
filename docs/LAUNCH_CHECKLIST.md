@@ -140,15 +140,18 @@ Security:
 - [ ] `adminRoles/{uid}` bootstrapped (operator step)
 - [ ] Manual smoke items 6–13 pass before Phase 12B
 
-## Phase 12A Gate (Visual Wow — Merged)
+## Phase 12A Gate (Visual Wow + Actions)
 
-- [x] Design token system (`src/styles/*`)
-- [x] Landing component split
-- [x] Success panel with copy-email actions
-- [x] Login/legal polish
-- [x] Admin/artist empty states
+- [x] Design token system (`src/styles/*`) with motion + button states
+- [x] Feedback components: EliteLoader, PageSkeleton, EmptyState, ErrorState, StatusPill
+- [x] Landing hero, trust strip (5 chips), 3-card how-it-works
+- [x] Success panel with checklist + email recovery actions (mailto, Gmail, copy)
+- [x] Login portal + legal center polish
+- [x] Admin mission control + artist opportunity hub empty/loading states
+- [x] Mobile layout pass (intake CTA first, `lg` breakpoint)
+- [x] `prefers-reduced-motion` respected
 - [x] Email fallback + waiver behavior preserved
-- [x] `npm run ci` passes locally
+- [x] `npm run ci` passes on branch `phase/12a-elite-visual-actions-wow`
 
 ## Phase 12B Gate (Intake Enable — BLOCKED on ops)
 

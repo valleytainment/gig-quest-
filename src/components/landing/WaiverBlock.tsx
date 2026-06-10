@@ -105,7 +105,7 @@ export const WaiverBlock = ({
         {!waiverViewed ? (
           <span className="mt-1 flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-amber-300">
             <CircleAlert className="h-3.5 w-3.5" />
-            Open the waiver first to unlock this checkbox.
+            View the waiver first to unlock acceptance.
           </span>
         ) : null}
       </span>

@@ -44,5 +44,50 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-  animation: gq-shimmer 2.4s infinite;
+  animation: gq-shimmer 1.8s infinite;
+}
+
+@keyframes gq-scale-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes gq-soft-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.04); }
+}
+
+.gq-scale-in {
+  animation: gq-scale-in 0.35s ease-out both;
+}
+
+.gq-soft-pulse {
+  animation: gq-soft-pulse 14s ease-in-out infinite;
+}
+
+.gq-hover-lift {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.gq-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gq-fade-in,
+  .gq-slide-up,
+  .gq-scale-in,
+  .gq-soft-pulse,
+  .gq-shimmer::after {
+    animation: none !important;
+  }
+
+  .gq-hover-lift {
+    transition: none;
+  }
+
+  .gq-hover-lift:hover {
+    transform: none;
+  }
 }

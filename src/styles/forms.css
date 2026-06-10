@@ -24,3 +24,14 @@
   border-color: var(--gq-border);
   background: rgba(255, 255, 255, 0.03);
 }
+
+.gq-form-section-header {
+  @apply flex items-center gap-3;
+}
+
+.gq-section-number {
+  @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-bold;
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--gq-gold-soft);
+}

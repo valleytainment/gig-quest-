@@ -45,10 +45,17 @@ export const LandingIntakeForm = ({
   const signatureMatches =
     formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
 
+  const SectionHeader = ({ num, label }: { num: number; label: string }) => (
+    <div className="gq-form-section-header">
+      <span className="gq-section-number">{num}</span>
+      <p className="gq-section-label">{label}</p>
+    </div>
+  );
+
   return (
     <form className="space-y-4 pb-24 md:pb-4 gq-slide-up" onSubmit={onSubmit}>
       <div className="gq-form-section">
-        <p className="gq-section-label">Artist Info</p>
+        <SectionHeader num={1} label="Artist Info" />
         <div className="mt-4 space-y-3">
           <div>
             <Label htmlFor="stageName" className="mb-2 text-zinc-200">Stage Name</Label>
@@ -62,7 +69,7 @@ export const LandingIntakeForm = ({
       </div>
 
       <div className="gq-form-section">
-        <p className="gq-section-label">Contact</p>
+        <SectionHeader num={2} label="Contact Info" />
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <div>
             <Label htmlFor="email" className="mb-2 text-zinc-200">Email</Label>
@@ -135,6 +142,10 @@ export const LandingIntakeForm = ({
         <Link to="/legal/privacy" className="text-[#f2d06b] underline-offset-2 hover:underline">Privacy Policy</Link>
         {' '}and{' '}
         <Link to="/legal/waiver" className="text-[#f2d06b] underline-offset-2 hover:underline">Participation Agreement</Link>.
+      </p>
+
+      <p className="text-xs leading-5 text-zinc-500">
+        After submit, your email app will open with your registration ready to send.
       </p>
 
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-[#070911]/95 p-4 backdrop-blur-md md:static md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">

@@ -52,7 +52,7 @@ export const EmailFallbackActions = ({ mailto, gmail, emailBody, compact }: Emai
           className={`elite-btn-dark ${btnClass}`}
         >
           {copied === 'draft' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-          {copied === 'draft' ? 'Copied' : 'Copy Artist Registration Email'}
+          {copied === 'draft' ? 'Copied' : 'Copy Email Draft'}
         </button>
       ) : null}
       <button
