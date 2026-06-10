@@ -13,7 +13,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "ci": "npm run typecheck && npm run test && npm run build && npm run test:e2e"
+    "test:e2e:launch": "playwright test e2e/phase11-smoke.spec.ts e2e/landing.spec.ts",
+    "ci": "npm run typecheck && npm run test && npm run build && npm run test:e2e",
+    "launch:deploy-rules": "bash scripts/launch/deploy-rules.sh",
+    "launch:bootstrap-admin": "node scripts/launch/bootstrap-admin.mjs",
+    "launch:all": "bash scripts/launch/launch-all.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
@@ -50,6 +54,8 @@
     "@types/node": "^22.14.0",
     "@vitest/coverage-v8": "^3.1.2",
     "autoprefixer": "^10.4.21",
+    "firebase-admin": "^14.0.0",
+    "firebase-tools": "^15.19.1",
     "jsdom": "^26.1.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
