@@ -5,7 +5,7 @@ test.describe('Landing intake happy path', () => {
     await page.goto('/');
 
     await expect(
-      page.getByRole('heading', { name: /performance opportunities for serious artists/i })
+      page.getByRole('heading', { name: /apply once.*get reviewed/i })
     ).toBeVisible();
 
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
@@ -38,7 +38,8 @@ test.describe('Landing intake happy path', () => {
 
     await page.getByRole('button', { name: /submit registration/i }).click();
 
-    await expect(page.getByRole('heading', { name: /we will reach out soon thank you/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /we will reach out soon/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /copy creative freq email/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /open email app/i })).toHaveAttribute(
       'href',
       /^mailto:creativefreqllc@gmail\.com/

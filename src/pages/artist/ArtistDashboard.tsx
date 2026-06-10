@@ -6,7 +6,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { Label } from '../../components/ui/label';
 import { Input } from '../../components/ui/input';
-import { MapPin, Calendar, Star, Trophy, CheckCircle2, Clock, XCircle, AlertCircle } from 'lucide-react';
+import { MapPin, Calendar, Star, Trophy, CheckCircle2, Clock, XCircle, AlertCircle, Compass, ClipboardList } from 'lucide-react';
+import { EmptyState } from '../../components/feedback/EmptyState';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -130,6 +131,7 @@ export const ArtistDashboard = () => {
             <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
               <Trophy className="w-5 h-5 text-[#D4AF37]" />
               <h2 className="text-2xl font-bold uppercase tracking-tight text-white">Level {profile?.level || 1} Artist</h2>
+              <p className="text-xs text-zinc-500 mt-1">XP awards coming soon — server-backed progression</p>
             </div>
             
             <div className="space-y-2">
@@ -179,7 +181,11 @@ export const ArtistDashboard = () => {
         <h3 className="text-xl font-bold text-white mb-4">My Applications ({applications.length})</h3>
         <div className="space-y-2 text-sm text-gray-300">
           {applications.length === 0 ? (
-            <p className="text-gray-500">No applications yet. Discover a quest below.</p>
+            <EmptyState
+              icon={ClipboardList}
+              title="No applications yet"
+              description="Discover an open quest below and submit your first application."
+            />
           ) : (
             applications.map((app) => (
               <div key={app.id} className="flex justify-between border-b border-[#2A3441] py-2">
@@ -200,8 +206,12 @@ export const ArtistDashboard = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.length === 0 ? (
-            <div className="col-span-full p-8 text-center border border-dashed border-[#2A3441] rounded-xl text-gray-500 font-mono uppercase text-sm">
-              No open gigs right now. Check back later!
+            <div className="col-span-full">
+              <EmptyState
+                icon={Compass}
+                title="No open quests"
+                description="New performance opportunities will appear here when admins publish events."
+              />
             </div>
           ) : (
             events.map(event => {

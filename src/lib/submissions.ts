@@ -11,32 +11,11 @@ import type {
   WaiverConsentInput,
 } from '../types/applications';
 
-export type EmailDraftLinks = { mailto: string; gmail: string };
+export type EmailDraftLinks = { mailto: string; gmail: string; subject: string; body: string };
 
-export function buildConsentSnapshot(
-  formData: LandingFormData,
-  consent: WaiverConsentInput
-): ConsentSnapshot {
-  return {
-    waiverVersionId: CURRENT_WAIVER_VERSION_ID,
-    waiverBodyHash: CURRENT_WAIVER_BODY_HASH,
-    waiverViewed: consent.waiverViewed,
-    waiverAccepted: consent.waiverAccepted,
-    ageConfirmed: consent.ageConfirmed,
-    eSignConsent: consent.eSignConsent,
-    legalSignature: formData.legalSignature,
-    initials: formData.signatureInitials,
-    guardianName: formData.guardianName || undefined,
-    guardianPhone: formData.guardianPhone || undefined,
-    acceptedAt: new Date(), // replaced with serverTimestamp() on write
-    userAgentHash: navigator.userAgent.slice(0, 64),
-  };
-}
+export const INTAKE_RECIPIENT_EMAIL = 'creativefreqllc@gmail.com';
 
-export function buildEmailDraft(
-  formData: LandingFormData,
-  confirmationId?: string
-): EmailDraftLinks {
+export function buildEmailBody(formData: LandingFormData, confirmationId?: string): { subject: string; body: string } {
   const submittedAt = new Date();
   const subject = `Artist Registration - ${formData.stageName || formData.realName || 'New Submission'}`;
   const body = [
@@ -81,10 +60,37 @@ export function buildEmailDraft(
     .filter((line, index, arr) => !(line === '' && arr[index - 1] === ''))
     .join('\n');
 
-  const mailtoUrl = `mailto:creativefreqllc@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent('creativefreqllc@gmail.com')}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return { subject, body };
+}
 
-  return { mailto: mailtoUrl, gmail: gmailUrl };
+export function buildConsentSnapshot(
+  formData: LandingFormData,
+  consent: WaiverConsentInput
+): ConsentSnapshot {
+  return {
+    waiverVersionId: CURRENT_WAIVER_VERSION_ID,
+    waiverBodyHash: CURRENT_WAIVER_BODY_HASH,
+    waiverViewed: consent.waiverViewed,
+    waiverAccepted: consent.waiverAccepted,
+    ageConfirmed: consent.ageConfirmed,
+    eSignConsent: consent.eSignConsent,
+    legalSignature: formData.legalSignature,
+    initials: formData.signatureInitials,
+    guardianName: formData.guardianName || undefined,
+    guardianPhone: formData.guardianPhone || undefined,
+    acceptedAt: new Date(), // replaced with serverTimestamp() on write
+    userAgentHash: navigator.userAgent.slice(0, 64),
+  };
+}
+
+export function buildEmailDraft(
+  formData: LandingFormData,
+  confirmationId?: string
+): EmailDraftLinks {
+  const { subject, body } = buildEmailBody(formData, confirmationId);
+  const mailtoUrl = `mailto:${INTAKE_RECIPIENT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(INTAKE_RECIPIENT_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return { mailto: mailtoUrl, gmail: gmailUrl, subject, body };
 }
 
 export function isFirestoreIntakeEnabled(): boolean {

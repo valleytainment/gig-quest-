@@ -11,10 +11,10 @@ export const Layout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen elite-bg flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#D4AF37] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400 font-mono text-sm uppercase tracking-widest">Loading System</p>
+      <div className="gq-shell flex min-h-screen items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#d4af37]/25 border-t-[#d4af37]" />
+          <p className="font-mono text-sm uppercase tracking-widest text-gray-400">Loading system</p>
         </div>
       </div>
     );

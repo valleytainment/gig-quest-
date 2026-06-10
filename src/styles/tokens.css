@@ -1,0 +1,14 @@
+:root {
+  --gq-bg: #070911;
+  --gq-panel: #101622;
+  --gq-panel-2: #151d2c;
+  --gq-gold: #d4af37;
+  --gq-gold-soft: #f2d06b;
+  --gq-blue: #3a75b5;
+  --gq-bronze: #d47837;
+  --gq-danger: #ef4444;
+  --gq-success: #22c55e;
+  --gq-border: rgba(255, 255, 255, 0.1);
+  --gq-glow-gold: 0 0 50px rgba(212, 175, 55, 0.28);
+  --gq-glow-blue: 0 0 55px rgba(58, 117, 181, 0.22);
+}
