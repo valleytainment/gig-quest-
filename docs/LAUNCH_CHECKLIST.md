@@ -4,6 +4,18 @@
 
 Use this checklist before each production deploy and before declaring 10+ done.
 
+## Email-First Production Launch (COMPLETE — Jun 2026)
+
+Public artist intake is **live** on GitHub Pages with mailto/Gmail fallback. Firestore intake remains off.
+
+- [x] Production URL: https://valleytainment.github.io/gig-quest-/
+- [x] CI + auto-deploy on `main`
+- [x] `npm run launch:smoke-production` — 11/11 @ 375px
+- [x] Waiver gate + signature validation on production
+- [x] `VITE_ENABLE_FIRESTORE_INTAKE=false` default unchanged
+- [ ] Optional: Firebase Hosting mirror (`npm run launch:wait-and-deploy-firebase`)
+- [ ] Optional: Firestore intake enable (Phase 12B ops — blocked on `CONSUMER_INVALID`)
+
 ## Pre-Merge (Every PR)
 
 - [ ] `npm run ci` passes locally or in GitHub Actions

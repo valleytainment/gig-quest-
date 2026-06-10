@@ -18,6 +18,7 @@
     "launch:deploy-rules": "bash scripts/launch/deploy-rules.sh",
     "launch:deploy-hosting": "bash scripts/launch/deploy-hosting.sh",
     "launch:wait-and-deploy": "bash scripts/launch/wait-and-deploy.sh",
+    "launch:wait-and-deploy-firebase": "bash scripts/launch/wait-and-deploy-firebase.sh",
     "launch:deploy-github-pages": "bash scripts/launch/deploy-github-pages.sh",
     "launch:setup-firebase-ci": "bash scripts/launch/setup-firebase-ci.sh",
     "launch:status": "bash scripts/launch/status.sh",

@@ -20,7 +20,8 @@
 | `launch:smoke-production` | `smoke-production.sh` | E2E against live GitHub Pages URL |
 | `launch:deploy-github-pages` | `deploy-github-pages.sh` | Build + GitHub Pages (uses `gh` auth) |
 | `launch:bootstrap-admin` | `bootstrap-admin.mjs` | Needs `ADMIN_UID` + ADC |
-| `launch:all` | `launch-all.sh` | Full chain (CI+deploy+bootstrap) |
+| `launch:wait-and-deploy` | `wait-and-deploy.sh` | Poll local Firebase login, then deploy hosting |
+| `launch:wait-and-deploy-firebase` | `wait-and-deploy-firebase.sh` | Poll `FIREBASE_TOKEN`, then GHA or local deploy |
 
 ## Production Deploy (Email-First)
 

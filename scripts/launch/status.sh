@@ -32,11 +32,13 @@ else
   warn "Pages build: ${status}"
 fi
 
-latest_ci=$(gh run list --repo "${REPO}" --workflow CI --limit 1 --json conclusion --jq '.[0].conclusion' 2>/dev/null || echo "unknown")
+latest_ci=$(gh run list --repo "${REPO}" --workflow CI --limit 1 --json status,conclusion --jq '.[0] | if .status != "completed" then .status else .conclusion end' 2>/dev/null || echo "unknown")
 if [[ "${latest_ci}" == "success" ]]; then
   pass "Latest CI: success"
-else
+elif [[ "${latest_ci}" == "in_progress" || "${latest_ci}" == "queued" ]]; then
   warn "Latest CI: ${latest_ci}"
+else
+  warn "Latest CI: ${latest_ci:-unknown}"
 fi
 
 echo ""
