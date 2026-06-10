@@ -157,7 +157,7 @@ Security:
 - [x] **12F** Motion pass — stagger, tap-scale, loaders, status pills
 - [x] **12G** Mobile conversion — 375px e2e, safe-area submit, touch targets
 - [x] `npm run ci` — vitest 27/27, playwright 11/11
-- [ ] Merged to `main`
+- [x] Merged to `main` (`f80131b`)
 - [ ] Production smoke after deploy
 
 ## Phase 12B Gate (Firestore Intake Enable — BLOCKED on ops)
