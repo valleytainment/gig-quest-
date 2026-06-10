@@ -21,7 +21,7 @@ export const Layout = () => {
   }
 
   if (!user) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Redirect artists away from admin routes
