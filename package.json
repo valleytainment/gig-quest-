@@ -17,6 +17,8 @@
     "ci": "npm run typecheck && npm run test && npm run build && npm run test:e2e",
     "launch:deploy-rules": "bash scripts/launch/deploy-rules.sh",
     "launch:deploy-hosting": "bash scripts/launch/deploy-hosting.sh",
+    "launch:smoke-preview": "bash scripts/launch/smoke-preview.sh",
+    "launch:open-hosting-console": "bash scripts/launch/open-hosting-console.sh",
     "launch:bootstrap-admin": "node scripts/launch/bootstrap-admin.mjs",
     "launch:all": "bash scripts/launch/launch-all.sh",
     "launch:verify": "bash scripts/launch/verify-readiness.sh",
