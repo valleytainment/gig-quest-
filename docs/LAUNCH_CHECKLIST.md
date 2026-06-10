@@ -85,8 +85,8 @@ Use this checklist before each production deploy and before declaring 10+ done.
 
 ### Launch Hardening (Phase 10)
 
-- [ ] `.github/workflows/ci.yml` runs on PR + push to `main` — passing on GitHub (Jun 2026)
-- [ ] `.github/workflows/deploy-pages.yml` auto-deploys gh-pages after CI on `main`
+- [x] `.github/workflows/ci.yml` runs on PR + push to `main` — passing on GitHub (Jun 2026)
+- [x] `.github/workflows/deploy-pages.yml` auto-deploys gh-pages after CI on `main`
 - [ ] Full test matrix documented below passes in CI
 - [ ] Production deploy runbook documented
 - [ ] Rollback plan documented
