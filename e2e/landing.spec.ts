@@ -13,7 +13,7 @@ test.describe('Landing intake happy path', () => {
 
     await page.getByLabel('Stage Name').fill('Stage Star');
     await page.getByLabel('Real Name').fill('Jane Artist');
-    await page.getByLabel('Email', { exact: true }).fill('jane@example.com');
+    await page.locator('#email').fill('jane@example.com');
     await page.getByLabel('Phone Number').fill('555-0100');
     await page.getByLabel('Emergency Contact Name').fill('Contact One');
     await page.getByLabel('Emergency Contact Phone').fill('555-0101');
@@ -39,8 +39,9 @@ test.describe('Landing intake happy path', () => {
 
     await page.getByRole('button', { name: /submit registration/i }).click();
 
-    await expect(page.getByRole('heading', { name: /we will reach out soon/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /copy creative freq email/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /your registration is ready to send/i })).toBeVisible();
+    await expect(page.getByText(/waiver reviewed/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /copy email draft/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /open email app/i })).toHaveAttribute(
       'href',
       /^mailto:creativefreqllc@gmail\.com/

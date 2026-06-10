@@ -27,6 +27,8 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { CalendarPlus, ClipboardList, Mail, Check, X, Search, Plus, Play, ChevronDown, Filter, MoreHorizontal, Calendar } from 'lucide-react';
 import { EmptyState } from '../../components/feedback/EmptyState';
+import { PageSkeleton } from '../../components/feedback/PageSkeleton';
+import { StatusPill } from '../../components/ui/StatusPill';
 
 export const AdminDashboard = () => {
   const { user } = useAuth();
@@ -35,6 +37,8 @@ export const AdminDashboard = () => {
   const [applications, setApplications] = useState<any[]>([]);
   const [users, setUsers] = useState<Record<string, any>>({});
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
+  const [updatingAppId, setUpdatingAppId] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<'application_approved' | 'application_rejected' | 'application_waitlisted'>('application_approved');
 
   useEffect(() => {
@@ -43,6 +47,7 @@ export const AdminDashboard = () => {
     const eventsQuery = query(collection(db, 'events'), orderBy('createdAt', 'desc'));
     const unsubEvents = onSnapshot(eventsQuery, (snapshot) => {
       setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setDataReady(true);
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'events'));
 
     const subsQuery = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'));
@@ -75,6 +80,7 @@ export const AdminDashboard = () => {
   const handleUpdateApplication = async (applicationId: string, status: ApplicationStatus) => {
     if (!user) return;
     const before = applications.find((a) => a.id === applicationId);
+    setUpdatingAppId(applicationId);
     try {
       await updateDoc(doc(db, 'applications', applicationId), {
         status,
@@ -94,6 +100,8 @@ export const AdminDashboard = () => {
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, `applications/${applicationId}`);
       toast.error('Failed to update application');
+    } finally {
+      setUpdatingAppId(null);
     }
   };
 
@@ -130,6 +138,7 @@ export const AdminDashboard = () => {
 
   const pendingCount = applications.filter(s => s.status === 'new' || s.status === 'reviewing').length;
   const approvedCount = applications.filter(s => s.status === 'approved').length;
+  const waitlistedCount = applications.filter(s => s.status === 'waitlisted').length;
   const rejectedCount = applications.filter(s => s.status === 'rejected').length;
   const totalSlots = events.reduce((sum, e) => sum + (e.capacity || 20), 0);
   const filledSlots = applications.filter(s => s.status === 'approved').length;
@@ -141,8 +150,31 @@ export const AdminDashboard = () => {
     eventLocation: 'TBD',
   });
 
+  if (!dataReady) {
+    return <PageSkeleton />;
+  }
+
   return (
-    <div className="p-4 md:p-8 max-w-[1400px] mx-auto">
+    <div className="p-3 md:p-8 max-w-[1400px] mx-auto">
+      <header className="mb-8 gq-fade-in">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Event Command Center</p>
+        <h1 className="mt-2 text-2xl font-black uppercase tracking-tight text-white md:text-3xl">Mission Control</h1>
+        <p className="mt-2 max-w-xl text-sm text-zinc-400">Review artist applications, manage events, and track capacity.</p>
+      </header>
+
+      <div className="gq-stagger mb-6 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4 md:gap-4">
+        {[
+          { label: 'New Applications', value: pendingCount, accent: 'text-sky-300' },
+          { label: 'Approved', value: approvedCount, accent: 'text-emerald-300' },
+          { label: 'Waitlisted', value: waitlistedCount, accent: 'text-yellow-300' },
+          { label: 'Slots Left', value: slotsRemaining, accent: 'text-[#f2d06b]' },
+        ].map(({ label, value, accent }) => (
+          <div key={label} className="gq-glass gq-hover-lift rounded-xl p-4">
+            <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{label}</p>
+            <p className={`mt-1 text-2xl font-bold ${accent}`}>{value}</p>
+          </div>
+        ))}
+      </div>
       
       {/* Top Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -262,7 +294,13 @@ export const AdminDashboard = () => {
                 })}
                 {events.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-gray-500">No events found. Create one above.</td>
+                    <td colSpan={7} className="p-4">
+                      <EmptyState
+                        icon={Calendar}
+                        title="No active events yet"
+                        description="Create an event to start collecting artist applications."
+                      />
+                    </td>
                   </tr>
                 )}
               </tbody>
@@ -323,19 +361,42 @@ export const AdminDashboard = () => {
                 <div key={app.id} className="rounded border border-[#2A3441] bg-black/20 p-3 text-sm">
                   <p className="font-semibold text-white">{app.artistSnapshot?.stageName || 'Artist'}</p>
                   <p className="text-gray-400 text-xs">{app.artistSnapshot?.email}</p>
-                  <p className="mt-1 text-xs uppercase tracking-wider text-[#D4AF37]">{app.status}</p>
+                  <div className="mt-1">
+                    <StatusPill status={app.status} />
+                  </div>
                   <div className="mt-2 flex flex-wrap gap-1">
-                    <button className="elite-btn-dark px-2 py-1 text-[10px] rounded" onClick={() => handleUpdateApplication(app.id, 'approved')}>Approve</button>
-                    <button className="elite-btn-dark px-2 py-1 text-[10px] rounded" onClick={() => handleUpdateApplication(app.id, 'waitlisted')}>Waitlist</button>
-                    <button className="elite-btn-dark px-2 py-1 text-[10px] rounded" onClick={() => handleUpdateApplication(app.id, 'rejected')}>Reject</button>
+                    <button
+                      type="button"
+                      disabled={updatingAppId === app.id}
+                      className="gq-btn-success min-h-8 px-2 py-1 text-[10px] rounded font-semibold uppercase disabled:opacity-50"
+                      onClick={() => handleUpdateApplication(app.id, 'approved')}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="button"
+                      disabled={updatingAppId === app.id}
+                      className="gq-btn-secondary min-h-8 px-2 py-1 text-[10px] rounded font-semibold uppercase disabled:opacity-50"
+                      onClick={() => handleUpdateApplication(app.id, 'waitlisted')}
+                    >
+                      Add To Waitlist
+                    </button>
+                    <button
+                      type="button"
+                      disabled={updatingAppId === app.id}
+                      className="gq-btn-danger min-h-8 px-2 py-1 text-[10px] rounded font-semibold uppercase disabled:opacity-50"
+                      onClick={() => handleUpdateApplication(app.id, 'rejected')}
+                    >
+                      Reject
+                    </button>
                   </div>
                 </div>
               ))}
               {applications.length === 0 && (
                 <EmptyState
                   icon={ClipboardList}
-                  title="Review queue empty"
-                  description="Applications from the landing page and artist portal will appear here."
+                  title="No applications yet"
+                  description="When artists submit, they will appear here for review."
                 />
               )}
             </div>

@@ -9,6 +9,7 @@
 @import "./styles/actions.css";
 @import "./styles/motion.css";
 @import "./styles/forms.css";
+@import "./styles/mobile.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";

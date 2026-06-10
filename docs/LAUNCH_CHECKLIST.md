@@ -140,17 +140,27 @@ Security:
 - [ ] `adminRoles/{uid}` bootstrapped (operator step)
 - [ ] Manual smoke items 6–13 pass before Phase 12B
 
-## Phase 12A Gate (Visual Wow — Merged)
+## Phase 12A Gate (Visual Foundation — Merged)
 
 - [x] Design token system (`src/styles/*`)
-- [x] Landing component split
-- [x] Success panel with copy-email actions
-- [x] Login/legal polish
-- [x] Admin/artist empty states
+- [x] UI primitives + feedback components
+- [x] `actions.css` / `motion.css` with reduced-motion support
 - [x] Email fallback + waiver behavior preserved
 - [x] `npm run ci` passes locally
 
-## Phase 12B Gate (Intake Enable — BLOCKED on ops)
+## Phase 12B–12G Gate (Visual Experience — Branch `phase/12-visual-complete`)
+
+- [x] **12B** Landing wow — hero, trust strip, floating cards, CTA-first mobile layout
+- [x] **12C** Intake form — 7 guided sections, waiver gate, sticky submit
+- [x] **12D** Email success — checklist, mailto/Gmail/copy recovery + tests
+- [x] **12E** Portal polish — login, admin, artist, legal surfaces
+- [x] **12F** Motion pass — stagger, tap-scale, loaders, status pills
+- [x] **12G** Mobile conversion — 375px e2e, safe-area submit, touch targets
+- [x] `npm run ci` — vitest 27/27, playwright 11/11
+- [ ] Merged to `main`
+- [ ] Production smoke after deploy
+
+## Phase 12B Gate (Firestore Intake Enable — BLOCKED on ops)
 
 - [x] `docs/INTAKE_ENABLE_RUNBOOK.md` exists
 - [x] `npm run launch:verify` passes

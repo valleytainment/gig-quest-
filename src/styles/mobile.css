@@ -1,0 +1,70 @@
+/* ⚪ STYLE │ mobile.css — 375px conversion pass: touch, safe-area, readability */
+@media (max-width: 767px) {
+  html,
+  body,
+  #root {
+    overflow-x: clip;
+    max-width: 100vw;
+  }
+}
+
+.gq-sticky-submit {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(7, 9, 17, 0.96);
+  padding: 1rem max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (min-width: 768px) {
+  .gq-sticky-submit {
+    position: static;
+    border-top: 0;
+    background: transparent;
+    padding: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.safe-area-x {
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+}
+
+.legal-prose {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.legal-prose h2,
+.legal-prose h3 {
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 640px) {
+  .legal-prose h2,
+  .legal-prose h3 {
+    font-size: 1.125rem;
+  }
+}
+
+.gq-mobile-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .gq-mobile-stack--sm-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
