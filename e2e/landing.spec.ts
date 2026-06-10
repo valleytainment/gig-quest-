@@ -13,7 +13,7 @@ test.describe('Landing intake happy path', () => {
 
     await page.getByLabel('Stage Name').fill('Stage Star');
     await page.getByLabel('Real Name').fill('Jane Artist');
-    await page.getByLabel('Email', { exact: true }).fill('jane@example.com');
+    await page.locator('#email').fill('jane@example.com');
     await page.getByLabel('Phone Number').fill('555-0100');
     await page.getByLabel('Emergency Contact Name').fill('Contact One');
     await page.getByLabel('Emergency Contact Phone').fill('555-0101');

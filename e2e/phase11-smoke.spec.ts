@@ -12,11 +12,12 @@ test.describe('Phase 11 launch smoke', () => {
   test('waiver must be viewed before checkbox unlocks', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
+    await expect(page.locator('#stageName')).toBeVisible();
 
     const waiverCheckbox = page
       .locator('label')
       .filter({ hasText: /I have viewed the waiver form/i })
-      .getByRole('checkbox');
+      .locator('input[type="checkbox"]');
     await expect(waiverCheckbox).toBeDisabled();
 
     await page.getByRole('button', { name: /view waiver form/i }).click();
@@ -32,7 +33,7 @@ test.describe('Phase 11 launch smoke', () => {
 
     await page.getByLabel('Stage Name').fill('Stage Star');
     await page.getByLabel('Real Name').fill('Jane Artist');
-    await page.getByLabel('Email', { exact: true }).fill('jane@example.com');
+    await page.locator('#email').fill('jane@example.com');
     await page.getByLabel('Phone Number').fill('555-0100');
     await page.getByLabel('Emergency Contact Name').fill('Contact One');
     await page.getByLabel('Emergency Contact Phone').fill('555-0101');

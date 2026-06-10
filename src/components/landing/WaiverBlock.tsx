@@ -1,4 +1,4 @@
-/** 🟧 UI │ components/landing/WaiverBlock.tsx — Waiver view gate + acceptance checkboxes. @see README.md */
+/** 🟧 UI │ WaiverBlock — Waiver view gate + acceptance checkboxes. @see README.md */
 import { CircleAlert, Info, ShieldCheck } from 'lucide-react';
 import {
   Dialog,
@@ -9,7 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
+import { SectionHeader } from '../ui/SectionHeader';
 import { WaiverDialogContent } from './WaiverDialogContent';
+import { cn } from '../../lib/utils';
 
 type WaiverBlockProps = {
   waiverViewed: boolean;
@@ -26,22 +28,16 @@ export const WaiverBlock = ({
 }: WaiverBlockProps) => (
   <div className="gq-form-section">
     <div className="flex items-start justify-between gap-3">
-      <div>
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4 text-[#f2d06b]" />
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white">
-            Waiver &amp; Consent
-          </p>
-        </div>
-        <p className="mt-2 text-sm leading-6 text-zinc-300">
-          You must open and review the waiver before you can accept it and continue.
-        </p>
-      </div>
+      <SectionHeader
+        number={5}
+        label="Waiver Review"
+        description="Open and review the participation agreement before accepting."
+      />
       <span
-        title="Open the waiver first. The acceptance box stays locked until the waiver has been viewed."
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300"
+        title="View the waiver first to unlock acceptance."
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300"
       >
-        <Info className="h-4 w-4" />
+        <Info className="h-4 w-4" aria-hidden />
       </span>
     </div>
 
@@ -51,7 +47,7 @@ export const WaiverBlock = ({
           render={
             <button
               type="button"
-              className="elite-btn-blue inline-flex h-12 w-full items-center justify-center rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:w-auto sm:tracking-[0.18em]"
+              className="gq-btn-blue inline-flex h-12 min-h-[44px] w-full items-center justify-center rounded-2xl px-4 text-sm font-bold uppercase tracking-[0.14em] sm:w-auto sm:tracking-[0.18em]"
             />
           }
           onClick={onViewed}
@@ -77,20 +73,21 @@ export const WaiverBlock = ({
       </Dialog>
 
       <span
-        className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
+        className={cn(
+          'rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]',
           waiverViewed ? 'bg-emerald-500/15 text-emerald-300' : 'bg-amber-500/15 text-amber-300'
-        }`}
+        )}
       >
         {waiverViewed ? 'Waiver Viewed' : 'View Required'}
       </span>
     </div>
 
     <label
-      className={`mt-4 flex items-start gap-3 rounded-2xl border px-4 py-3 text-sm ${
-        waiverViewed
-          ? 'border-emerald-500/25 bg-emerald-500/10 text-white'
-          : 'border-white/10 bg-black/20 text-zinc-400'
-      }`}
+      className={cn(
+        'gq-checkbox-card mt-4 min-h-[44px] cursor-pointer',
+        waiverViewed && waiverAccepted && 'gq-checkbox-card--active',
+        !waiverViewed && 'gq-checkbox-card--locked cursor-not-allowed'
+      )}
     >
       <input
         type="checkbox"
@@ -98,14 +95,14 @@ export const WaiverBlock = ({
         disabled={!waiverViewed}
         required
         onChange={(event) => onAcceptedChange(event.target.checked)}
-        className="mt-1 h-4 w-4 rounded border-white/20 accent-[#d4af37]"
+        className="gq-checkbox-input"
       />
       <span className="leading-6">
         I have viewed the waiver form and I accept the terms and conditions outlined in the artist participation agreement.
         {!waiverViewed ? (
-          <span className="mt-1 flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-amber-300">
-            <CircleAlert className="h-3.5 w-3.5" />
-            Open the waiver first to unlock this checkbox.
+          <span className="mt-2 flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-amber-300">
+            <CircleAlert className="h-3.5 w-3.5 shrink-0" aria-hidden />
+            View the waiver first to unlock acceptance.
           </span>
         ) : null}
       </span>

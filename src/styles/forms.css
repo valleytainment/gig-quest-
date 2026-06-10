@@ -55,3 +55,24 @@
 .gq-checkbox-card--locked {
   color: rgb(161 161 170);
 }
+
+.gq-checkbox-input {
+  @apply mt-0.5 shrink-0 rounded border-white/20 accent-[#d4af37];
+  height: 1.25rem;
+  width: 1.25rem;
+  min-height: 1.25rem;
+  min-width: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .gq-checkbox-input {
+    height: 1rem;
+    width: 1rem;
+    min-height: 1rem;
+    min-width: 1rem;
+  }
+}
+
+.safe-area-pb {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}

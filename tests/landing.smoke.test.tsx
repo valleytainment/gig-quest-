@@ -78,6 +78,7 @@ describe('Landing page smoke tests', () => {
     const waiverCheckbox = getWaiverAcceptCheckbox();
     expect(waiverCheckbox).toBeDisabled();
     expect(screen.getByText(/view required/i)).toBeInTheDocument();
+    expect(screen.getByText(/view the waiver first to unlock acceptance/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /view waiver form/i }));
 
@@ -93,7 +94,7 @@ describe('Landing page smoke tests', () => {
 
     await user.type(screen.getByLabelText(/stage name/i), 'Stage Star');
     await user.type(screen.getByLabelText(/real name/i), 'Jane Artist');
-    await user.type(screen.getByLabelText(/^email$/i), 'jane@example.com');
+    await user.type(screen.getByLabelText(/^email/i), 'jane@example.com');
     await user.type(screen.getByLabelText(/phone number/i), '555-0100');
     await user.type(screen.getByLabelText(/emergency contact name/i), 'Contact One');
     await user.type(screen.getByLabelText(/emergency contact phone/i), '555-0101');
@@ -145,7 +146,7 @@ describe('Landing page smoke tests', () => {
 
     await user.type(screen.getByLabelText(/stage name/i), 'Stage Star');
     await user.type(screen.getByLabelText(/real name/i), 'Jane Artist');
-    await user.type(screen.getByLabelText(/^email$/i), 'jane@example.com');
+    await user.type(screen.getByLabelText(/^email/i), 'jane@example.com');
     await user.type(screen.getByLabelText(/phone number/i), '555-0100');
     await user.type(screen.getByLabelText(/emergency contact name/i), 'Contact One');
     await user.type(screen.getByLabelText(/emergency contact phone/i), '555-0101');
