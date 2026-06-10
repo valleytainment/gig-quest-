@@ -126,6 +126,18 @@ Security:
   Emulator allow-list tests pass
 ```
 
+## Phase 11 Gate (Launch Ops)
+
+- [ ] `firebase.json` and `.firebaserc` committed
+- [ ] `scripts/launch/` deploy + bootstrap scripts present
+- [ ] `e2e/phase11-smoke.spec.ts` passes
+- [ ] `npm run launch:deploy-rules` documented and runnable after `firebase login`
+- [ ] `ADMIN_UID` bootstrap script documented
+- [ ] `VITE_ENABLE_FIRESTORE_INTAKE` remains `false` by default
+- [ ] Firestore rules deployed to production (operator step)
+- [ ] `adminRoles/{uid}` bootstrapped (operator step)
+- [ ] Manual smoke items 6–13 pass before Phase 12
+
 ## Production Deploy Checklist
 
 - [ ] `npm run build` succeeds
