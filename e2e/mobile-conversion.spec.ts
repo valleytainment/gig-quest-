@@ -29,16 +29,22 @@ test.describe('375px mobile conversion', () => {
 
   test('intake form stays usable at 375px with sticky submit visible', async ({ page }) => {
     await page.goto(appPath());
+    await expect(
+      page.getByRole('heading', { name: /apply once.*get reviewed/i })
+    ).toBeVisible();
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
+    await expect(page.locator('#stageName')).toBeVisible();
 
     await expectNoHorizontalScroll(page);
-    await expect(page.getByRole('button', { name: /submit registration/i })).toBeVisible();
+    const submit = page.getByRole('button', { name: /submit registration/i });
+    await expect(submit).toBeVisible();
+    await submit.scrollIntoViewIfNeeded();
 
     await page.getByLabel('Stage Name').fill('Mobile Star');
     await page.getByLabel('Real Name').fill('Jane Artist');
     await page.locator('#email').fill('jane@example.com');
 
-    const submitBox = await page.getByRole('button', { name: /submit registration/i }).boundingBox();
+    const submitBox = await submit.boundingBox();
     expect(submitBox?.height ?? 0).toBeGreaterThanOrEqual(44);
   });
 
