@@ -1,0 +1,46 @@
+name: Deploy GitHub Pages
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build for GitHub Pages
+        run: GITHUB_PAGES=true npm run build
+
+      - name: SPA fallback
+        run: cp dist/index.html dist/404.html
+
+      - name: Publish gh-pages branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          single-commit: true
+          clean: true
+          commit-message: Deploy Gig Quest ${{ github.event.workflow_run.head_sha }}

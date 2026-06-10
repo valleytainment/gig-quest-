@@ -24,7 +24,9 @@
 
 **GitHub Pages (live):** https://valleytainment.github.io/gig-quest-/
 
-```bash
+Pushes to `main` auto-deploy after CI passes (`.github/workflows/deploy-pages.yml`).
+
+Manual deploy:
 npm run ci                         # local gate (GitHub Actions may be billing-blocked)
 npm run launch:deploy-github-pages # build + publish gh-pages branch
 npm run launch:smoke-production    # e2e against live URL (375px mobile)
