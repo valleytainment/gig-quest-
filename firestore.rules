@@ -40,18 +40,29 @@ service cloud.firestore {
     }
 
     function isValidUser(data) {
-      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'role', 'xp', 'level', 'createdAt', 'stageName', 'city', 'bio']) &&
+      return hasOnlyAllowedFields([
+             'uid', 'email', 'displayName', 'photoURL', 'role', 'xp', 'level', 'createdAt',
+             'stageName', 'city', 'bio', 'phone', 'updatedAt',
+             'waiverCompleted', 'waiverVersionId', 'waiverBodyHash', 'waiverAcceptedAt', 'legalSignature'
+           ]) &&
              data.uid is string && data.uid.size() > 0 && data.uid.size() <= 128 &&
              isValidEmail(data.email) &&
              isValidString(data.displayName, 1, 100) &&
-             (!('photoURL' in data) || isValidUrl(data.photoURL)) &&
+             (!('photoURL' in data) || data.photoURL == '' || isValidUrl(data.photoURL)) &&
              data.role in ['artist', 'admin'] &&
              data.xp is number && data.xp >= 0 &&
              data.level is number && data.level >= 1 &&
              data.createdAt is timestamp &&
              (!('stageName' in data) || isValidString(data.stageName, 0, 100)) &&
              (!('city' in data) || isValidString(data.city, 0, 100)) &&
-             (!('bio' in data) || isValidString(data.bio, 0, 2000));
+             (!('bio' in data) || isValidString(data.bio, 0, 2000)) &&
+             (!('phone' in data) || isValidString(data.phone, 0, 30)) &&
+             (!('updatedAt' in data) || data.updatedAt is timestamp) &&
+             (!('waiverCompleted' in data) || data.waiverCompleted is bool) &&
+             (!('waiverVersionId' in data) || isValidString(data.waiverVersionId, 0, 50)) &&
+             (!('waiverBodyHash' in data) || isValidString(data.waiverBodyHash, 0, 100)) &&
+             (!('waiverAcceptedAt' in data) || data.waiverAcceptedAt is timestamp) &&
+             (!('legalSignature' in data) || isValidString(data.legalSignature, 0, 100));
     }
 
     function isValidEvent(data) {

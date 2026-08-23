@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { Mic2, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { signInWithGoogle } from '../lib/firebase';
+import { getAuthErrorMessage, signInWithGoogle } from '../lib/firebase';
 import { ActionButton } from '../components/ui/ActionButton';
 import { GlowCard } from '../components/ui/GlowCard';
 import { TrustBadge } from '../components/ui/TrustBadge';
@@ -44,7 +44,7 @@ export const Login = () => {
         : isAdmin
           ? '/admin'
           : '/artist';
-    return <Navigate to={destination} replace />;
+    return <Navigate to={destination} replace state={{ remindWaiver: true }} />;
   }
 
   const handleSignIn = async () => {
@@ -52,8 +52,8 @@ export const Login = () => {
     setError(null);
     try {
       await signInWithGoogle();
-    } catch {
-      setError('Sign in failed. Please try again.');
+    } catch (err) {
+      setError(getAuthErrorMessage(err));
     } finally {
       setSigningIn(false);
     }
@@ -66,18 +66,18 @@ export const Login = () => {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Gig Quest Portal</p>
             <h1 className="mt-4 text-3xl font-black uppercase leading-tight">
-              Artist dashboard · Admin operations · Event review
+              Sign in fast. Finish your waiver next.
             </h1>
             <p className="mt-4 text-sm leading-6 text-zinc-400">
-              Artist and admin portal access. Public artist registration is available without signing in.
+              Google sign-in creates your artist account immediately. Complete the participation agreement before you can be accepted for performances.
             </p>
           </div>
           <div className="gq-stagger space-y-3">
             <TrustBadge dot>Secure Google sign-in</TrustBadge>
-            <TrustBadge>Public signup does not require login</TrustBadge>
+            <TrustBadge>Waiver required before acceptance</TrustBadge>
             <p className="flex items-center gap-2 text-sm text-zinc-500">
               <ShieldCheck className="h-4 w-4 text-[#f2d06b]" aria-hidden />
-              Manage profile, applications, or event operations
+              Public signup still works without login
             </p>
           </div>
         </section>
@@ -87,15 +87,15 @@ export const Login = () => {
             <Mic2 className="h-7 w-7 text-black" aria-hidden />
           </div>
 
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Sign In</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#f2d06b]">Sign In / Sign Up</p>
           <h2 className="text-2xl font-black uppercase tracking-tight text-white">Continue With Google</h2>
           <p className="mt-3 text-sm leading-6 text-zinc-300">
-            Use this portal to manage your profile, applications, or event operations. Public artist signup does not require login.
+            One click creates or opens your artist portal. You will be reminded to finish the waiver before acceptance.
           </p>
 
           <div className="mt-4 flex flex-wrap gap-2 md:hidden">
             <TrustBadge dot>Secure sign-in</TrustBadge>
-            <TrustBadge>No login for public signup</TrustBadge>
+            <TrustBadge>Waiver before acceptance</TrustBadge>
           </div>
 
           {error ? (
@@ -116,7 +116,7 @@ export const Login = () => {
 
           <p className="mt-6 text-center text-sm text-zinc-400">
             <Link to="/" className="text-[#f2d06b] underline-offset-4 hover:underline">
-              Back to Public Signup
+              Prefer public signup without login?
             </Link>
           </p>
         </GlowCard>

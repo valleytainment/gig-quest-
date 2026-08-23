@@ -1,4 +1,4 @@
-/** 🟧 UI │ LandingIntakeForm — Guided artist intake form sections. @see README.md */
+/** 🟧 UI │ LandingIntakeForm — Agreement + remaining details after quick signup. @see README.md */
 import type { ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from '../ui/input';
@@ -45,33 +45,24 @@ export const LandingIntakeForm = ({
 }: LandingIntakeFormProps) => {
   const signatureMatches =
     formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
+  const canSubmit =
+    waiverViewed && waiverAccepted && ageConfirmed && eSignConsent && signatureMatches;
 
   return (
     <form className="gq-form-reveal space-y-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))] md:pb-4" onSubmit={onSubmit}>
+      <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-4 py-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-300">Step 2 of 2 · Agreement</p>
+        <p className="mt-1 text-sm leading-5 text-zinc-300">
+          Finish emergency details, review the waiver, and sign. Acceptance stays pending until this step is complete.
+        </p>
+        <p className="mt-2 text-xs text-zinc-400">
+          Signed up as <span className="text-white">{formData.stageName || formData.realName}</span>
+          {formData.email ? ` · ${formData.email}` : ''}
+        </p>
+      </div>
+
       <div className="gq-stagger space-y-4">
-      <IntakeFormSection number={1} label="Artist Info" description="Your stage and legal name.">
-        <div className="space-y-4">
-          <FormField id="stageName" label="Stage Name" required>
-            <Input id="stageName" name="stageName" required value={formData.stageName} onChange={onChange} className="gq-input" />
-          </FormField>
-          <FormField id="realName" label="Real Name" required>
-            <Input id="realName" name="realName" required value={formData.realName} onChange={onChange} className="gq-input" autoComplete="name" />
-          </FormField>
-        </div>
-      </IntakeFormSection>
-
-      <IntakeFormSection number={2} label="Contact Info" description="How we reach you about opportunities.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <FormField id="email" label="Email" required>
-            <Input id="email" name="email" type="email" required value={formData.email} onChange={onChange} className="gq-input" autoComplete="email" />
-          </FormField>
-          <FormField id="phone" label="Phone Number" required>
-            <Input id="phone" name="phone" type="tel" required value={formData.phone} onChange={onChange} className="gq-input" autoComplete="tel" />
-          </FormField>
-        </div>
-      </IntakeFormSection>
-
-      <IntakeFormSection number={3} label="Emergency Contact" description="Someone we can reach if needed during an event.">
+      <IntakeFormSection number={1} label="Emergency Contact" description="Someone we can reach if needed during an event.">
         <div className="grid gap-4 md:grid-cols-2">
           <FormField id="emergencyContactName" label="Emergency Contact Name" required>
             <Input id="emergencyContactName" name="emergencyContactName" required value={formData.emergencyContactName} onChange={onChange} className="gq-input" />
@@ -82,7 +73,7 @@ export const LandingIntakeForm = ({
         </div>
       </IntakeFormSection>
 
-      <IntakeFormSection number={4} label="Performance Details" description="Tell us about your act and where you perform.">
+      <IntakeFormSection number={2} label="Performance Details" description="Tell us about your act and where you perform.">
         <div className="grid gap-4 md:grid-cols-2">
           <FormField id="city" label="City">
             <Input id="city" name="city" value={formData.city} onChange={onChange} className="gq-input" autoComplete="address-level2" />
@@ -144,18 +135,27 @@ export const LandingIntakeForm = ({
         After submit, your email app will open with your registration ready to send.
       </p>
 
+      {!canSubmit ? (
+        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs leading-5 text-amber-200">
+          <p className="font-semibold uppercase tracking-[0.14em]">Still needed before acceptance</p>
+          <ul className="mt-2 list-disc space-y-1 pl-4 normal-case tracking-normal text-amber-100/90">
+            {!waiverViewed ? <li>View the waiver form</li> : null}
+            {waiverViewed && !waiverAccepted ? <li>Accept the participation agreement</li> : null}
+            {!ageConfirmed ? <li>Confirm age / guardian consent</li> : null}
+            {!eSignConsent ? <li>Confirm electronic signature consent</li> : null}
+            {!signatureMatches ? <li>Type your legal signature to match your real name</li> : null}
+          </ul>
+          <p className="mt-2 text-amber-100/80">
+            You can still press Submit — we will guide you if anything is missing.
+          </p>
+        </div>
+      ) : null}
+
       <div className="gq-sticky-submit md:static md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
         <ActionButton
           type="submit"
           fullWidth
           loading={submitting}
-          disabled={
-            !waiverViewed ||
-            !waiverAccepted ||
-            !ageConfirmed ||
-            !eSignConsent ||
-            !signatureMatches
-          }
           className="min-h-[48px]"
         >
           Submit Registration

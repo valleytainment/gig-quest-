@@ -11,24 +11,27 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 import React, { useEffect, useState } from 'react';
-import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, doc, updateDoc } from 'firebase/firestore';
+import { Link, useLocation } from 'react-router-dom';
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, doc, updateDoc, setDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
 import { CURRENT_WAIVER_BODY_HASH, CURRENT_WAIVER_VERSION_ID } from '../../lib/waiver';
 import { useAuth } from '../../contexts/AuthContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { Label } from '../../components/ui/label';
 import { Input } from '../../components/ui/input';
-import { MapPin, Calendar, Star, Trophy, Compass, ClipboardList } from 'lucide-react';
+import { MapPin, Calendar, Star, Trophy, Compass, ClipboardList, ShieldAlert } from 'lucide-react';
 import { EmptyState } from '../../components/feedback/EmptyState';
 import { PageSkeleton } from '../../components/feedback/PageSkeleton';
 import { StatusPill } from '../../components/ui/StatusPill';
 import { ActionButton } from '../../components/ui/ActionButton';
 import { GlowCard } from '../../components/ui/GlowCard';
+import { WaiverBlock } from '../../components/landing/WaiverBlock';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 export const ArtistDashboard = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
+  const location = useLocation();
   const [events, setEvents] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
@@ -37,20 +40,51 @@ export const ArtistDashboard = () => {
   const [bio, setBio] = useState('');
   const [dataReady, setDataReady] = useState(false);
   const [savingProfile, setSavingProfile] = useState(false);
+  const [showWaiverForm, setShowWaiverForm] = useState(false);
+  const [waiverViewed, setWaiverViewed] = useState(false);
+  const [waiverAccepted, setWaiverAccepted] = useState(false);
+  const [legalSignature, setLegalSignature] = useState('');
+  const [savingWaiver, setSavingWaiver] = useState(false);
+
+  const waiverCompleted = Boolean(profile?.waiverCompleted);
+  const showWaiverReminder = !waiverCompleted;
 
   useEffect(() => {
     if (!user) return;
 
     const eventsQuery = query(collection(db, 'events'), where('status', '==', 'open'), orderBy('date', 'asc'));
-    const unsubEvents = onSnapshot(eventsQuery, (snapshot) => {
-      setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-      setDataReady(true);
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'events'));
+    const unsubEvents = onSnapshot(
+      eventsQuery,
+      (snapshot) => {
+        setEvents(snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() })));
+        setDataReady(true);
+      },
+      (error) => {
+        console.error('Firestore error', {
+          operationType: OperationType.LIST,
+          path: 'events',
+          message: error instanceof Error ? error.message : String(error),
+        });
+        setEvents([]);
+        setDataReady(true);
+      }
+    );
 
     const appsQuery = query(collection(db, 'applications'), where('artistId', '==', user.uid));
-    const unsubApps = onSnapshot(appsQuery, (snapshot) => {
-      setApplications(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'applications'));
+    const unsubApps = onSnapshot(
+      appsQuery,
+      (snapshot) => {
+        setApplications(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      },
+      (error) => {
+        console.error('Firestore error', {
+          operationType: OperationType.LIST,
+          path: 'applications',
+          message: error instanceof Error ? error.message : String(error),
+        });
+        setApplications([]);
+      }
+    );
 
     return () => {
       unsubEvents();
@@ -63,15 +97,72 @@ export const ArtistDashboard = () => {
       setStageName((profile as any).stageName || profile.displayName || '');
       setCity((profile as any).city || '');
       setBio((profile as any).bio || '');
+      setLegalSignature(profile.displayName || '');
     }
   }, [profile]);
+
+  useEffect(() => {
+    const draft = (location.state as { draftSignup?: Record<string, string> } | null)?.draftSignup;
+    if (!draft) return;
+    if (draft.stageName) setStageName(draft.stageName);
+    if (draft.city) setCity(draft.city);
+  }, [location.state]);
+
+  const handleCompleteWaiver = async () => {
+    if (!user) return;
+    const expectedName = (stageName || profile?.displayName || '').trim().toLowerCase();
+    if (!waiverViewed || !waiverAccepted) {
+      toast.error('View and accept the waiver first.');
+      return;
+    }
+    if (!legalSignature.trim() || legalSignature.trim().toLowerCase() !== expectedName) {
+      toast.error('Typed signature must match your stage/display name.');
+      return;
+    }
+
+    setSavingWaiver(true);
+    try {
+      await setDoc(
+        doc(db, 'users', user.uid),
+        {
+          waiverCompleted: true,
+          waiverVersionId: CURRENT_WAIVER_VERSION_ID,
+          waiverBodyHash: CURRENT_WAIVER_BODY_HASH,
+          waiverAcceptedAt: serverTimestamp(),
+          legalSignature: legalSignature.trim(),
+          stageName: stageName || profile?.displayName,
+          displayName: stageName || profile?.displayName,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+      await refreshProfile();
+      setShowWaiverForm(false);
+      toast.success('Agreement completed. You are now eligible for acceptance review.');
+    } catch (error) {
+      console.error('Firestore error', {
+        operationType: OperationType.UPDATE,
+        path: `users/${user.uid}`,
+        message: error instanceof Error ? error.message : String(error),
+      });
+      toast.error('Could not save agreement yet. Firestore may still need to be enabled — try again shortly.');
+    } finally {
+      setSavingWaiver(false);
+    }
+  };
 
   const handleApply = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user || !selectedEventId) return;
-    
+
+    if (!waiverCompleted) {
+      toast.error('Complete the participation agreement before applying.');
+      setShowWaiverForm(true);
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
-    
+
     const existing = applications.find((a) => a.eventId === selectedEventId);
     if (existing) {
       toast.error('You already applied to this quest.');
@@ -98,7 +189,7 @@ export const ArtistDashboard = () => {
           waiverAccepted: true,
           ageConfirmed: true,
           eSignConsent: true,
-          legalSignature: profile?.displayName || 'Portal Apply',
+          legalSignature: legalSignature || profile?.displayName || 'Portal Apply',
           initials: 'AP',
           acceptedAt: serverTimestamp(),
         },
@@ -150,6 +241,73 @@ export const ArtistDashboard = () => {
           Build your profile. Apply to open quests. Track review status.
         </h1>
       </header>
+
+      {showWaiverReminder ? (
+        <GlowCard variant="gold" className="rounded-xl p-5 border border-amber-500/30">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="flex gap-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-300">
+                <ShieldAlert className="h-5 w-5" aria-hidden />
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                  Reminder · Waiver required
+                </p>
+                <h2 className="mt-1 text-lg font-bold text-white">
+                  Complete the participation agreement before acceptance
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-zinc-300">
+                  Your account is ready. Artists are not accepted for performances until the waiver is viewed, accepted, and signed.
+                </p>
+                <p className="mt-2 text-xs text-zinc-500">
+                  Prefer email signup?{' '}
+                  <Link to="/" className="text-[#f2d06b] underline-offset-2 hover:underline">
+                    Finish on the public registration form
+                  </Link>
+                  .
+                </p>
+              </div>
+            </div>
+            <ActionButton type="button" onClick={() => setShowWaiverForm((open) => !open)}>
+              {showWaiverForm ? 'Hide Agreement' : 'Complete Agreement'}
+            </ActionButton>
+          </div>
+
+          {showWaiverForm ? (
+            <div className="mt-5 space-y-4 border-t border-white/10 pt-5">
+              <WaiverBlock
+                waiverViewed={waiverViewed}
+                waiverAccepted={waiverAccepted}
+                onViewed={() => setWaiverViewed(true)}
+                onAcceptedChange={setWaiverAccepted}
+              />
+              <div>
+                <Label htmlFor="portalLegalSignature" className="text-xs text-gray-400 uppercase">
+                  Type your name as signature
+                </Label>
+                <Input
+                  id="portalLegalSignature"
+                  value={legalSignature}
+                  onChange={(e) => setLegalSignature(e.target.value)}
+                  className="mt-1 bg-[#0B0E14] border-[#2A3441] text-white"
+                  placeholder={stageName || profile?.displayName || 'Legal / stage name'}
+                />
+                <p className="mt-2 text-xs text-zinc-500">
+                  Must match your stage name: <span className="text-zinc-300">{stageName || profile?.displayName}</span>
+                </p>
+              </div>
+              <ActionButton
+                type="button"
+                loading={savingWaiver}
+                disabled={!waiverViewed || !waiverAccepted}
+                onClick={handleCompleteWaiver}
+              >
+                Save Agreement
+              </ActionButton>
+            </div>
+          ) : null}
+        </GlowCard>
+      ) : null}
 
       {/* Gamified Header */}
       <GlowCard variant="gold" className="rounded-xl p-6 relative overflow-hidden">
@@ -276,6 +434,17 @@ export const ArtistDashboard = () => {
                       <div className="flex items-center justify-center gap-2 py-3">
                         <StatusPill status={sub.status} className="px-4 py-2 text-xs" />
                       </div>
+                    ) : !waiverCompleted ? (
+                      <button
+                        type="button"
+                        className="w-full elite-btn-dark py-3 rounded font-bold uppercase tracking-wider text-sm"
+                        onClick={() => {
+                          setShowWaiverForm(true);
+                          toast.error('Complete the participation agreement before applying.');
+                        }}
+                      >
+                        Complete Waiver To Apply
+                      </button>
                     ) : (
                       <Dialog open={selectedEventId === event.id} onOpenChange={(open) => setSelectedEventId(open ? event.id : null)}>
                         <DialogTrigger asChild>

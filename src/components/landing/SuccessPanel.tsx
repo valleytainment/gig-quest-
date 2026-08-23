@@ -8,6 +8,7 @@ type SuccessPanelProps = {
 };
 
 const CHECKLIST = [
+  'Quick signup completed',
   'Waiver reviewed',
   'Consent recorded',
   'Signature matched',

@@ -83,8 +83,10 @@
 | `TrustStrip.tsx` | 🟧 | Social proof strip |
 | `HowItWorks.tsx` | 🟧 | Steps section |
 | `FaqBlock.tsx` | 🟧 | FAQ accordion |
-| `ArtistIntakeCard.tsx` | 🟧 | Intake card wrapper |
-| `LandingIntakeForm.tsx` | 🟧 | Form fields + validation UI |
+| `ArtistIntakeCard.tsx` | 🟧 | Intake card wrapper + optional Google signup |
+| `QuickSignupForm.tsx` | 🟧 | Fast contact signup (step 1) |
+| `PendingWaiverPanel.tsx` | 🟧 | Post-signup waiver reminder before acceptance |
+| `LandingIntakeForm.tsx` | 🟧 | Agreement + remaining fields (step 2) |
 | `WaiverBlock.tsx` | 🟧 | Waiver view gate + checkboxes |
 | `WaiverDialogContent.tsx` | 🟧 | Full waiver modal content |
 | `ConsentBlock.tsx` | 🟧 | Age + e-sign consent |

@@ -16,6 +16,12 @@ test.describe('Landing intake happy path', () => {
     await page.getByLabel('Real Name').fill('Jane Artist');
     await page.locator('#email').fill('jane@example.com');
     await page.getByLabel('Phone Number').fill('555-0100');
+    await page.getByRole('button', { name: /create free signup/i }).click();
+
+    await expect(page.getByText(/you are signed up/i)).toBeVisible();
+    await expect(page.getByText(/waiver required for acceptance/i)).toBeVisible();
+    await page.getByRole('button', { name: /complete agreement now/i }).click();
+
     await page.getByLabel('Emergency Contact Name').fill('Contact One');
     await page.getByLabel('Emergency Contact Phone').fill('555-0101');
 

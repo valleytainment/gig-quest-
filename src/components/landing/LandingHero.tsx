@@ -40,7 +40,7 @@ export const LandingHero = ({ className = '' }: LandingHeroProps) => (
       </h1>
 
       <p className="mt-4 max-w-lg text-sm leading-6 text-zinc-300 sm:text-base sm:leading-7">
-        Submit your artist info, review the agreement, and send your registration in minutes. Free signup. Curated review. Email-safe submission.
+        Sign up fast with your contact info, then finish the participation agreement before acceptance. Free signup. Curated review. Email-safe submission.
       </p>
 
       <p className="mt-3 max-w-lg text-xs leading-5 text-zinc-500 sm:text-sm sm:leading-6">

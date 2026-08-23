@@ -1,0 +1,62 @@
+
+# BEGIN MAC_OPTIMIZE_CURSORIGNORE
+# Dependencies
+**/node_modules
+**/.pnpm-store
+**/.yarn
+**/.npm
+**/vendor
+**/.venv
+**/venv
+**/__pycache__
+**/*.pyc
+
+# Build outputs and generated files
+**/dist
+**/build
+**/.next
+**/out
+**/.nuxt
+**/.svelte-kit
+**/.turbo
+**/.cache
+**/coverage
+**/target
+**/bin
+**/obj
+
+# Test artifacts
+**/playwright-report
+**/test-results
+**/.nyc_output
+
+# Logs and temp files
+**/*.log
+**/logs
+**/tmp
+**/.tmp
+
+# VCS and worktree explosion protection
+**/.git
+**/.svn
+**/.hg
+**/.worktrees
+**/worktrees
+**/*-worktree*
+**/*-agent-*
+
+# Local data, dumps, databases, and secrets
+**/.docker
+**/data
+**/dump
+**/backups
+**/*.sqlite
+**/*.db
+**/*.parquet
+**/*.csv
+**/.env
+**/.env.*
+**/*secret*
+**/*private*
+**/*key*
+# END MAC_OPTIMIZE_CURSORIGNORE

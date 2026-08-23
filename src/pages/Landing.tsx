@@ -7,24 +7,28 @@
  * @responsibility Public intake orchestrator — form state, submit, success flow
  * @depends-on     lib/submissions, components/landing/*, types/applications
  * @consumers      App.tsx route "/"
- * @safe-mode      CRITICAL — waiver gate, signature match, email fallback required
+ * @safe-mode      CRITICAL — waiver gate before acceptance submit, email fallback required
  *
  * STRUCTURAL INTENT
- * Owns intake state machine only; presentation delegated to components/landing/.
- * Never remove email fallback on success. Firestore create is env-gated.
+ * Two-step intake: fast contact signup → waiver reminder → agreement + email draft.
+ * Never remove email fallback on final submit. Firestore create is env-gated.
  *
  * @see docs/LEGACY_SAFE_MODE.md
  * @see docs/SYSTEM_MAP.md#intake-flow-public-landing
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   buildEmailDraft,
   createPublicApplication,
   isFirestoreIntakeEnabled,
 } from '../lib/submissions';
+import { getAuthErrorMessage, signInWithGoogle } from '../lib/firebase';
 import { LandingHero } from '../components/landing/LandingHero';
 import { ArtistIntakeCard } from '../components/landing/ArtistIntakeCard';
+import { QuickSignupForm } from '../components/landing/QuickSignupForm';
+import { PendingWaiverPanel } from '../components/landing/PendingWaiverPanel';
 import { LandingIntakeForm } from '../components/landing/LandingIntakeForm';
 import { SuccessPanel } from '../components/landing/SuccessPanel';
 import { HowItWorks } from '../components/landing/HowItWorks';
@@ -48,9 +52,11 @@ const INITIAL_FORM: LandingFormData = {
   notes: '',
 };
 
+type IntakeStep = 'cta' | 'quick' | 'pending_waiver' | 'agreement' | 'submitted';
+
 export const Landing = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate();
+  const [step, setStep] = useState<IntakeStep>('cta');
   const [draftLinks, setDraftLinks] = useState({ mailto: '', gmail: '', body: '' });
   const [waiverViewed, setWaiverViewed] = useState(false);
   const [waiverAccepted, setWaiverAccepted] = useState(false);
@@ -59,6 +65,8 @@ export const Landing = () => {
   const [confirmationId, setConfirmationId] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleError, setGoogleError] = useState<string | null>(null);
   const [formData, setFormData] = useState<LandingFormData>(INITIAL_FORM);
 
   const handleChange = (
@@ -68,12 +76,53 @@ export const Landing = () => {
     setFormData((current) => ({ ...current, [name]: value }));
   };
 
+  const handleQuickSignup = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!formData.stageName.trim() || !formData.realName.trim() || !formData.email.trim() || !formData.phone.trim()) {
+      return;
+    }
+    setStep('pending_waiver');
+  };
+
+  const handleGoogleFromReminder = async () => {
+    setGoogleLoading(true);
+    setGoogleError(null);
+    try {
+      await signInWithGoogle();
+      navigate('/artist', {
+        replace: true,
+        state: {
+          remindWaiver: true,
+          draftSignup: {
+            stageName: formData.stageName,
+            realName: formData.realName,
+            email: formData.email,
+            phone: formData.phone,
+            city: formData.city,
+            performanceType: formData.performanceType,
+          },
+        },
+      });
+    } catch (error) {
+      setGoogleError(getAuthErrorMessage(error));
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const signatureMatches =
       formData.legalSignature.trim().toLowerCase() === formData.realName.trim().toLowerCase();
 
     if (!waiverViewed || !waiverAccepted || !ageConfirmed || !eSignConsent || !signatureMatches) {
+      const missing: string[] = [];
+      if (!waiverViewed) missing.push('view the waiver');
+      if (waiverViewed && !waiverAccepted) missing.push('accept the agreement');
+      if (!ageConfirmed) missing.push('confirm age/guardian consent');
+      if (!eSignConsent) missing.push('confirm e-sign consent');
+      if (!signatureMatches) missing.push('match your typed signature to your real name');
+      setSubmitError(`Almost there — please ${missing.join(', ')} before we can send your registration.`);
       return;
     }
 
@@ -88,7 +137,7 @@ export const Landing = () => {
         const drafts = buildEmailDraft(formData, id);
         setConfirmationId(id);
         setDraftLinks({ mailto: drafts.mailto, gmail: drafts.gmail, body: drafts.body });
-        setSubmitted(true);
+        setStep('submitted');
         window.location.href = drafts.mailto;
         return;
       } catch {
@@ -104,7 +153,7 @@ export const Landing = () => {
 
     const drafts = buildEmailDraft(formData);
     setDraftLinks({ mailto: drafts.mailto, gmail: drafts.gmail, body: drafts.body });
-    setSubmitted(true);
+    setStep('submitted');
     window.location.href = drafts.mailto;
     setSubmitting(false);
   };
@@ -119,11 +168,29 @@ export const Landing = () => {
       <main className="relative mx-auto w-full max-w-6xl">
         <div className="gq-card grid w-full min-w-0 grid-cols-1 items-stretch overflow-hidden rounded-2xl lg:grid-cols-2 lg:rounded-[2rem]">
           <section className="relative z-10 order-1 flex min-w-0 flex-col justify-center border-b border-white/10 px-3 py-5 sm:px-6 sm:py-8 lg:order-2 lg:border-b-0 lg:border-l lg:px-8 lg:py-10">
-            {!showForm && !submitted ? (
-              <ArtistIntakeCard onOpen={() => setShowForm(true)} />
+            {step === 'cta' ? (
+              <ArtistIntakeCard onOpen={() => setStep('quick')} />
             ) : null}
 
-            {showForm && !submitted ? (
+            {step === 'quick' ? (
+              <QuickSignupForm
+                formData={formData}
+                onChange={handleChange}
+                onSubmit={handleQuickSignup}
+              />
+            ) : null}
+
+            {step === 'pending_waiver' ? (
+              <PendingWaiverPanel
+                stageName={formData.stageName}
+                onCompleteAgreement={() => setStep('agreement')}
+                onGoogleSignUp={handleGoogleFromReminder}
+                googleLoading={googleLoading}
+                googleError={googleError}
+              />
+            ) : null}
+
+            {step === 'agreement' ? (
               <LandingIntakeForm
                 formData={formData}
                 waiverViewed={waiverViewed}
@@ -142,7 +209,7 @@ export const Landing = () => {
               />
             ) : null}
 
-            {submitted ? (
+            {step === 'submitted' ? (
               <SuccessPanel draftLinks={draftLinks} confirmationId={confirmationId} />
             ) : null}
           </section>

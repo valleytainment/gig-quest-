@@ -5,13 +5,13 @@ import { GlowCard } from '../ui/GlowCard';
 const STEPS = [
   {
     icon: FileText,
-    title: 'Submit Artist Info',
-    body: 'Tell us who you are, how to contact you, and what type of performance you bring.',
+    title: 'Quick Signup',
+    body: 'Enter your stage name and contact info in under a minute — free, no login required.',
   },
   {
     icon: ShieldCheck,
-    title: 'Review + Consent',
-    body: 'View the participation agreement, confirm consent, and sign electronically.',
+    title: 'Complete Agreement',
+    body: 'Review the participation agreement and sign. Acceptance stays pending until this is done.',
   },
   {
     icon: Mail,
