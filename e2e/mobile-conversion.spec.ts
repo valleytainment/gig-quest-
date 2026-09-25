@@ -35,14 +35,17 @@ test.describe('375px mobile conversion', () => {
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
     await expect(page.locator('#stageName')).toBeVisible();
 
+    await page.getByLabel('Stage Name').fill('Mobile Star');
+    await page.getByLabel('Real Name').fill('Jane Artist');
+    await page.locator('#email').fill('jane@example.com');
+    await page.getByLabel('Phone Number').fill('555-0100');
+    await page.getByRole('button', { name: /create free signup/i }).click();
+    await page.getByRole('button', { name: /complete agreement now/i }).click();
+
     await expectNoHorizontalScroll(page);
     const submit = page.getByRole('button', { name: /submit registration/i });
     await expect(submit).toBeVisible();
     await submit.scrollIntoViewIfNeeded();
-
-    await page.getByLabel('Stage Name').fill('Mobile Star');
-    await page.getByLabel('Real Name').fill('Jane Artist');
-    await page.locator('#email').fill('jane@example.com');
 
     const submitBox = await submit.boundingBox();
     expect(submitBox?.height ?? 0).toBeGreaterThanOrEqual(44);
@@ -56,6 +59,9 @@ test.describe('375px mobile conversion', () => {
     await page.getByLabel('Real Name').fill('Jane Artist');
     await page.locator('#email').fill('jane@example.com');
     await page.getByLabel('Phone Number').fill('555-0100');
+    await page.getByRole('button', { name: /create free signup/i }).click();
+    await page.getByRole('button', { name: /complete agreement now/i }).click();
+
     await page.getByLabel('Emergency Contact Name').fill('Contact One');
     await page.getByLabel('Emergency Contact Phone').fill('555-0101');
 

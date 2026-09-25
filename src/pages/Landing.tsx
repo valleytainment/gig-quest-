@@ -138,7 +138,9 @@ export const Landing = () => {
         setConfirmationId(id);
         setDraftLinks({ mailto: drafts.mailto, gmail: drafts.gmail, body: drafts.body });
         setStep('submitted');
-        window.location.href = drafts.mailto;
+        setTimeout(() => {
+          window.location.href = drafts.mailto;
+        }, 150);
         return;
       } catch {
         const drafts = buildEmailDraft(formData);
@@ -154,7 +156,9 @@ export const Landing = () => {
     const drafts = buildEmailDraft(formData);
     setDraftLinks({ mailto: drafts.mailto, gmail: drafts.gmail, body: drafts.body });
     setStep('submitted');
-    window.location.href = drafts.mailto;
+    setTimeout(() => {
+      window.location.href = drafts.mailto;
+    }, 150);
     setSubmitting(false);
   };
 

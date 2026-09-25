@@ -25,6 +25,7 @@
 | `docs/CONFIG.md` | 🟦 | Root config reference |
 | `scripts/audit-consistency.sh` | 🟫 | `npm run audit:consistency` |
 | `components.json` | 🟧 | shadcn/ui config |
+| `public/_redirects` | 🟫 OPS | Netlify SPA rewrite redirects |
 
 ---
 
@@ -145,6 +146,7 @@
 | `tests/setup.ts` | 🟫 | Vitest DOM setup |
 | `e2e/README.md` | ⚪ | Playwright index |
 | `e2e/landing.spec.ts` | 🟫 | Mobile intake happy path |
+| `e2e/mobile-conversion.spec.ts` | 🟫 | 375px mobile responsiveness & sticky submit |
 | `e2e/phase11-smoke.spec.ts` | 🟫 | Legal, waiver gate, auth redirect |
 
 ---

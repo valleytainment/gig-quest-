@@ -1,5 +1,5 @@
 /** 🟫 OPS │ tests/landing.smoke.test.tsx — Vitest safe-mode landing smoke. */
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
@@ -202,7 +202,9 @@ describe('Landing page smoke tests', () => {
       'href',
       expect.stringMatching(/^https:\/\/mail\.google\.com\/mail/)
     );
-    expect(locationAssign).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(locationAssign).toHaveBeenCalled();
+    });
   });
 
   it('shows the free sign-up notice', () => {

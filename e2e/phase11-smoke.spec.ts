@@ -13,7 +13,15 @@ test.describe('Phase 11 launch smoke', () => {
   test('waiver must be viewed before checkbox unlocks', async ({ page }) => {
     await page.goto(appPath());
     await page.getByRole('button', { name: /sign up for performance opportunities/i }).click();
-    await expect(page.locator('#stageName')).toBeVisible();
+
+    await page.getByLabel('Stage Name').fill('Stage Star');
+    await page.getByLabel('Real Name').fill('Jane Artist');
+    await page.locator('#email').fill('jane@example.com');
+    await page.getByLabel('Phone Number').fill('555-0100');
+    await page.getByRole('button', { name: /create free signup/i }).click();
+    await page.getByRole('button', { name: /complete agreement now/i }).click();
+
+    await expect(page.locator('#emergencyContactName')).toBeVisible();
 
     const waiverCheckbox = page
       .locator('label')
@@ -36,6 +44,9 @@ test.describe('Phase 11 launch smoke', () => {
     await page.getByLabel('Real Name').fill('Jane Artist');
     await page.locator('#email').fill('jane@example.com');
     await page.getByLabel('Phone Number').fill('555-0100');
+    await page.getByRole('button', { name: /create free signup/i }).click();
+    await page.getByRole('button', { name: /complete agreement now/i }).click();
+
     await page.getByLabel('Emergency Contact Name').fill('Contact One');
     await page.getByLabel('Emergency Contact Phone').fill('555-0101');
 
@@ -57,7 +68,8 @@ test.describe('Phase 11 launch smoke', () => {
     await page.getByLabel('Initials').fill('JA');
 
     const submit = page.getByRole('button', { name: /submit registration/i });
-    await expect(submit).toBeDisabled();
+    await submit.click();
+    await expect(page.getByText(/match your typed signature to your real name/i)).toBeVisible();
   });
 
   test('legal pages load', async ({ page }) => {
@@ -76,7 +88,7 @@ test.describe('Phase 11 launch smoke', () => {
 
   test('login page has back to signup link', async ({ page }) => {
     await page.goto(appPath('login'));
-    await expect(page.getByRole('link', { name: /back to public signup/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /prefer public signup without login/i })).toBeVisible();
   });
 
   test('protected routes redirect to login', async ({ page }) => {
